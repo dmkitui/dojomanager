@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e5a6cf2a-5337-4181-9e0d-f9c0d7020733" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dojo_manager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="e5a6cf2a-5337-4181-9e0d-f9c0d7020733" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,11 +20,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
               <caret line="139" column="72" lean-forward="true" selection-start-line="139" selection-start-column="72" selection-end-line="139" selection-end-column="72" />
-              <folding>
-                <marker date="1491830257267" expanded="true" signature="2035:3818" ph="..." />
-                <marker date="1491830257267" expanded="true" signature="3076:3818" ph="..." />
-                <marker date="1491830257267" expanded="true" signature="3162:3818" ph="..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -589,11 +582,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="139" column="72" lean-forward="true" selection-start-line="139" selection-start-column="72" selection-end-line="139" selection-end-column="72" />
-          <folding>
-            <marker date="1491830257267" expanded="true" signature="2035:3818" ph="..." />
-            <marker date="1491830257267" expanded="true" signature="3076:3818" ph="..." />
-            <marker date="1491830257267" expanded="true" signature="3162:3818" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
