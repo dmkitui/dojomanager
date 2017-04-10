@@ -4,7 +4,7 @@
 '''
 
 Usage:
-    dojo_manager.py create_room (<room_type>) <room_name>...
+    dojo_manager.py create_room (Office|Livingspace) <room_name>...
     dojo_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
 
 arguments:
@@ -24,26 +24,19 @@ import docopt
 class Room(object):
 
     '''
-    Class Room.
+    base class Room to instantiate and hold attributes for the facilities at the dojo
     '''
-    max_occupants = 0
     all_rooms = []
     room_name = ''
 
     def __init__(self, room_name='', room_type=''):
         self.room_name = room_name
         self.room_type = room_type
-        print('Room Name: ', self.room_name)
 
-        if room_type.lower() == 'office':
-            Room.max_occupants = 6
-        elif room_type.lower() == 'livingspace':
-            Room.max_occupants = 4
-        self.max_occupants = Room.max_occupants
-        print('Type: ', room_type, self.max_occupants)
 
-    def create_room(self, name, room_type):
-
+    def create_room(self, room_name, room_type):
+        self.room_name = room_name
+        self.room_type = room_type
         print('Making Room Now')
         self.all_rooms.append(self)
 
@@ -64,26 +57,37 @@ class Person(object):
 
 
 class Fellow(Person):
+    '''
+    Subclass Fellow to model Andela Fellows
+    '''
 
-    def add_person(self, name='', accomodation=False):
-        Person().__init__(name, accomodation)
-        print('Fellow {0} {1} has been successfully added.'.format(name[0],
-                                                                  name[1]))
+    def add_person(self, fellow_name='', accomodation=False):
+        Person().__init__(fellow_name, accomodation)
+        print('Fellow {0} {1} has been successfully added.'.format(
+            fellow_name[0], fellow_name[1]))
         if not accomodation:
-            print('{0} does not wish to be accomodated'.format(name[0]))
+            print('{0} does not wish to be accomodated'.format(fellow_name[0]))
         print('NAME: ', self.person_name)
         return self
 
 
 class Staff(Person):
+    '''
+    subclass of Person to model staff members
+    '''
 
-    def add_person(self, name='', wants_accommodation=False):
-        Person().__init__(name, wants_accommodation=False)
-        print('Staff {0} has been successfully added.'.format(name))
+    def add_person(self, staff_name=''):
+        Person().__init__(staff_name)
+        print('Staff {0} has been successfully added.'.format(staff_name))
         return self
 
 
 class Office(Room):
+
+    '''
+    Subclass of Room to model offices
+    with attributes room_name and room_type
+    '''
 
     def create_room(self, room_name, room_type):
         Room().__init__(room_name, room_type)
@@ -93,16 +97,23 @@ class Office(Room):
 
 
 class LivingSpace(Room):
+    '''
+    Subclass of Room to model living spaces with attributes room_name and
+    room_type
+    '''
 
     def create_room(self, room_name, room_type):
         Room().__init__(room_name, room_type)
         print('A Livingspace called {0} has been successfully '
               'created!'.format(room_name))
-
         return self
 
 
 class Dojo(object):
+    '''
+    Class Dojo to model the dojo complex, and manage all the other classes
+    from the main()
+    '''
 
     def __init__(self):
         self.fellows = []
@@ -120,7 +131,6 @@ class Dojo(object):
 
         wants_accommodation = options['<wants_accommodation>']
         room_names = options['<room_name>']
-        room_type = options['<room_type>']
 
         if wants_accommodation and wants_accommodation.lower() == 'y':
             accommodation = True
@@ -138,25 +148,28 @@ class Dojo(object):
                 self.staff.append(person)
 
         elif options['create_room']:
-            for room in room_names:
-                self.add_room(room, room_type)
+            if options['Office']:
+                for room_name in room_names:
+                    self.add_office(room_name)
+            if options['Livingspace']:
+                for room_name in room_names:
+                    self.add_living_space(room_name)
+
 
         print(len(self.livingspaces))
         print(len(self.offices))
         print(len(self.fellows))
         print(len(self.staff))
 
-    def add_room(self, room_name, room_type):
+    def add_office(self, room_name):
+        a = Office()
+        room = a.create_room(room_name, 'office')
+        self.offices.append(room)
 
-        if room_type.lower() == 'office':
-            a = Office()
-            room = a.create_room(room_name, room_type)
-            self.offices.append(room)
-
-        elif room_type.lower() == 'livingspace':
-            b = LivingSpace()
-            room = b.create_room(room_name, room_type)
-            self.livingspaces.append(room)
+    def add_living_space(self, room_name):
+        b = LivingSpace()
+        room = b.create_room(room_name, 'livingspace')
+        self.livingspaces.append(room)
 
 
 if __name__ == "__main__":
