@@ -26,15 +26,20 @@ class Room(object):
     '''
     Class Room.
     '''
+    max_occupants = 0
 
     def __init__(self, name='', room_type=''):
         self.room_name = name
         self.room_type = room_type
-        print(room_type)
-        if self.room_type.lower() == 'office':
-            self.max_occupants = 6
-        elif self.room_type.lower() == 'livingspace':
-            self.max_occupants = 4
+
+        if room_type.lower() == 'office':
+            print('yes')
+            Room.max_occupants = 6
+        elif room_type.lower() == 'livingspace':
+            print('No')
+            Room.max_occupants = 4
+        self.max_occupants = Room.max_occupants
+        print('Type: ', room_type, self.max_occupants)
 
     def create_room(self, name, room_type):
 
@@ -77,10 +82,8 @@ class Office(Room):
 
     def create_room(self, name, room_type):
         Room().__init__(name, room_type)
-        # self.room_name = name
-        # self.room_type = room_type
-        # print('Making Room Now')
-        # self.all_rooms.append(self)
+
+        print('Instance: ', self.max_occupants)
         print('An Office called {0} has been successfully '
               'created!'.format(name))
         return self
@@ -93,6 +96,7 @@ class LivingSpace(Room):
         print('A Livingspace called {0} has been successfully '
               'created!'.format(name))
         # self.all_rooms.append(self)
+        print('Instance: ', self.max_occupants)
         # print(self.room_name, len(self.all_rooms))
         return self
 
@@ -140,14 +144,14 @@ class Dojo(object):
         # print('Freee', roomtype.lower())
 
         if room_type.lower() == 'office':
-            self.offices.append(Office.create_room(self, room_name, room_type))
+            self.offices.append(Office.create_room(Office, room_name,
+                                                   room_type))
             # print('An Office called {0} has been successfully '
             #       'created!'.format(room_name))
             # self.fellows.append()
 
         elif room_type.lower() == 'livingspace':
-
-            self.livingspaces.append(LivingSpace.create_room(self, room_name,
+            self.livingspaces.append(LivingSpace.create_room(LivingSpace, room_name,
                                                              room_type))
             # print('A Living Room called {0} has been successfully '
             #       'created!'.format(room_name))
