@@ -61,13 +61,18 @@ class Fellow(Person):
     Subclass Fellow to model Andela Fellows
     '''
 
-    def add_person(self, fellow_name='', accomodation=False):
+    def __init__(self, fellow_name='', accomodation=False):
         Person().__init__(fellow_name, accomodation)
+        self.fellow_name = fellow_name
+        self.accommodation = accomodation
+
+    def add_person(self, fellow_name, accomodation):
+
         print('Fellow {0} {1} has been successfully added.'.format(
             fellow_name[0], fellow_name[1]))
         if not accomodation:
             print('{0} does not wish to be accomodated'.format(fellow_name[0]))
-        print('NAME: ', self.person_name)
+
         return self
 
 
