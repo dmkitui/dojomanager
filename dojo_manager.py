@@ -5,7 +5,7 @@
 
 Usage:
     dojo_manager.py create_room (<room_type>) <room_name>...
-    dojo_manager.py add_person (<person_name1> <person_name2>) (Fellow|Staff) [<wants_accommodation>]
+    dojo_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
 
 arguments:
     create_room Creates a room type of <room_type> called <room_name>
@@ -27,16 +27,17 @@ class Room(object):
     Class Room.
     '''
     max_occupants = 0
+    all_rooms = []
+    room_name = ''
 
-    def __init__(self, name='', room_type=''):
-        self.room_name = name
+    def __init__(self, room_name='', room_type=''):
+        self.room_name = room_name
         self.room_type = room_type
+        print('Room Name: ', self.room_name)
 
         if room_type.lower() == 'office':
-            print('yes')
             Room.max_occupants = 6
         elif room_type.lower() == 'livingspace':
-            print('No')
             Room.max_occupants = 4
         self.max_occupants = Room.max_occupants
         print('Type: ', room_type, self.max_occupants)
@@ -49,7 +50,10 @@ class Room(object):
         return self
 
 
-class Person:
+class Person(object):
+    person_name = ''
+    wants_accommodation = False
+
     def __init__(self, name='', wants_accommodation=False):
 
         self.person_name = name
@@ -67,6 +71,7 @@ class Fellow(Person):
                                                                   name[1]))
         if not wants_accomodation:
             print('{0} does not wish to be accomodated'.format(name[0]))
+        print('NAME: ', self.person_name)
         return self
 
 
@@ -80,24 +85,20 @@ class Staff(Person):
 
 class Office(Room):
 
-    def create_room(self, name, room_type):
-        Room().__init__(name, room_type)
-
-        print('Instance: ', self.max_occupants)
+    def create_room(self, room_name, room_type):
+        Room().__init__(room_name, room_type)
         print('An Office called {0} has been successfully '
-              'created!'.format(name))
+              'created!'.format(room_name))
         return self
 
 
 class LivingSpace(Room):
 
-    def create_room(self, name, room_type):
-        Room().__init__(name, room_type)
+    def create_room(self, room_name, room_type):
+        Room().__init__(room_name, room_type)
         print('A Livingspace called {0} has been successfully '
-              'created!'.format(name))
-        # self.all_rooms.append(self)
-        print('Instance: ', self.max_occupants)
-        # print(self.room_name, len(self.all_rooms))
+              'created!'.format(room_name))
+
         return self
 
 
@@ -115,8 +116,7 @@ class Dojo(object):
     def main(self, options):
         # print(options)
 
-        name = [options['<person_name1>'], options['<person_name2>']]
-        print(name)
+        name = options['<person_name>']
 
         wants_accommodation = options['<wants_accommodation>']
         room_names = options['<room_name>']
@@ -125,10 +125,10 @@ class Dojo(object):
         if options['add_person']:
             print('Yes', name, wants_accommodation)
             if options['Fellow']:
-                self.fellows.append(Fellow.add_person(Dojo, name,
+                self.fellows.append(Fellow.add_person(Fellow, name,
                                                   wants_accommodation))
             elif options['Staff']:
-                self.staff.append(Staff.add_person(Dojo, name,
+                self.staff.append(Staff.add_person(Staff, name,
                                                    wants_accommodation=False))
 
         elif options['create_room']:
@@ -155,8 +155,6 @@ class Dojo(object):
                                                              room_type))
             # print('A Living Room called {0} has been successfully '
             #       'created!'.format(room_name))
-
-
 
 if __name__ == "__main__":
 
