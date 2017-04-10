@@ -44,9 +44,9 @@ class TestCreateRoom(unittest.TestCase):
 
     def test_adding_fellow_successfully(self):
         my_class_instance = Fellow()
-        daniel = my_class_instance.add_person(['Daniel', 'Kitui'])
+        daniel = my_class_instance.add_person(['Daniel', 'Kitui'], 'Y')
         self.assertTrue(daniel)
-        self.assertEqual(daniel.person_name, ['Daniel', 'Kitui'])
+        self.assertEqual(daniel.fellow_name, ['Daniel', 'Kitui'])
 
 
 if __name__ == '__main__':
