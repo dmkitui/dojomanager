@@ -78,7 +78,8 @@ class Staff(Person):
 
     def add_person(self, staff_name=''):
         Person().__init__(staff_name)
-        print('Staff {0} has been successfully added.'.format(staff_name))
+        print('Staff {0} {1} has been successfully added.'.format(
+            staff_name[0], staff_name[1]))
         return self
 
 
@@ -144,7 +145,7 @@ class Dojo(object):
                 self.fellows.append(person)
             elif options['Staff']:
                 person_class = Staff()
-                person = person_class.add_person(name, accommodation)
+                person = person_class.add_person(name)
                 self.staff.append(person)
 
         elif options['create_room']:
