@@ -23,14 +23,12 @@ class TestCreateRoom(unittest.TestCase):
         rhino_office = my_class.create_room('Rhino', 'Office')
         self.assertIsInstance(rhino_office, Room, 'Formed Object not of the '
                                                   'right class')
-        self.assertEqual(rhino_office.max_occupants, 6)
 
     def test_create_living_space(self):
         my_class = LivingSpace()
         comfy_livingspace = my_class.create_room('Comfy', 'livingspace')
         self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the '
                                                   'right class')
-        self.assertEqual(comfy_livingspace.max_occupants, 4)
 
     def test_create_staff_successfully(self):
         my_class_instance = Staff()
