@@ -52,12 +52,12 @@ class Room(object):
 
 class Person(object):
     person_name = ''
-    wants_accommodation = False
+    accommodation = False
 
-    def __init__(self, name='', wants_accommodation=False):
+    def __init__(self, name='', accommodation=False):
 
         self.person_name = name
-        self.wants_accommodation = wants_accommodation
+        self.accommodation = accommodation
 
     def add_person(self, name, job_group):
         return self
@@ -65,11 +65,11 @@ class Person(object):
 
 class Fellow(Person):
 
-    def add_person(self, name='', wants_accomodation=False):
-        Person().__init__(name, wants_accomodation)
+    def add_person(self, name='', accomodation=False):
+        Person().__init__(name, accomodation)
         print('Fellow {0} {1} has been successfully added.'.format(name[0],
                                                                   name[1]))
-        if not wants_accomodation:
+        if not accomodation:
             print('{0} does not wish to be accomodated'.format(name[0]))
         print('NAME: ', self.person_name)
         return self
@@ -121,15 +121,21 @@ class Dojo(object):
         wants_accommodation = options['<wants_accommodation>']
         room_names = options['<room_name>']
         room_type = options['<room_type>']
-        # add_person = options['<add_person>']
+
+        if wants_accommodation and wants_accommodation.lower() == 'y':
+            accommodation = True
+        else:
+            accommodation = False
+
         if options['add_person']:
-            print('Yes', name, wants_accommodation)
             if options['Fellow']:
-                self.fellows.append(Fellow.add_person(Fellow, name,
-                                                  wants_accommodation))
+                person_class = Fellow()
+                person = person_class.add_person(name, accommodation)
+                self.fellows.append(person)
             elif options['Staff']:
-                self.staff.append(Staff.add_person(Staff, name,
-                                                   wants_accommodation=False))
+                person_class = Staff()
+                person = person_class.add_person(name, accommodation)
+                self.staff.append(person)
 
         elif options['create_room']:
             for room in room_names:
@@ -141,20 +147,17 @@ class Dojo(object):
         print(len(self.staff))
 
     def add_room(self, room_name, room_type):
-        # print('Freee', roomtype.lower())
 
         if room_type.lower() == 'office':
-            self.offices.append(Office.create_room(Office, room_name,
-                                                   room_type))
-            # print('An Office called {0} has been successfully '
-            #       'created!'.format(room_name))
-            # self.fellows.append()
+            a = Office()
+            room = a.create_room(room_name, room_type)
+            self.offices.append(room)
 
         elif room_type.lower() == 'livingspace':
-            self.livingspaces.append(LivingSpace.create_room(LivingSpace, room_name,
-                                                             room_type))
-            # print('A Living Room called {0} has been successfully '
-            #       'created!'.format(room_name))
+            b = LivingSpace()
+            room = b.create_room(room_name, room_type)
+            self.livingspaces.append(room)
+
 
 if __name__ == "__main__":
 
