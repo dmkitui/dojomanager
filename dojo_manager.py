@@ -58,9 +58,10 @@ class Fellow(Person):
 
     def add_person(self, name='', wants_accomodation=False):
         Person().__init__(name, wants_accomodation)
-        print('Fellow {0} has been successfully added.'.format(name))
+        print('Fellow {0} {1} has been successfully added.'.format(name[0],
+                                                                  name[1]))
         if not wants_accomodation:
-            print('{0} does not wish to be accomodated'.format(name))
+            print('{0} does not wish to be accomodated'.format(name[0]))
         return self
 
 
