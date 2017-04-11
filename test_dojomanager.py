@@ -30,6 +30,8 @@ class TestCreateRoom(unittest.TestCase):
         self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the '
                                                   'right class')
 
+class TestAddPerson(unittest.TestCase):
+
     def test_create_staff_successfully(self):
         my_class_instance = Staff()
         daniel = my_class_instance.add_person('Daniel Kitui')
@@ -47,6 +49,8 @@ class TestCreateRoom(unittest.TestCase):
         daniel = my_class_instance.add_person(['Daniel', 'Kitui'], 'Y')
         self.assertTrue(daniel)
         self.assertEqual(daniel.fellow_name, ['Daniel', 'Kitui'])
+
+
 
 
 if __name__ == '__main__':

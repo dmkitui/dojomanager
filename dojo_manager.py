@@ -19,6 +19,7 @@ arguments:
 
 
 import docopt
+import random
 
 
 class Room(object):
@@ -97,8 +98,8 @@ class Office(Room):
 
     def create_room(self, room_name, room_type):
         Room().__init__(room_name, room_type)
-        print('An Office called {0} has been successfully '
-              'created!'.format(room_name))
+        # print('An Office called {0} has been successfully '
+        #       'created!'.format(room_name))
         return self
 
 
@@ -110,8 +111,8 @@ class LivingSpace(Room):
 
     def create_room(self, room_name, room_type):
         Room().__init__(room_name, room_type)
-        print('A Livingspace called {0} has been successfully '
-              'created!'.format(room_name))
+        # print('A Livingspace called {0} has been successfully '
+        #       'created!'.format(room_name))
         return self
 
 
@@ -148,24 +149,50 @@ class Dojo(object):
                 person_class = Fellow()
                 person = person_class.add_person(name, accommodation)
                 self.fellows.append(person)
+                self.allocate_office(name)
+                if accommodation:
+                    self.allocate_livingroom(name)
             elif options['Staff']:
                 person_class = Staff()
                 person = person_class.add_person(name)
+                self.allocate_office(name)
                 self.staff.append(person)
+
+
+
 
         elif options['create_room']:
             if options['Office']:
                 for room_name in room_names:
                     self.add_office(room_name)
+                    print('A Livingspace called {0} has been successfully '
+                          'created!'.format(room_name))
             if options['Livingspace']:
                 for room_name in room_names:
                     self.add_living_space(room_name)
+
 
 
         print(len(self.livingspaces))
         print(len(self.offices))
         print(len(self.fellows))
         print(len(self.staff))
+
+    def allocate_office(self, name):
+        office_instance = Office()
+        office_block = []
+        office_names = ['Green', 'Yellow', 'Blue', 'Brown']
+
+        for officename in office_names:
+            new_office = office_instance.create_room(officename, 'office')
+            office_block.append(new_office)
+
+        y = random.randint(0, len(office_block)-1)
+        print(y)
+
+        allocated_office = office_block[y]
+        print('{0} has been allocated the office {1}'.format(name[0],
+                                                             office_names[y]))
 
     def add_office(self, room_name):
         a = Office()
@@ -176,6 +203,25 @@ class Dojo(object):
         b = LivingSpace()
         room = b.create_room(room_name, 'livingspace')
         self.livingspaces.append(room)
+
+    def allocate_livingroom(self, name):
+
+        livingroom = LivingSpace()
+        livingroom_names = ['Comfort', 'Kenya', 'Uganda', 'Kampala']
+
+        living_places = []
+
+        for pad in livingroom_names:
+            living_place = livingroom.create_room(pad, 'livingspace')
+            living_places.append(living_place)
+
+        x = random.randint(0, len(living_places)-1)
+        allocated_livingroom = living_places[x]
+
+        print('{0} has been allocated the livingspace {1}'.format(name[0],
+                                                             livingroom_names[x]))
+
+
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e5a6cf2a-5337-4181-9e0d-f9c0d7020733" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojo_manager.py" afterPath="$PROJECT_DIR$/dojo_manager.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_dojomanager.py" afterPath="$PROJECT_DIR$/test_dojomanager.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,9 +22,11 @@
       <file leaf-file-name="dojo_manager.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dojo_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-91">
-              <caret line="68" column="50" lean-forward="false" selection-start-line="68" selection-start-column="50" selection-end-line="68" selection-end-column="50" />
-              <folding />
+            <state relative-caret-position="150">
+              <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="101" selection-end-column="45" />
+              <folding>
+                <element signature="e#515#528#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -31,8 +34,8 @@
       <file leaf-file-name="test_dojomanager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_dojomanager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="44" column="40" lean-forward="false" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
+            <state relative-caret-position="-61">
+              <caret line="22" column="41" lean-forward="false" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="43" />
               <folding>
                 <element signature="e#65#80#0" expanded="true" />
               </folding>
@@ -77,8 +80,8 @@
         <option value="$PROJECT_DIR$/tests/dojo_managerV2.py" />
         <option value="$PROJECT_DIR$/tests/refactors/test.dogomanager.py" />
         <option value="$PROJECT_DIR$/tests/refactors/dojomananger.py" />
-        <option value="$PROJECT_DIR$/dojo_manager.py" />
         <option value="$PROJECT_DIR$/test_dojomanager.py" />
+        <option value="$PROJECT_DIR$/dojo_manager.py" />
       </list>
     </option>
   </component>
@@ -116,8 +119,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -132,35 +133,15 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/tests/refactors/test.dogomanager.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python tests.Unittest TestCreateRoom.test_adding_fellow_successfully">
-    <configuration default="false" name="Unittest TestCreateRoom.test_create_room_successfully" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Week2" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_dojomanager.py" />
-      <option name="CLASS_NAME" value="TestCreateRoom" />
-      <option name="METHOD_NAME" value="test_create_room_successfully" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python tests.Unittest TestCreateRoom.test_create_office">
     <configuration default="false" name="Unittest TestCreateRoom.test_create_living_space" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -240,6 +221,28 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_dojomanager.py" />
       <option name="CLASS_NAME" value="TestCreateRoom" />
       <option name="METHOD_NAME" value="test_adding_fellow_successfully" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest TestCreatePerson.test_create_staff_successfully" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Week2" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_dojomanager.py" />
+      <option name="CLASS_NAME" value="TestCreatePerson" />
+      <option name="METHOD_NAME" value="test_create_staff_successfully" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
       <option name="PATTERN" value="" />
@@ -384,19 +387,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_room_successfully" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_living_space" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_office" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_staff_successfully" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_adding_fellow_successfully" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_living_space" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_office" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_staff_successfully" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_adding_fellow_successfully" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestCreatePerson.test_create_staff_successfully" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_adding_fellow_successfully" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_living_space" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_staff_successfully" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_office" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_room_successfully" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_office" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestCreatePerson.test_create_staff_successfully" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_adding_fellow_successfully" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_living_space" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_staff_successfully" />
       </list>
     </recent_temporary>
   </component>
@@ -414,11 +417,8 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittest_TestCreateRoom_test_adding_fellow_successfully - 2017.04.11 at 01h 41m 22s.xml">
-      <configuration name="Unittest TestCreateRoom.test_adding_fellow_successfully" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittest_TestCreateRoom_test_adding_fellow_successfully - 2017.04.11 at 01h 42m 48s.xml">
-      <configuration name="Unittest TestCreateRoom.test_adding_fellow_successfully" configurationId="tests" />
+    <history-entry file="Unittest_TestCreatePerson_test_create_staff_successfully - 2017.04.11 at 08h 13m 43s.xml">
+      <configuration name="Unittest TestCreatePerson.test_create_staff_successfully" configurationId="tests" />
     </history-entry>
     <history-entry file="Unittest_TestCreateRoom_test_adding_fellow_successfully - 2017.04.11 at 01h 45m 41s.xml">
       <configuration name="Unittest TestCreateRoom.test_adding_fellow_successfully" configurationId="tests" />
@@ -438,6 +438,9 @@
     <history-entry file="Unittest_TestCreateRoom_test_create_office - 2017.04.11 at 01h 41m 12s.xml">
       <configuration name="Unittest TestCreateRoom.test_create_office" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittest_TestCreateRoom_test_create_office - 2017.04.11 at 08h 28m 15s.xml">
+      <configuration name="Unittest TestCreateRoom.test_create_office" configurationId="tests" />
+    </history-entry>
     <history-entry file="Unittest_TestCreateRoom_test_create_room_successfully - 2017.04.11 at 01h 41m 09s.xml">
       <configuration name="Unittest TestCreateRoom.test_create_room_successfully" configurationId="tests" />
     </history-entry>
@@ -447,25 +450,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1350" height="718" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16818182" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.092307694" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32820514" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39965987" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32820514" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39965987" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -497,9 +500,51 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/dojo_manager.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3120">
+          <caret line="209" column="81" lean-forward="false" selection-start-line="209" selection-start-column="81" selection-end-line="209" selection-end-column="81" />
+          <folding>
+            <element signature="e#515#528#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_dojomanager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="20" column="27" lean-forward="true" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+          <folding>
+            <element signature="e#65#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dojo_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#515#528#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_dojomanager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="44" column="40" lean-forward="false" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
+          <folding>
+            <element signature="e#65#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dojo_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#515#528#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -517,7 +562,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#515#528#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -569,7 +616,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="28" column="34" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="40" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -584,9 +630,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="91" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="91" />
-          <folding>
-            <element signature="e#958#997#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -594,7 +637,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="29" column="54" lean-forward="false" selection-start-line="29" selection-start-column="54" selection-end-line="29" selection-end-column="54" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -602,16 +644,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="35" lean-forward="false" selection-start-line="12" selection-start-column="35" selection-end-line="12" selection-end-column="35" />
-          <folding>
-            <element signature="e#65#80#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test_dojomanager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="44" column="40" lean-forward="false" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
+        <state relative-caret-position="-61">
+          <caret line="22" column="41" lean-forward="false" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="43" />
           <folding>
             <element signature="e#65#80#0" expanded="true" />
           </folding>
@@ -620,9 +659,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dojo_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-91">
-          <caret line="68" column="50" lean-forward="false" selection-start-line="68" selection-start-column="50" selection-end-line="68" selection-end-column="50" />
-          <folding />
+        <state relative-caret-position="150">
+          <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="101" selection-end-column="45" />
+          <folding>
+            <element signature="e#515#528#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
