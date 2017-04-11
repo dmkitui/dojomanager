@@ -165,8 +165,18 @@ class Dojo(object):
         wants_accommodation = options['<wants_accommodation>']
         room_names = options['<room_name>']
 
-        if wants_accommodation and wants_accommodation.lower() == 'y':
-            accommodation = True
+        if wants_accommodation:
+            if options['Staff']:
+                print('Staff are not entitled to accommodation')
+                return 'Staff are not entitled to accommodation'
+
+            if wants_accommodation.lower() == 'y' or \
+                            wants_accommodation.lower() == 'n':
+                accommodation = True
+            else:
+                print('Argument for Accomodation can only be either Y or N')
+                return 'Argument for Accomodation can only be either Y or N'
+
         else:
             accommodation = False
 
