@@ -29,6 +29,7 @@ class TestCreateRoom(unittest.TestCase):
         comfy_livingspace = my_class.create_room('Comfy', 'livingspace')
         self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the '
                                                   'right class')
+        self.assertEqual(comfy_livingspace.room_name, 'Comfy')
 
 class TestAddPerson(unittest.TestCase):
 
@@ -57,6 +58,14 @@ class Test_add_person_to_a_room(unittest.TestCase):
         new_office = Office.create_room('Kilimanjaro', 'Office')
         new_person = Staff().add_person(['Steve', 'Man'])
         Dojo.allocate_office(new_person.person_name)
+
+
+class Test_invalid_docopt_inputs(unittest.TestCase):
+    def test_invalid_accomodation_argument(self):
+        pass
+
+    def test_invalid_accommodation_request(self):
+        pass
 
 
 
