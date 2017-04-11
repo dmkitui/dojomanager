@@ -27,12 +27,12 @@ class Room(object):
     '''
     base class Room to instantiate and hold attributes for the facilities at the dojo
     '''
-    all_rooms = []
-    room_name = ''
+    # room_name = ''
 
     def __init__(self, room_name='', room_type=''):
         self.room_name = room_name
         self.room_type = room_type
+        all_rooms = []
 
 
     def create_room(self, room_name, room_type):
@@ -45,15 +45,19 @@ class Room(object):
 
 
 class Person(object):
-    person_name = ''
-    accommodation = False
+    '''
+    Base class to manage the people objects in the Dojo
+    '''
 
-    def __init__(self, name='', accommodation=False):
+    def __init__(self, name='', job_group='', accommodation=False):
 
         self.person_name = name
         self.accommodation = accommodation
+        self.job_group = job_group
 
-    def add_person(self, name, job_group):
+    def add_person(self, name, job_group, accommodation):
+        self.person_name = name
+        self.accommodation = accommodation
         return self
 
 
@@ -63,14 +67,15 @@ class Fellow(Person):
     '''
 
     def __init__(self, fellow_name='', accomodation=False):
-        Person().__init__(fellow_name, accomodation)
+        # Person().__init__(fellow_name, accomodation)
         self.fellow_name = fellow_name
         self.accommodation = accomodation
 
     def add_person(self, fellow_name, accomodation):
-
+        self.fellow_name = fellow_name
+        self.accommodation = accomodation
         print('Fellow {0} {1} has been successfully added.'.format(
-            fellow_name[0], fellow_name[1]))
+            self.fellow_name[0], self.fellow_name[1]))
         if not accomodation:
             print('{0} does not wish to be accomodated'.format(fellow_name[0]))
 
@@ -82,10 +87,14 @@ class Staff(Person):
     subclass of Person to model staff members
     '''
 
+    def __init__(self, staff_name=''):
+        self.person_name = staff_name
+
     def add_person(self, staff_name=''):
-        Person().__init__(staff_name)
+        self.person_name = staff_name
         print('Staff {0} {1} has been successfully added.'.format(
             staff_name[0], staff_name[1]))
+        print(self.person_name)
         return self
 
 
@@ -95,11 +104,13 @@ class Office(Room):
     Subclass of Room to model offices
     with attributes room_name and room_type
     '''
+    def __init__(self, room_name='', room_type=''):
+        self.room_name = room_name
+        self.room_type = room_type
 
     def create_room(self, room_name, room_type):
-        Room().__init__(room_name, room_type)
-        # print('An Office called {0} has been successfully '
-        #       'created!'.format(room_name))
+        self.room_name = room_name
+        self.room_type = room_type
         return self
 
 
@@ -109,11 +120,21 @@ class LivingSpace(Room):
     room_type
     '''
 
+    def __init__(self, room_name='', room_type=''):
+        self.room_name = room_name
+        self.room_type = room_type
+        self.occupants = []
+
+
     def create_room(self, room_name, room_type):
-        Room().__init__(room_name, room_type)
-        # print('A Livingspace called {0} has been successfully '
-        #       'created!'.format(room_name))
+
+        self.room_name = room_name
+        self.room_type = room_type
+
         return self
+    #
+    # def add_occupant(self, person):
+    #     self.occupants.append(person)
 
 
 class Dojo(object):
@@ -167,11 +188,13 @@ class Dojo(object):
             if options['Office']:
                 for room_name in room_names:
                     self.add_office(room_name)
-                    print('A Livingspace called {0} has been successfully '
+                    print('An Office called {0} has been successfully '
                           'created!'.format(room_name))
             if options['Livingspace']:
                 for room_name in room_names:
                     self.add_living_space(room_name)
+                    print('A Livingspace called {0} has been successfully '
+                      'created!'.format(room_name))
 
 
 #Print for testing purposes.
@@ -213,7 +236,7 @@ class Dojo(object):
             living_places.append(living_place)
 
         x = random.randint(0, len(living_places)-1)
-        allocated_livingroom = living_places[x]
+        # allocated_livingroom = living_places[x]
 
         print('{0} has been allocated the livingspace {1}'.format(name[0],
                                                              livingroom_names[x]))
