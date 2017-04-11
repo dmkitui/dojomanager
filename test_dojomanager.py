@@ -51,6 +51,14 @@ class TestAddPerson(unittest.TestCase):
         self.assertEqual(daniel.fellow_name, ['Daniel', 'Kitui'])
 
 
+class Test_add_person_to_a_room(unittest.TestCase):
+    def test_add_to_existing_room(self):
+        office_instance = Office()
+        new_office = Office.create_room('Kilimanjaro', 'Office')
+        new_person = Staff().add_person(['Steve', 'Man'])
+        Dojo.allocate_office(new_person.person_name)
+
+
 
 
 if __name__ == '__main__':
