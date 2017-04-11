@@ -12,16 +12,12 @@ arguments:
     add_person Adds a person, and assigns the person to a randomly chosen existing room
 '''
 
-# options:
-#     -h, --help Show this screen and exit
-#     -v, --version show program's version number and exit
-
 
 
 import docopt
 import random
 from cmd import Cmd
-from personel.person import Person, Staff, Fellow
+from personel.person import Staff, Fellow
 from rooms.room import Office, LivingSpace
 
 
