@@ -20,17 +20,16 @@ class Fellow(Person):
     Subclass Fellow to model Andela Fellows
     '''
 
-    def __init__(self, fellow_name='', accomodation=False):
-        # Person().__init__(fellow_name, accomodation)
+    def __init__(self, fellow_name='', accommodation=False):
         self.fellow_name = fellow_name
-        self.accommodation = accomodation
+        self.accommodation = accommodation
 
-    def add_person(self, fellow_name, accomodation):
+    def add_person(self, fellow_name, accommodation):
         self.fellow_name = fellow_name
-        self.accommodation = accomodation
+        self.accommodation = accommodation
         print('Fellow {0} {1} has been successfully added.'.format(
             self.fellow_name[0], self.fellow_name[1]))
-        if not accomodation:
+        if not accommodation:
             print('{0} does not wish to be accomodated'.format(fellow_name[0]))
 
         return self
@@ -48,5 +47,4 @@ class Staff(Person):
         self.person_name = staff_name
         print('Staff {0} {1} has been successfully added.'.format(
             staff_name[0], staff_name[1]))
-        print(self.person_name)
         return self

@@ -1,74 +1,33 @@
 '''
-Test cases for the commandline program 'create_room.py'
+Test cases for the dojo_manager.py module
 '''
 
 import unittest
-from dojo_manager import Person, Fellow, Staff, Dojo, Room, Office, \
-    LivingSpace
+from personel.person import Person, Staff, Fellow
+from rooms.room import Office, LivingSpace, Room
+from dojo_manager import DojoManager
+
 
 class TestCreateRoom(unittest.TestCase):
+    '''Test cases to test the functionality of the dojo_manager module
     '''
 
-    '''
-    def test_create_room_successfully(self):
-        my_class_instance = Room()
-        initial_room_count = len(my_class_instance.all_rooms)
-        blue_office = my_class_instance.create_room('blue', 'office')
-        self.assertTrue(blue_office)
-        new_room_count = len(my_class_instance.all_rooms)
-        self.assertEqual(new_room_count - initial_room_count, 1)
+    def setup(self):
+        self.instance = DojoManager()
 
-    def test_create_office(self):
-        my_class = Office()
-        rhino_office = my_class.create_room('Rhino', 'Office')
-        self.assertIsInstance(rhino_office, Room, 'Formed Object not of the '
-                                                  'right class')
+    def test_initial_state(self):
+        self.instance = DojoManager()
+        self.assertEqual([self.instance.livingspaces,
+                             self.instance.office_block,
+                             self.instance.fellows,
+                             self.instance.staff_members],
+                             [[],[],[],[]])
 
-    def test_create_living_space(self):
-        my_class = LivingSpace()
-        comfy_livingspace = my_class.create_room('Comfy', 'livingspace')
-        self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the '
-                                                  'right class')
-        self.assertEqual(comfy_livingspace.room_name, 'Comfy')
-
-class TestAddPerson(unittest.TestCase):
-
-    def test_create_staff_successfully(self):
-        my_class_instance = Staff()
-        daniel = my_class_instance.add_person('Daniel Kitui')
-        self.assertIsInstance(daniel, Staff, 'Formed object no of the '
-                                             'required class')
-
-    def test_create_fellow_successfully(self):
-        my_class_instance = Fellow()
-        daniel = my_class_instance.add_person('Daniel Kitui', 'Y')
-        self.assertIsInstance(daniel, Fellow, 'Formed object not of the '
-                                             'required class')
-
-    def test_adding_fellow_successfully(self):
-        my_class_instance = Fellow()
-        daniel = my_class_instance.add_person(['Daniel', 'Kitui'], 'Y')
-        self.assertTrue(daniel)
-        self.assertEqual(daniel.fellow_name, ['Daniel', 'Kitui'])
-
-
-class Test_add_person_to_a_room(unittest.TestCase):
-    def test_add_to_existing_room(self):
-        office_instance = Office()
-        new_office = Office.create_room('Kilimanjaro', 'Office')
-        new_person = Staff().add_person(['Steve', 'Man'])
-        Dojo.allocate_office(new_person.person_name)
-
-
-class Test_invalid_docopt_inputs(unittest.TestCase):
-    def test_invalid_accomodation_argument(self):
-        pass
-
-    def test_invalid_accommodation_request(self):
-        pass
-
-
-
+    def test_add_office(self):
+        self.instance = DojoManager()
+        self.instance.add_office('Kahawa')
+        self.assertEqual(len(self.instance.office_block), 1, 'Office not '
+                                                             'added')
 
 if __name__ == '__main__':
     unittest.main()
