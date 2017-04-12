@@ -212,13 +212,8 @@ class DojoManager(Cmd):
             return
 
         room_name = options['<room_name>']
-        print(room_name)
-
         available_rooms = self.office_block + self.livingspaces
-
         available_room_names = [x.room_name for x in available_rooms]
-
-        print(available_room_names)
 
         if room_name not in available_room_names:
             print('Room {} Seems not to exist. Kindly Confirm room '
@@ -229,19 +224,19 @@ class DojoManager(Cmd):
                       room_name][0]
         occupant_list = room_object.occupants
 
-        print_names = []
-        for occupant in occupant_list:
-            name = ' '.join(occupant)
-            print_names.append(name)
+        if len(occupant_list) == 0: # When a room is empty
+            print_output = 'Room is empty'
+        else:
+            print_names = []
+            for occupant in occupant_list:
+                name = ' '.join(occupant)
+                print_names.append(name)
 
-        print_output = ', '.join(print_names)
+            print_output = ', '.join(print_names)
 
         print(room_name)
         print('--------------------------------------------')
         print(print_output)
-
-
-        # print(room.occupants)
 
 
 
