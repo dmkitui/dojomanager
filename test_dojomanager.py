@@ -33,7 +33,6 @@ class TestCreateRoom(unittest.TestCase):
         self.assertEqual(self.instance.do_print_room(room_name), 'Room {} '
                                                                'Seems not to exist. Kindly Confirm room name'.format(room_name))
 
-    def test_
 
 if __name__ == '__main__':
     unittest.main()
