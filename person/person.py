@@ -8,11 +8,11 @@ class Person(object):
         self.person_name = name
         self.accommodation = accommodation
         self.job_group = job_group
-
-    def add_person(self, name, job_group, accommodation):
-        self.person_name = name
-        self.accommodation = accommodation
-        return self
+    #
+    # def add_person(self, name, job_group, accommodation):
+    #     self.person_name = name
+    #     self.accommodation = accommodation
+    #     return self
 
 
 class Fellow(Person):
@@ -27,10 +27,9 @@ class Fellow(Person):
     def add_person(self, fellow_name, accommodation):
         self.fellow_name = fellow_name
         self.accommodation = accommodation
-        print('Fellow {0} {1} has been successfully added.'.format(
-            self.fellow_name[0], self.fellow_name[1]))
+        print('Fellow {0} {1} has been successfully added.\n'.format(self.fellow_name[0],self.fellow_name[1]))
         if not accommodation:
-            print('{0} does not wish to be accomodated'.format(fellow_name[0]))
+            print('{0} does not wish to be accomodated\n'.format(fellow_name[0]))
 
         return self
 
@@ -45,6 +44,6 @@ class Staff(Person):
 
     def add_person(self, staff_name=''):
         self.person_name = staff_name
-        print('Staff {0} {1} has been successfully added.'.format(
+        print('Staff {0} {1} has been successfully added.\n'.format(
             staff_name[0], staff_name[1]))
         return self

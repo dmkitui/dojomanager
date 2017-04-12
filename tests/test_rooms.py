@@ -1,5 +1,5 @@
 import unittest
-from rooms.room import Office, LivingSpace, Room
+from room.room import Office, LivingSpace, Room
 from dojo_manager import DojoManager
 
 
@@ -28,10 +28,8 @@ class TestCreateRoom(unittest.TestCase):
                                                   'right class')
         self.assertEqual(comfy_livingspace.room_name, 'Comfy')
 
-class Test_allocate_no_rooms(unittest.TestCase):
-    def test_office_allocation(self):
-        x = DojoManager()
-        self.assertIsNone(x.allocate_office(['Daniel', 'Kitui']))
+
+
 
 if __name__ == '__main__':
     unittest.main()
