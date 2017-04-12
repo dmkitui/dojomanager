@@ -12,13 +12,12 @@ arguments:
     add_person Adds a person, and assigns the person to a randomly chosen existing room
 '''
 
-
-
 import docopt
 import random
 from cmd import Cmd
 from personel.person import Staff, Fellow
 from rooms.room import Office, LivingSpace
+import os
 
 
 class DojoManager(Cmd):
@@ -184,9 +183,22 @@ class DojoManager(Cmd):
 
         print('{0} has been allocated the office {1}'.format(name[0], random_office.room_name))
 
+    def do_exit(self, arg):
+        '''To exit from Dojo Manager Session'''
+        print('Dojo Manager V0. Exiting...')
+        return True
+
+    def do_clear(self, arg):
+        '''To clear screen'''
+        try:
+            os.system('clear') # Clear screen for Unix
+        except:
+            os.system('cls') # Clear screen for Windows
+
 if __name__ == '__main__':
 
     try:
         DojoManager().cmdloop()
     except (KeyboardInterrupt, SystemExit):
+        print('Dojo Manager V0. Exit.')
         print('____________________________')
