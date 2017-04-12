@@ -252,6 +252,36 @@ class DojoManager(Cmd):
 
         print('Occupants of room {} : {}'.format(room_name, print_output))
 
+    @docopt_cmd
+    def do_print_allocations(self, user_input):
+        '''
+        Usage:
+            print_allocations [<-o=filename>]
+        '''
+        print(user_input)
+        if user_input['<-o=filename>']:
+            output_file = user_input['<-o=filename>']
+
+        rooms = self.office_block + self.livingspaces
+        if len(len(rooms)) == 0:
+            print('No rooms currently occupied')
+            return
+
+        for room in rooms:
+            occupant_list = room.occupants
+            room_occupant_names = []
+            if len(occupant_list) > 0:
+                for occupant in occupant_list:
+                    name = ' '.join(occupant)
+                    room_occupant_names.append(name)
+            print(room.name)
+            print('-----------------------')
+            print(', '.join(room_occupant_names))
+
+
+
+
+
 if __name__ == '__main__':
 
     try:
