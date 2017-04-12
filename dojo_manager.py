@@ -183,17 +183,77 @@ class DojoManager(Cmd):
 
         print('{0} has been allocated the office {1}'.format(name[0], random_office.room_name))
 
-    def do_exit(self, arg):
+    def do_exit(self, user_input):
         '''To exit from Dojo Manager Session'''
         print('Dojo Manager V0. Exiting...')
         return True
 
-    def do_clear(self, arg):
+    def do_clear(self, user_input):
         '''To clear screen'''
         try:
             os.system('clear') # Clear screen for Unix
         except:
             os.system('cls') # Clear screen for Windows
+
+    def do_print_room(self, user_input):
+        '''
+        Usage:
+            print_room <room_name>
+        '''
+        '''Prints the names of all the people in ​room_name​ on the screen.'''
+
+        try:
+            options = docopt.docopt(self.do_print_room.__doc__, user_input)
+
+        except docopt.DocoptExit as e:
+            print('_________________________________________')
+            print('Dojo Manager V.1: Invalid argument values')
+            print(e)
+            return
+
+        room_name = options['<room_name>']
+        print(room_name)
+
+        available_rooms = self.office_block + self.livingspaces
+
+        available_room_names = [x.room_name for x in available_rooms]
+
+        print(available_room_names)
+
+        if room_name not in available_room_names:
+            print('Room {} Seems not to exist. Kindly Confirm room '
+                  'name'.format(room_name))
+            return
+
+        room_object = [x for x in available_rooms if x.room_name ==
+                      room_name][0]
+        occupant_list = room_object.occupants
+
+        print_names = []
+        for occupant in occupant_list:
+            name = ' '.join(occupant)
+            print_names.append(name)
+
+        print_output = ', '.join(print_names)
+
+        print(room_name)
+        print('--------------------------------------------')
+        print(print_output)
+
+
+        # print(room.occupants)
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
 
