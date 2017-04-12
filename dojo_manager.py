@@ -241,7 +241,7 @@ class DojoManager(Cmd):
         occupant_list = room_object.occupants
 
         if len(occupant_list) == 0: # When a room is empty
-            print_output = 'Room is empty'
+            print_output = 'Room {} is empty'.format(room_name)
         else:
             print_names = []
             for occupant in occupant_list:
@@ -250,9 +250,7 @@ class DojoManager(Cmd):
 
             print_output = ', '.join(print_names)
 
-        print(room_name)
-        print('--------------------------------------------')
-        print(print_output)
+        print('Occupants of room {} : {}'.format(room_name, print_output))
 
 if __name__ == '__main__':
 
