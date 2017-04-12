@@ -12,13 +12,41 @@ arguments:
     add_person Adds a person, and assigns the person to a randomly chosen existing room
 '''
 
-import docopt
+from docopt import docopt, DocoptExit
 import random
 from cmd import Cmd
 from personel.person import Staff, Fellow
 from rooms.room import Office, LivingSpace
 import os
 
+def docopt_cmd(func):
+    """
+    This decorator is used to simplify the try/except block and pass the result
+    of the docopt parsing to the called action.
+    """
+    def fn(self, arg):
+        try:
+            opt = docopt(fn.__doc__, arg)
+
+        except DocoptExit as e:
+            # The DocoptExit is thrown when the args do not match.
+            # We print a message to the user and the usage block.
+
+            print('Dojo Manager V.1: Invalid argument value(s)')
+            print(e)
+            return
+
+        except SystemExit:
+            # The SystemExit exception prints the usage for --help
+            # We do not need to do the print here.
+            return
+
+        return func(self, opt)
+
+    fn.__name__ = func.__name__
+    fn.__doc__ = func.__doc__
+    fn.__dict__.update(func.__dict__)
+    return fn
 
 class DojoManager(Cmd):
     '''
@@ -35,25 +63,16 @@ class DojoManager(Cmd):
     office_block = []
     livingspaces = []
 
+    @docopt_cmd
     def do_create_room(self, user_input):
 
         """
         Usage:
             create_room (Office|Livingspace) (<room_name>...)
         """
+        room_names = user_input['<room_name>']
 
-        try:
-            options = docopt.docopt(self.do_create_room.__doc__, user_input)
-
-        except docopt.DocoptExit as e:
-            print('_________________________________________')
-            print('Dojo Manager V.1: Invalid argument value(s)')
-            print(e)
-            return
-
-        room_names = options['<room_name>']
-
-        if options['Office']:
+        if user_input['Office']:
             existing_offices = [x.room_name for x in self.office_block]
             for room_name in room_names:
                 if room_name in existing_offices:
@@ -63,7 +82,7 @@ class DojoManager(Cmd):
                 print('An Office called {0} has been successfully '
                       'created!'.format(room_name))
 
-        if options['Livingspace']:
+        if user_input['Livingspace']:
             existing_livingspaces = [x.room_name for x in self.livingspaces]
             for room_name in room_names:
                 if room_name in existing_livingspaces:
@@ -88,6 +107,7 @@ class DojoManager(Cmd):
         room = b.create_room(room_name, 'livingspace')
         self.livingspaces.append(room)
 
+    @docopt_cmd
     def do_add_person(self, user_input):
 
         '''
@@ -95,21 +115,12 @@ class DojoManager(Cmd):
             add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
         '''
 
-        try:
-            options = docopt.docopt(self.do_add_person.__doc__, user_input)
+        name = user_input['<person_name>']
 
-        except docopt.DocoptExit as e:
-            print('_________________________________________')
-            print('Dojo Manager V.1: Invalid argument values')
-            print(e)
-            return
-
-        name = options['<person_name>']
-
-        wants_accommodation = options['<wants_accommodation>']
+        wants_accommodation = user_input['<wants_accommodation>']
 
         if wants_accommodation:
-            if options['Staff']:
+            if user_input['Staff']:
                 print('Staff are not entitled to accommodation')
                 return 'Staff are not entitled to accommodation'
 
@@ -125,14 +136,14 @@ class DojoManager(Cmd):
         else:
             accommodation = False
 
-        if options['Fellow']:
+        if user_input['Fellow']:
             person_class = Fellow()
             person = person_class.add_person(name, accommodation)
             self.fellows.append(person)
             self.allocate_office(name)
             if accommodation:
                 self.allocate_livingroom(name)
-        elif options['Staff']:
+        elif user_input['Staff']:
             person_class = Staff()
             person = person_class.add_person(name)
             self.allocate_office(name)
@@ -183,18 +194,33 @@ class DojoManager(Cmd):
 
         print('{0} has been allocated the office {1}'.format(name[0], random_office.room_name))
 
+    # To implement docopt function wrapper fully
+    # @docopt_cmd
+    # def do_exit(self, user_input):
+    #     '''To exit from Dojo Manager Session'''
+    #     print('Dojo Manager V0. Exiting...')
+    #     return True
+
     def do_exit(self, user_input):
         '''To exit from Dojo Manager Session'''
         print('Dojo Manager V0. Exiting...')
         return True
 
+    # To implement docopt wrapper exit method
+    # @docopt_cmd
+    # def do_clear(self, user_input):
+    #     '''To clear screen'''
+    #     '''
+    #     Usage:
+    #         clear
+    #     '''
+    #     os.system('cls' if os.name == 'nt' else 'clear')
+
     def do_clear(self, user_input):
         '''To clear screen'''
-        try:
-            os.system('clear') # Clear screen for Unix
-        except:
-            os.system('cls') # Clear screen for Windows
+        os.system('cls' if os.name == 'nt' else 'clear')
 
+    @docopt_cmd
     def do_print_room(self, user_input):
         '''
         Usage:
@@ -202,16 +228,7 @@ class DojoManager(Cmd):
         '''
         '''Prints the names of all the people in ​room_name​ on the screen.'''
 
-        try:
-            options = docopt.docopt(self.do_print_room.__doc__, user_input)
-
-        except docopt.DocoptExit as e:
-            print('_________________________________________')
-            print('Dojo Manager V.1: Invalid argument values')
-            print(e)
-            return
-
-        room_name = options['<room_name>']
+        room_name = user_input['<room_name>']
         available_rooms = self.office_block + self.livingspaces
         available_room_names = [x.room_name for x in available_rooms]
 
@@ -237,18 +254,6 @@ class DojoManager(Cmd):
         print(room_name)
         print('--------------------------------------------')
         print(print_output)
-
-
-
-
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
 
