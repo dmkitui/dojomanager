@@ -48,6 +48,7 @@ def docopt_cmd(func):
     fn.__dict__.update(func.__dict__)
     return fn
 
+
 class DojoManager(Cmd):
     '''
     Class Dojo to model the dojo complex, and manage all the data models
@@ -65,7 +66,6 @@ class DojoManager(Cmd):
 
     @docopt_cmd
     def do_create_room(self, user_input):
-
         """
         Usage:
             create_room (Office|Livingspace) (<room_name>...)
@@ -109,7 +109,6 @@ class DojoManager(Cmd):
 
     @docopt_cmd
     def do_add_person(self, user_input):
-
         '''
         Usage:
             add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
