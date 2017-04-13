@@ -5,8 +5,9 @@ Test cases for the dojo_manager.py module
 '''
 
 import unittest
-from person.person import Person, Staff, Fellow
-from room.room import Office, LivingSpace, Room
+import sys
+from os import path
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from dojo.dojo import DojoManager
 
 
@@ -62,11 +63,11 @@ class TestCreateRoom(unittest.TestCase):
     def test_print_room_non_existent_room(self):
         self.assertEqual(self.instance.print_room(self.user_inputs), 'Specified room Seems not to exist. Kindly Confirm room name\n')
 
-
+    # Task 2 tests
 
     def test_valid_output_file_for_allocations(self):
         self.assertEqual(self.instance.print_allocations(self.user_inputs3), 'The output file not a valid text file\n')
-# Task 2 tests
+
 
     def test_valid_output_file_for_print_unallocated(self):
         self.instance.un_allocated = ['daniel kitui', 'Dan M']

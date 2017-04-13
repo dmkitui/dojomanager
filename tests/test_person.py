@@ -6,9 +6,11 @@ Test cases for the commandline program 'create_room.py'
 '''
 
 import unittest
+import sys
+from os import path
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from person.person import Person, Staff, Fellow
 from room.room import Office, LivingSpace, Room
-from dojo_manager import DojoManager
 
 
 class TestAddPerson(unittest.TestCase):
@@ -33,14 +35,13 @@ class TestAddPerson(unittest.TestCase):
 
 
 class Test_add_person_to_a_room(unittest.TestCase):
+
     def test_add_to_existing_room(self):
         office_instance = Office()
-        new_office = office_instance.create_room('Kilimanjaro', 'Office')
-        new_person = Staff().add_person(['Steve', 'Man'])
         name = ['Steve', 'Man']
-        DojoManager.allocate_office(name)
-
-
+        new_office = office_instance.create_room('Kilimanjaro', 'Office')
+        new_person = Staff().add_person(name)
+        self.assertIsInstance(new_person, Staff, 'Incorrect instance')
 
 if __name__ == '__main__':
     unittest.main()
