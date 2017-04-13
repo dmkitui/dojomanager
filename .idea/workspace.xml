@@ -4,11 +4,6 @@
     <list default="true" id="e5a6cf2a-5337-4181-9e0d-f9c0d7020733" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojo/dojo.py" afterPath="$PROJECT_DIR$/dojo/dojo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojo_manager.py" afterPath="$PROJECT_DIR$/dojo_manager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/person/person.py" afterPath="$PROJECT_DIR$/person/person.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/room/room.py" afterPath="$PROJECT_DIR$/room/room.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/test_dojo.py" afterPath="$PROJECT_DIR$/tests/test_dojo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/test_person.py" afterPath="$PROJECT_DIR$/tests/test_person.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,10 +18,10 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="dojo_manager.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="dojo_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dojo_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1140">
+            <state relative-caret-position="-1649">
               <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
               <folding>
                 <element signature="e#398#408#0" expanded="true" />
@@ -35,11 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dojo.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dojo.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dojo/dojo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
-              <caret line="223" column="46" lean-forward="false" selection-start-line="223" selection-start-column="46" selection-end-line="223" selection-end-column="46" />
+            <state relative-caret-position="-59">
+              <caret line="221" column="17" lean-forward="false" selection-start-line="221" selection-start-column="17" selection-end-line="221" selection-end-column="17" />
               <folding>
                 <element signature="e#43#56#0" expanded="true" />
               </folding>
@@ -149,8 +144,8 @@
         <option value="$PROJECT_DIR$/room/room.py" />
         <option value="$PROJECT_DIR$/person/person.py" />
         <option value="$PROJECT_DIR$/tests/test_dojo.py" />
-        <option value="$PROJECT_DIR$/dojo/dojo.py" />
         <option value="$PROJECT_DIR$/dojo_manager.py" />
+        <option value="$PROJECT_DIR$/dojo/dojo.py" />
       </list>
     </option>
   </component>
@@ -533,7 +528,7 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3" y="25" width="1372" height="720" extended-state="6" />
+    <frame x="-3" y="25" width="1372" height="720" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12295082" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -717,22 +712,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dojo/dojo.py">
+    <entry file="file://$PROJECT_DIR$/dojo_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="223" column="46" lean-forward="false" selection-start-line="223" selection-start-column="46" selection-end-line="223" selection-end-column="46" />
+        <state relative-caret-position="-1649">
+          <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
           <folding>
-            <element signature="e#43#56#0" expanded="true" />
+            <element signature="e#398#408#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dojo_manager.py">
+    <entry file="file://$PROJECT_DIR$/dojo/dojo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1140">
-          <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+        <state relative-caret-position="-59">
+          <caret line="221" column="17" lean-forward="false" selection-start-line="221" selection-start-column="17" selection-end-line="221" selection-end-column="17" />
           <folding>
-            <element signature="e#398#408#0" expanded="true" />
+            <element signature="e#43#56#0" expanded="true" />
           </folding>
         </state>
       </provider>
