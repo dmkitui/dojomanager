@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 '''
-
 Usage:
     dojo_manager.py create_room (Office|Livingspace) <room_name>...
     dojo_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
@@ -12,181 +11,166 @@ arguments:
     add_person Adds a person, and assigns the person to a randomly chosen existing room
 '''
 
+import cmd
+from docopt import docopt, DocoptExit
+from dojo.dojo import DojoManager
+import os
 
-
-import docopt
-import random
-from cmd import Cmd
-from personel.person import Staff, Fellow
-from rooms.room import Office, LivingSpace
-
-
-class DojoManager(Cmd):
-    '''
-    Class Dojo to model the dojo complex, and manage all the data models
-    '''
-
-    intro = '\n       ___________ANDELA KENYA______________\n' \
-            '       The Dojo Room Allocatons Management\n' \
-            '       _____________Version 0.0_____________\n'
-    prompt = 'Enter Command: '
-
-    fellows = []
-    staff_members = []
-    office_block = []
-    livingspaces = []
-
-    def do_create_room(self, user_input):
-
-        """
-        Usage:
-            create_room (Office|Livingspace) (<room_name>...)
-        """
-
+def docopt_cmd(func):
+    """
+    This decorator function is used to simplify the try/except block and pass the result
+    of the docopt parsing to the called action.
+    """
+    def fn(self, arg):
         try:
-            options = docopt.docopt(self.do_create_room.__doc__, user_input)
+            opt = docopt(fn.__doc__, arg)
 
-        except docopt.DocoptExit as e:
-            print('_________________________________________')
+        except DocoptExit as e:
+            # The DocoptExit is thrown when the args do not match.
+            # We print a message to the user and the usage block.
+
             print('Dojo Manager V.1: Invalid argument value(s)')
             print(e)
             return
 
-        room_names = options['<room_name>']
+        except SystemExit:
+            # The SystemExit exception prints the usage for --help
+            # We do not need to do the print here.
+            return
 
-        if options['Office']:
-            existing_offices = [x.room_name for x in self.office_block]
-            for room_name in room_names:
-                if room_name in existing_offices:
-                    print('An Office called {} already exists'.format(room_name))
-                    continue
-                self.add_office(room_name)
-                print('An Office called {0} has been successfully '
-                      'created!'.format(room_name))
+        return func(self, opt)
 
-        if options['Livingspace']:
-            existing_livingspaces = [x.room_name for x in self.livingspaces]
-            for room_name in room_names:
-                if room_name in existing_livingspaces:
-                    print('A Livingspace called {} already exists'.format(
-                        room_name))
-                    continue
-                self.add_living_space(room_name)
-                print('A Livingspace called {0} has been successfully '
-                  'created!'.format(room_name))
+    fn.__name__ = func.__name__
+    fn.__doc__ = func.__doc__
+    fn.__dict__.update(func.__dict__)
+    return fn
 
-    def add_office(self, room_name):
-        '''Function to call create_room function for the case of multiple
-        room arguments'''
 
-        a = Office()
-        room = a.create_room(room_name, 'office')
-        self.office_block.append(room)
+class DocoptManager(cmd.Cmd):
+    '''
+    Class to handle docopt: parsing of cmd input and call relevant
+    functionality from other module
+    '''
 
-    def add_living_space(self, room_name):
-        '''Function to repeatedly call create_room method for multiple rooms entered.'''
-        b = LivingSpace()
-        room = b.create_room(room_name, 'livingspace')
-        self.livingspaces.append(room)
+    intro = '\n       ___________ANDELA KENYA______________\n' \
+            '       The Dojo Room Allocations Management\n' \
+            '       _____________Version 0.0_____________\n' \
+            '\n' \
+            'Usage:\n'\
+            '   create_room (Office|Livingspace) <room_name>...\n' \
+            '   add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]\n' \
+            '   reallocate_person <person_identifier> <new_room_name>\n' \
+            '   print_room <room_name>\n' \
+            '   print_allocations [<-o=filename>]\n' \
+            '   print_unallocated [<-o=filename>]\n' \
+            '   load_people (<people_file>)\n' \
+            '   save_state [--db=sqlite_database]​\n' \
+            '   load_state [--db=sqlite_database]​\n' \
+            '   help\n' \
+            '   clear\n' \
+            '   exit\n' \
+            'arguments:\n' \
+            '   create_room Creates a room type of <room_type> called <room_name>\n' \
+            '   add_person Adds a person, and assigns the person to a randomly chosen existing room\n' \
+            '   reallocate_person Move person <person_identifier> to room <new_room_name>\n' \
+            '   print_room Prints the occupants fo the stated room\n' \
+            '   print_allocations Prints how the people are allocated in the different rooms\n' \
+            '   print_unallocated Prints people who are not located in any rooms\n' \
+            '   laod_people Loads people into the sysytem from input text file\n' \
+            '   save_state Saves the data in the program to specified database\n' \
+            '   load_state Loads the data form specified database\n' \
+            '   help Prints this help message\n' \
+            '   clear Clears the screen\n' \
+            '   exit Exits this interactive session\n' \
+            '\n\n'
 
+    prompt = 'Enter Command: '
+    dojo_manager = DojoManager()
+
+    @docopt_cmd
+    def do_create_room(self, user_input):
+        '''
+        Usage:
+            create_room (Office|Livingspace) (<room_name>...)
+        '''
+        self.dojo_manager.create_room(user_input)
+
+    @docopt_cmd
     def do_add_person(self, user_input):
-
         '''
         Usage:
             add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
         '''
+        self.dojo_manager.add_person(user_input)
 
-        try:
-            options = docopt.docopt(self.do_add_person.__doc__, user_input)
+    def do_clear(self, user_input):
+        '''To clear screen'''
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-        except docopt.DocoptExit as e:
-            print('_________________________________________')
-            print('Dojo Manager V.1: Invalid argument values')
-            print(e)
-            return
+    def do_exit(self, user_input):
+        '''To exit from Dojo Manager Session'''
+        print('\nDojo Manager V0. Exiting...')
+        return True
 
-        name = options['<person_name>']
-
-        wants_accommodation = options['<wants_accommodation>']
-
-        if wants_accommodation:
-            if options['Staff']:
-                print('Staff are not entitled to accommodation')
-                return 'Staff are not entitled to accommodation'
-
-            if wants_accommodation.lower() == 'y':
-                accommodation = True
-
-            elif wants_accommodation.lower() == 'n':
-                accommodation = False
-
-            else:
-                print('Argument for Accomodation can only be either Y or N')
-                return
-        else:
-            accommodation = False
-
-        if options['Fellow']:
-            person_class = Fellow()
-            person = person_class.add_person(name, accommodation)
-            self.fellows.append(person)
-            self.allocate_office(name)
-            if accommodation:
-                self.allocate_livingroom(name)
-        elif options['Staff']:
-            person_class = Staff()
-            person = person_class.add_person(name)
-            self.allocate_office(name)
-            self.staff_members.append(person)
-
-    def allocate_livingroom(self, name):
-
+    @docopt_cmd
+    def do_print_room(self, user_input):
         '''
-        Function to allocate a random livin space to the person object that
-        is passed as input
-        :argument: name- person name to be allocated
-        :return: None
+        Usage:
+            print_room <room_name>
         '''
-        if len(self.livingspaces) == 0:
-            print('No Livingroom currently available for allocation')
-            return
+        self.dojo_manager.print_room(user_input)
 
-        available_rooms = [x for x in self.livingspaces if len(x.occupants) < 4]
-
-        if len(available_rooms) == 0:
-            print('Sorry, No livingspace currently available in any of the '
-                  'rooms')
-            return
-
-        random_room = random.choice(available_rooms)
-        random_room.occupants.append(name)
-
-        print('{0} has been allocated the livingspace {1}'.format(name[0], random_room.room_name))
-
-    def allocate_office(self, name):
+    @docopt_cmd
+    def do_print_allocations(self, user_input):
         '''
-        Function to allocate a random office to the person passed as argument
-        :param name: Person object to be allocated
-        :return: None
+        Usage:
+            print_allocations [<-o=filename>]
         '''
-        if len(self.office_block) == 0:
-            print('No Offices currently available for allocation')
-            return
+        self.dojo_manager.print_allocations(user_input)
 
-        available_rooms = [x for x in self.office_block if len(x.occupants) < 6]
+    @docopt_cmd
+    def do_print_unallocated(self, user_input):
+        '''
+        Usage:
+            print_unallocated [<-o=filename>]
+        '''
+        self.dojo_manager.print_unallocated(user_input)
 
-        if len(available_rooms) == 0:
-            print('Sorry, No space currently available in any of the Offices')
-            return
+    @docopt_cmd
+    def do_reallocate_person(self, user_input):
+        '''
+        Usage:
+            reallocate_person <person_identifier> <new_room_name>
+        '''
+        print('Not yet implemented')
 
-        random_office = random.choice(available_rooms)
-        random_office.occupants.append(name)
+    @docopt_cmd
+    def do_load_people(self, user_input):
+        '''
+        Usage:
+            load_people (<people_file>)
+        '''
+        self.dojo_manager.load_people(user_input)
 
-        print('{0} has been allocated the office {1}'.format(name[0], random_office.room_name))
+    @docopt_cmd
+    def do_save_state(self, user_input):
+        '''
+        Usage:
+            save_state [--db=sqlite_database]​
+        '''
+        print('Not yet implemented')
+
+    @docopt_cmd
+    def do_load_state(self, user_input):
+        '''
+        Usage:
+            load_state <sqlite_database>​
+        '''
+        print('Not yet implemented')
 
 if __name__ == '__main__':
-
     try:
-        DojoManager().cmdloop()
+        DocoptManager().cmdloop()
     except (KeyboardInterrupt, SystemExit):
+        print('Dojo Manager V0. Exit.')
         print('____________________________')

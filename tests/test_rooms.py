@@ -1,11 +1,13 @@
 import unittest
-from rooms.room import Office, LivingSpace, Room
-from dojo_manager import DojoManager
+import sys
+from os import path
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+from room.room import Office, LivingSpace, Room
 
 
 class TestCreateRoom(unittest.TestCase):
     '''
-
+    Class to run test cases for the rooms class
     '''
     def test_create_room_successfully(self):
         my_class_instance = Room()
@@ -27,11 +29,6 @@ class TestCreateRoom(unittest.TestCase):
         self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the '
                                                   'right class')
         self.assertEqual(comfy_livingspace.room_name, 'Comfy')
-
-class Test_allocate_no_rooms(unittest.TestCase):
-    def test_office_allocation(self):
-        x = DojoManager()
-        self.assertIsNone(x.allocate_office(['Daniel', 'Kitui']))
 
 if __name__ == '__main__':
     unittest.main()
