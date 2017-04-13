@@ -3,6 +3,7 @@
 import random
 from person.person import Staff, Fellow
 from room.room import Office, LivingSpace
+import os
 
 
 class DojoManager(object):
@@ -217,6 +218,10 @@ class DojoManager(object):
         if not text_file.endswith('.txt'):
             print('Invalid text file name')
             return 'Invalid text file name'
+
+        elif not os.path.isfile(text_file): # To check if file exists
+            print('The specified file does not exist')
+            return 'The specified file does not exist'
 
         with open(text_file) as f:
             content = f.readlines()
