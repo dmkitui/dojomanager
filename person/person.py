@@ -30,7 +30,6 @@ class Fellow(Person):
         print('Fellow {0} {1} has been successfully added.\n'.format(self.fellow_name[0],self.fellow_name[1]))
         if not accommodation:
             print('{0} does not wish to be accomodated\n'.format(fellow_name[0]))
-
         return self
 
 

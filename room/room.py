@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+
 class Room(object):
 
     '''
@@ -10,13 +14,11 @@ class Room(object):
         self.all_rooms = []
         self.occupants = []
 
-
     def create_room(self, room_name, room_type):
         self.room_name = room_name
         self.room_type = room_type
         self.all_rooms.append(self)
         self.occupants = []
-
         return self
 
 
@@ -49,12 +51,8 @@ class LivingSpace(Room):
         self.room_type = room_type
         self.occupants = []
 
-
-
     def create_room(self, room_name, room_type):
-
         self.room_name = room_name
         self.room_type = room_type
         self.occupants = []
-
         return self

@@ -18,7 +18,7 @@ import os
 
 def docopt_cmd(func):
     """
-    This decorator is used to simplify the try/except block and pass the result
+    This decorator function is used to simplify the try/except block and pass the result
     of the docopt parsing to the called action.
     """
     def fn(self, arg):
@@ -57,13 +57,31 @@ class DocoptManager(cmd.Cmd):
             '       _____________Version 0.0_____________\n' \
             '\n' \
             'Usage:\n'\
-            '   dojo_manager.py create_room (Office|Livingspace) <room_name>...\n' \
-            '   dojo_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [' \
-            '<wants_accommodation>]\n' \
-            '\n' \
+            '   create_room (Office|Livingspace) <room_name>...\n' \
+            '   add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]\n' \
+            '   reallocate_person <person_identifier> <new_room_name>\n' \
+            '   print_room <room_name>\n' \
+            '   print_allocations [<-o=filename>]\n' \
+            '   print_unallocated [<-o=filename>]\n' \
+            '   load_people (<people_file>)\n' \
+            '   save_state [--db=sqlite_database]​\n' \
+            '   load_state [--db=sqlite_database]​\n' \
+            '   help\n' \
+            '   clear\n' \
+            '   exit\n' \
             'arguments:\n' \
-            '    create_room Creates a room type of <room_type> called <room_name>\n' \
-            '    add_person Adds a person, and assigns the person to a randomly chosen existing room\n' \
+            '   create_room Creates a room type of <room_type> called <room_name>\n' \
+            '   add_person Adds a person, and assigns the person to a randomly chosen existing room\n' \
+            '   reallocate_person Move person <person_identifier> to room <new_room_name>\n' \
+            '   print_room Prints the occupants fo the stated room\n' \
+            '   print_allocations Prints how the people are allocated in the different rooms\n' \
+            '   print_unallocated Prints people who are not located in any rooms\n' \
+            '   laod_people Loads people into the sysytem from input text file\n' \
+            '   save_state Saves the data in the program to specified database\n' \
+            '   load_state Loads the data form specified database\n' \
+            '   help Prints this help message\n' \
+            '   clear Clears the screen\n' \
+            '   exit Exits this interactive session\n' \
             '\n\n'
 
     prompt = 'Enter Command: '
@@ -85,25 +103,10 @@ class DocoptManager(cmd.Cmd):
         '''
         self.dojo_manager.add_person(user_input)
 
-    # To implement docopt wrapper exit method
-    # @docopt_cmd
-    # def do_clear(self, user_input):
-    #     '''To clear screen'''
-    #     '''
-    #     Usage:
-    #         clear
-    #     '''
-    #     os.system('cls' if os.name == 'nt' else 'clear')
     def do_clear(self, user_input):
         '''To clear screen'''
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    # To implement docopt function wrapper fully
-    # @docopt_cmd
-    # def do_exit(self, user_input):
-    #     '''To exit from Dojo Manager Session'''
-    #     print('Dojo Manager V0. Exiting...')
-    #     return True
     def do_exit(self, user_input):
         '''To exit from Dojo Manager Session'''
         print('\nDojo Manager V0. Exiting...')
@@ -124,6 +127,46 @@ class DocoptManager(cmd.Cmd):
             print_allocations [<-o=filename>]
         '''
         self.dojo_manager.print_allocations(user_input)
+
+    @docopt_cmd
+    def do_print_unallocated(self, user_input):
+        '''
+        Usage:
+            print_unallocated [<-o=filename>]
+        '''
+        self.dojo_manager.print_unallocated(user_input)
+
+    @docopt_cmd
+    def do_reallocate_person(self, user_input):
+        '''
+        Usage:
+            reallocate_person <person_identifier> <new_room_name>
+        '''
+        print('Not yet implemented')
+
+    @docopt_cmd
+    def do_load_people(self, user_input):
+        '''
+        Usage:
+            load_people (<people_file>)
+        '''
+        self.dojo_manager.load_people(user_input)
+
+    @docopt_cmd
+    def do_save_state(self, user_input):
+        '''
+        Usage:
+            save_state [--db=sqlite_database]​
+        '''
+        print('Not yet implemented')
+
+    @docopt_cmd
+    def do_load_state(self, user_input):
+        '''
+        Usage:
+            load_state <sqlite_database>​
+        '''
+        print('Not yet implemented')
 
 if __name__ == '__main__':
     try:

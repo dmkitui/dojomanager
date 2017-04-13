@@ -15,10 +15,14 @@ class TestCreateRoom(unittest.TestCase):
     '''
     user_inputs = {'<person_name>': ['Daniel', 'Kitui'], '<room_name>': ['Kenya'], 'Office': True,
                    'Livingspace': False, '<wants_accommodation>': 'Y', 'Fellow': False, 'Staff':
-                       True, '<room_name>': 'Kindaruma' }
+                       True, '<room_name>': ['Kindaruma'] }
 
     user_inputs2 = {'<person_name>': ['Daniel', 'Kitui'], '<room_name>': ['Kenya'], 'Office': True,
                    'Livingspace': False, '<wants_accommodation>': 'M', 'Fellow': False, 'Staff': True }
+
+    user_inputs3 = {'<person_name>': ['Daniel', 'Kitui'], '<room_name>': ['Kenya'], 'Office': True,
+                   'Livingspace': True, '<wants_accommodation>': 'M', 'Fellow': True, 'Staff':
+                        False, '<-o=filename>' : 'output' }
 
     instance = DojoManager()
 
@@ -33,11 +37,19 @@ class TestCreateRoom(unittest.TestCase):
         self.assertTrue(tom, 'Staff are not entitled to accommodation\n')
 
     def test_incorrect_arguments2(self):
-        boss = self.instance.add_person(self.user_inputs)
+        boss = self.instance.add_person(self.user_inputs2)
         self.assertTrue(boss, 'Argument for Accomodation can only be either Y or N\n')
 
     def test_allocate_room_when_non_is_available(self):
-        self.assertTrue(self.instance.allocate_livingroom(self.user_inputs['<person_name>']), 'Argument for Accomodation can only be either Y or N\n')
+        self.instance.office_block = []
+        self.assertTrue(self.instance.allocate_livingroom(self.user_inputs['<person_name>']),
+                        'No Offices currently available for allocation\n')
+
+    def test_allocate_room_when_non_is_available2(self):
+        self.instance.livingspaces = []
+        self.assertTrue(self.instance.allocate_livingroom(self.user_inputs3['<person_name>']),
+                        'No Livingspace currently available for allocation\n')
+
 
 
     def test_add_office(self):
@@ -52,10 +64,14 @@ class TestCreateRoom(unittest.TestCase):
 
 
 
+    def test_valid_output_file_for_allocations(self):
+        self.assertEqual(self.instance.print_allocations(self.user_inputs3), 'The output file not a valid text file\n')
+# Task 2 tests
 
-
-
-
+    def test_valid_output_file_for_print_unallocated(self):
+        self.instance.un_allocated = ['daniel kitui', 'Dan M']
+        self.assertEqual(self.instance.print_unallocated(self.user_inputs3),
+                         'Invalid file format')
 
 if __name__ == '__main__':
     unittest.main()
