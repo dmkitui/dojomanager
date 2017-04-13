@@ -31,7 +31,7 @@ class TestAddPerson(unittest.TestCase):
 
     def test_wrong_argument(self):
         my_class = Staff()
-        jeff = my_class.add_person({['Daniel', 'Kitui'], 'M'})
+        jeff = my_class.add_person(['Daniel', 'Kitui'])
 
 
 class Test_add_person_to_a_room(unittest.TestCase):
