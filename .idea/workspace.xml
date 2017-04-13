@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e5a6cf2a-5337-4181-9e0d-f9c0d7020733" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojo/dojo.py" afterPath="$PROJECT_DIR$/dojo/dojo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dojo_manager.py" afterPath="$PROJECT_DIR$/dojo_manager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/person/person.py" afterPath="$PROJECT_DIR$/person/person.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/test_person.py" afterPath="$PROJECT_DIR$/tests/test_person.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,7 +21,7 @@
       <file leaf-file-name="dojo_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dojo_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
+            <state relative-caret-position="1636">
               <caret line="175" column="45" lean-forward="false" selection-start-line="175" selection-start-column="45" selection-end-line="175" selection-end-column="45" />
               <folding>
                 <element signature="e#398#408#0" expanded="true" />
@@ -35,7 +33,7 @@
       <file leaf-file-name="dojo.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dojo/dojo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1186">
+            <state relative-caret-position="526">
               <caret line="254" column="41" lean-forward="false" selection-start-line="254" selection-start-column="41" selection-end-line="254" selection-end-column="41" />
               <folding>
                 <element signature="e#43#56#0" expanded="true" />
@@ -47,8 +45,8 @@
       <file leaf-file-name="test_dojo.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/test_dojo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-554">
-              <caret line="10" column="33" lean-forward="false" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+            <state relative-caret-position="361">
+              <caret line="71" column="31" lean-forward="false" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
               <folding>
                 <element signature="e#94#109#0" expanded="true" />
               </folding>
@@ -69,7 +67,7 @@
       <file leaf-file-name="room.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/room/room.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
+            <state relative-caret-position="646">
               <caret line="57" column="19" lean-forward="false" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
               <folding />
             </state>
@@ -91,8 +89,8 @@
       <file leaf-file-name="test_person.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/test_person.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-59">
-              <caret line="12" column="47" lean-forward="false" selection-start-line="12" selection-start-column="47" selection-end-line="12" selection-end-column="47" />
+            <state relative-caret-position="436">
+              <caret line="33" column="55" lean-forward="false" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
               <folding>
                 <element signature="e#109#124#0" expanded="true" />
               </folding>
@@ -142,12 +140,12 @@
         <option value="$PROJECT_DIR$/personel/person.py" />
         <option value="$PROJECT_DIR$/tests/test_dojomanager.py" />
         <option value="$PROJECT_DIR$/room/room.py" />
-        <option value="$PROJECT_DIR$/dojo/dojo.py" />
         <option value="$PROJECT_DIR$/tests/test_dojo.py" />
-        <option value="$PROJECT_DIR$/tests/test_person.py" />
         <option value="$PROJECT_DIR$/person/person.py" />
         <option value="$PROJECT_DIR$/tests/test_rooms.py" />
         <option value="$PROJECT_DIR$/dojo_manager.py" />
+        <option value="$PROJECT_DIR$/dojo/dojo.py" />
+        <option value="$PROJECT_DIR$/tests/test_person.py" />
       </list>
     </option>
   </component>
@@ -200,6 +198,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dojomanager" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dojomanager" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dojo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -208,7 +220,51 @@
     <property name="last_opened_file_path" value="$USER_HOME$/BootCampWk2/environments/BootCamp2/bin/python3" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
-  <component name="RunManager" selected="Python tests.Unittest TestCreateRoom.test_create_living_space">
+  <component name="RunManager" selected="Python tests.Unittest TestAddPerson.test_wrong_argument">
+    <configuration default="false" name="Unittest TestCreateRoom.test_allocate_room_when_non_is_available2" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dojomanager" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_dojo.py" />
+      <option name="CLASS_NAME" value="TestCreateRoom" />
+      <option name="METHOD_NAME" value="test_allocate_room_when_non_is_available2" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest TestCreateRoom.test_allocate_room_when_non_is_available" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dojomanager" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_dojo.py" />
+      <option name="CLASS_NAME" value="TestCreateRoom" />
+      <option name="METHOD_NAME" value="test_allocate_room_when_non_is_available" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
     <configuration default="false" name="Unittest TestCreateRoom.test_incorrect_arguments2" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -231,7 +287,29 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="Unittest Test_add_person_to_a_room.test_add_to_existing_room" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Unittest TestCreateRoom.test_valid_output_file_for_print_unallocated" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="dojomanager" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_dojo.py" />
+      <option name="CLASS_NAME" value="TestCreateRoom" />
+      <option name="METHOD_NAME" value="test_valid_output_file_for_print_unallocated" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest TestAddPerson.test_wrong_argument" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -242,74 +320,8 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="dojomanager" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_person.py" />
-      <option name="CLASS_NAME" value="Test_add_person_to_a_room" />
-      <option name="METHOD_NAME" value="test_add_to_existing_room" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittest TestCreateRoom.test_create_room_successfully" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="dojomanager" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_rooms.py" />
-      <option name="CLASS_NAME" value="TestCreateRoom" />
-      <option name="METHOD_NAME" value="test_create_room_successfully" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittest TestCreateRoom.test_create_office" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="dojomanager" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_rooms.py" />
-      <option name="CLASS_NAME" value="TestCreateRoom" />
-      <option name="METHOD_NAME" value="test_create_office" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_METHOD" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittest TestCreateRoom.test_create_living_space" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="dojomanager" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_rooms.py" />
-      <option name="CLASS_NAME" value="TestCreateRoom" />
-      <option name="METHOD_NAME" value="test_create_living_space" />
+      <option name="CLASS_NAME" value="TestAddPerson" />
+      <option name="METHOD_NAME" value="test_wrong_argument" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_METHOD" />
       <option name="PATTERN" value="" />
@@ -454,19 +466,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_incorrect_arguments2" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest Test_add_person_to_a_room.test_add_to_existing_room" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_room_successfully" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_office" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_living_space" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_allocate_room_when_non_is_available2" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_allocate_room_when_non_is_available" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_incorrect_arguments2" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_valid_output_file_for_print_unallocated" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestAddPerson.test_wrong_argument" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_living_space" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_office" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_create_room_successfully" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest Test_add_person_to_a_room.test_add_to_existing_room" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_incorrect_arguments2" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest TestAddPerson.test_wrong_argument" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_valid_output_file_for_print_unallocated" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_incorrect_arguments2" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_allocate_room_when_non_is_available" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest TestCreateRoom.test_allocate_room_when_non_is_available2" />
       </list>
     </recent_temporary>
   </component>
@@ -484,40 +496,40 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittest_TestAddPerson_test_create_staff_successfully - 2017.04.13 at 07h 35m 57s.xml">
-      <configuration name="Unittest TestAddPerson.test_create_staff_successfully" configurationId="tests" />
+    <history-entry file="Unittest_TestAddPerson_test_wrong_argument - 2017.04.13 at 09h 22m 21s.xml">
+      <configuration name="Unittest TestAddPerson.test_wrong_argument" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_TestCreateRoom_test_create_living_space - 2017.04.13 at 08h 23m 05s.xml">
-      <configuration name="Unittest TestCreateRoom.test_create_living_space" configurationId="tests" />
+    <history-entry file="Unittest_TestAddPerson_test_wrong_argument - 2017.04.13 at 09h 24m 27s.xml">
+      <configuration name="Unittest TestAddPerson.test_wrong_argument" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_TestCreateRoom_test_create_office - 2017.04.13 at 08h 23m 02s.xml">
-      <configuration name="Unittest TestCreateRoom.test_create_office" configurationId="tests" />
+    <history-entry file="Unittest_TestCreateRoom_test_allocate_room_when_non_is_available - 2017.04.13 at 09h 17m 01s.xml">
+      <configuration name="Unittest TestCreateRoom.test_allocate_room_when_non_is_available" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_TestCreateRoom_test_create_room_successfully - 2017.04.13 at 08h 22m 59s.xml">
-      <configuration name="Unittest TestCreateRoom.test_create_room_successfully" configurationId="tests" />
+    <history-entry file="Unittest_TestCreateRoom_test_allocate_room_when_non_is_available2 - 2017.04.13 at 09h 14m 53s.xml">
+      <configuration name="Unittest TestCreateRoom.test_allocate_room_when_non_is_available2" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_TestCreateRoom_test_incorrect_arguments2 - 2017.04.13 at 07h 54m 55s.xml">
+    <history-entry file="Unittest_TestCreateRoom_test_allocate_room_when_non_is_available2 - 2017.04.13 at 09h 16m 29s.xml">
+      <configuration name="Unittest TestCreateRoom.test_allocate_room_when_non_is_available2" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittest_TestCreateRoom_test_allocate_room_when_non_is_available2 - 2017.04.13 at 09h 16m 58s.xml">
+      <configuration name="Unittest TestCreateRoom.test_allocate_room_when_non_is_available2" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittest_TestCreateRoom_test_incorrect_arguments2 - 2017.04.13 at 09h 17m 06s.xml">
       <configuration name="Unittest TestCreateRoom.test_incorrect_arguments2" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_TestCreateRoom_test_initial_state - 2017.04.13 at 07h 54m 51s.xml">
-      <configuration name="Unittest TestCreateRoom.test_initial_state" configurationId="tests" />
+    <history-entry file="Unittest_TestCreateRoom_test_print_room_non_existent_room - 2017.04.13 at 09h 13m 16s.xml">
+      <configuration name="Unittest TestCreateRoom.test_print_room_non_existent_room" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_Test_add_person_to_a_room_test_add_to_existing_room - 2017.04.13 at 07h 59m 25s.xml">
-      <configuration name="Unittest Test_add_person_to_a_room.test_add_to_existing_room" configurationId="tests" />
+    <history-entry file="Unittest_TestCreateRoom_test_valid_output_file_for_print_unallocated - 2017.04.13 at 09h 19m 17s.xml">
+      <configuration name="Unittest TestCreateRoom.test_valid_output_file_for_print_unallocated" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittest_Test_add_person_to_a_room_test_add_to_existing_room - 2017.04.13 at 08h 01m 41s.xml">
-      <configuration name="Unittest Test_add_person_to_a_room.test_add_to_existing_room" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittest_Test_add_person_to_a_room_test_add_to_existing_room - 2017.04.13 at 08h 03m 01s.xml">
-      <configuration name="Unittest Test_add_person_to_a_room.test_add_to_existing_room" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittest_Test_add_person_to_a_room_test_add_to_existing_room - 2017.04.13 at 08h 09m 23s.xml">
-      <configuration name="Unittest Test_add_person_to_a_room.test_add_to_existing_room" configurationId="tests" />
+    <history-entry file="Unittest_TestCreateRoom_test_valid_output_file_for_print_unallocated - 2017.04.13 at 09h 21m 20s.xml">
+      <configuration name="Unittest TestCreateRoom.test_valid_output_file_for_print_unallocated" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="25" width="1372" height="720" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12295082" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -654,11 +666,23 @@
     <entry file="file://$PROJECT_DIR$/rooms/test_rooms.py" />
     <entry file="file://$PROJECT_DIR$/room/test_rooms.py" />
     <entry file="file://$PROJECT_DIR$/tests/test_dojomanager.py" />
-    <entry file="file://$PROJECT_DIR$/room/room.py">
+    <entry file="file://$PROJECT_DIR$/dojo_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="57" column="19" lean-forward="false" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
-          <folding />
+        <state relative-caret-position="1636">
+          <caret line="175" column="45" lean-forward="false" selection-start-line="175" selection-start-column="45" selection-end-line="175" selection-end-column="45" />
+          <folding>
+            <element signature="e#398#408#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_person.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="33" column="55" lean-forward="false" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
+          <folding>
+            <element signature="e#109#124#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -672,6 +696,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/room/room.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="57" column="19" lean-forward="false" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/person/person.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-29">
@@ -680,39 +712,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_person.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-59">
-          <caret line="12" column="47" lean-forward="false" selection-start-line="12" selection-start-column="47" selection-end-line="12" selection-end-column="47" />
-          <folding>
-            <element signature="e#109#124#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/test_dojo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-554">
-          <caret line="10" column="33" lean-forward="false" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+        <state relative-caret-position="361">
+          <caret line="71" column="31" lean-forward="false" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
           <folding>
             <element signature="e#94#109#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dojo_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="175" column="45" lean-forward="false" selection-start-line="175" selection-start-column="45" selection-end-line="175" selection-end-column="45" />
-          <folding>
-            <element signature="e#398#408#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dojo/dojo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1186">
+        <state relative-caret-position="526">
           <caret line="254" column="41" lean-forward="false" selection-start-line="254" selection-start-column="41" selection-end-line="254" selection-end-column="41" />
           <folding>
             <element signature="e#43#56#0" expanded="true" />
