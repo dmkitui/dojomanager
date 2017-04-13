@@ -8,11 +8,11 @@ class Person(object):
         self.person_name = name
         self.accommodation = accommodation
         self.job_group = job_group
-    #
-    # def add_person(self, name, job_group, accommodation):
-    #     self.person_name = name
-    #     self.accommodation = accommodation
-    #     return self
+
+    def add_person(self, name, job_group, accommodation):
+        self.person_name = name
+        self.accommodation = accommodation
+        return self
 
 
 class Fellow(Person):
@@ -43,6 +43,5 @@ class Staff(Person):
 
     def add_person(self, staff_name=''):
         self.person_name = staff_name
-        print('Staff {0} {1} has been successfully added.\n'.format(
-            staff_name[0], staff_name[1]))
+        print('Staff {0} {1} has been successfully added.\n'.format(staff_name[0], staff_name[1]))
         return self

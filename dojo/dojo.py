@@ -253,4 +253,3 @@ class DojoManager(object):
             }
 
             self.add_person(user_details)
-
