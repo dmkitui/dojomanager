@@ -7,7 +7,7 @@ from room.room import Office, LivingSpace, Room
 
 class TestCreateRoom(unittest.TestCase):
     '''
-
+    Class to run test cases for the rooms class
     '''
     def test_create_room_successfully(self):
         my_class_instance = Room()
@@ -29,9 +29,6 @@ class TestCreateRoom(unittest.TestCase):
         self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the '
                                                   'right class')
         self.assertEqual(comfy_livingspace.room_name, 'Comfy')
-
-
-
 
 if __name__ == '__main__':
     unittest.main()
