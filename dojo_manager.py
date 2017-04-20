@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+# Personnel number#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 '''
@@ -142,7 +142,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             reallocate_person <person_identifier> <new_room_name>
         '''
-        print('Not yet implemented')
+        self.dojo_manager.reallocate_person(user_input)
 
     @docopt_cmd
     def do_load_people(self, user_input):
