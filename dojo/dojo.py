@@ -15,6 +15,7 @@ class DojoManager(object):
     office_block = []
     livingspaces = []
     un_allocated = []
+    personel_id = 1
 
     def create_room(self, user_input):
 
@@ -49,7 +50,6 @@ class DojoManager(object):
             print('A Livingspace called {0} has been successfully created!\n'.format(room_name))
 
     def add_person(self, user_input):
-
         '''Funcction to add individuals to the dojo'''
         name = user_input['<person_name>']
         wants_accommodation = user_input['<wants_accommodation>']
@@ -73,24 +73,26 @@ class DojoManager(object):
 
         if user_input['Fellow']:
             person_class = Fellow()
-            person = person_class.add_person(name, accommodation)
+            person = person_class.add_person(name, accommodation, self.personel_id)
             self.fellows.append(person)
-            self.allocate_office(name)
+            self.allocate_office(person)
+            self.personel_id += 1
             if accommodation:
-                self.allocate_livingroom(name)
+                self.allocate_livingroom(person)
         elif user_input['Staff']:
             person_class = Staff()
-            person = person_class.add_person(name)
-            self.allocate_office(name)
+            person = person_class.add_person(self.personel_id, name)
+            self.allocate_office(person)
             self.staff_members.append(person)
+            self.personel_id += 1
 
-    def allocate_livingroom(self, name):
+    def allocate_livingroom(self, person):
         '''Function to randomly allocate a livingroom to fellows'''
 
         if len(self.livingspaces) == 0:
             print('No Livingroom currently available for allocation\n')
-            if name not in self.un_allocated:
-                self.un_allocated.append(' '.join(name))
+            if person.person_name not in self.un_allocated:
+                self.un_allocated.append(person)
             return 'No Livingroom currently available for allocation\n'
 
         available_rooms = [x for x in self.livingspaces if len(x.occupants) < 4]
@@ -100,29 +102,29 @@ class DojoManager(object):
             return
 
         random_room = random.choice(available_rooms)
-        random_room.occupants.append(name)
+        random_room.occupants.append(person)
 
-        print('{0} has been allocated the livingspace {1}\n'.format(name[0], random_room.room_name))
+        print('{0} has been allocated the livingspace {1}\n'.format(person.person_name[0], random_room.room_name))
 
-    def allocate_office(self, name):
+    def allocate_office(self, person):
         '''Function to randomly allocate an office to fellows and staff'''
         if len(self.office_block) == 0:
             print('No Offices currently available for allocation\n')
-            if name not in self.un_allocated:
-                self.un_allocated.append(' '.join(name))
+            if person.person_name not in self.un_allocated:
+                self.un_allocated.append(person)
             return
 
         available_rooms = [x for x in self.office_block if len(x.occupants) < 6]
 
         if len(available_rooms) == 0:
             print('\nSorry, No space currently available in any of the Offices')
-            self.un_allocated.append(' '.join(name))
+            self.un_allocated.append(person)
             return
 
         random_office = random.choice(available_rooms)
-        random_office.occupants.append(name)
+        random_office.occupants.append(person)
 
-        print('{0} has been allocated the office {1}\n'.format(name[0], random_office.room_name))
+        print('{0} has been allocated the office {1}\n'.format(person.person_name[0], random_office.room_name))
 
     def print_room(self, user_input):
         '''Prints the names of all the people in ​room_name​ on the screen.'''
@@ -135,8 +137,7 @@ class DojoManager(object):
             print('Room {} Seems not to exist. Kindly Confirm room name\n'.format(room_name))
             return 'Specified room Seems not to exist. Kindly Confirm room name\n'
 
-        room_object = [x for x in available_rooms if x.room_name ==
-                      room_name][0]
+        room_object = [x for x in available_rooms if x.room_name == room_name][0]
         occupant_list = room_object.occupants
 
         if len(occupant_list) == 0: # When a room is empty
@@ -144,7 +145,7 @@ class DojoManager(object):
         else:
             print_names = []
             for occupant in occupant_list:
-                name = ' '.join(occupant)
+                name = ' '.join(occupant.person_name)
                 print_names.append(name)
 
             print_output = ', '.join(print_names)
@@ -171,7 +172,7 @@ class DojoManager(object):
             room_occupant_names = []
             if len(occupant_list) > 0:
                 for occupant in occupant_list:
-                    name = ' '.join(occupant)
+                    name = ' '.join(occupant.person_name)
                     room_occupant_names.append(name)
                 out = {room.room_name : ', '.join(room_occupant_names)}
 
@@ -195,7 +196,9 @@ class DojoManager(object):
             return 'There are currently no unallocated people'
         else:
             un_allocated_list = set(self.un_allocated)
-            out = '\n'.join(un_allocated_list)
+            names = [x.person_name for x in un_allocated_list] #list of names in the form [firstname, lastnames]
+            list_of_names = [' '.join(x) for x in names] # Join names together
+            out = '\n'.join(list_of_names)
             print(out)
 
             if user_input['<-o=filename>']:
@@ -207,8 +210,6 @@ class DojoManager(object):
                 with open(output_file, 'w') as f:
                     f.write(out)
                 print('List of the unallocated saved to {}'.format(output_file))
-
-
 
     def load_people(self, user_input):
         '''Function to laod people into rooms from a specified text file'''
@@ -251,5 +252,58 @@ class DojoManager(object):
                 'Fellow': fellow,
                 'Staff': staff
             }
-
             self.add_person(user_details)
+
+    def reallocate_person(self, user_input):
+
+        relocate_id = user_input['<person_identifier>']
+        new_room = user_input['<new_room_name>']
+
+        available_people = self.fellows + self.staff_members
+        available_people_ids = [x.person_id for x in available_people]
+        print(relocate_id, available_people_ids)
+
+        if int(relocate_id) not in available_people_ids:
+            print('Employee {} does not exist'.format(relocate_id))
+            return
+
+        person_object = [x for x in available_people if x.person_id == int(relocate_id)][0]
+
+        all_rooms = self.office_block + self.livingspaces
+        current_room_occupied = [x for x in all_rooms if person_object in x.occupants][0] # Find current room occupied by person
+        print(current_room_occupied.room_name, new_room)
+
+        if current_room_occupied.room_name == new_room:
+            print('Cant relocate a person to a room he/she is currently occupying.')
+            return
+
+        available_rooms = self.office_block + self.livingspaces
+        available_room_names = [x.room_name for x in available_rooms]
+
+        if new_room not in available_room_names:
+            print('Room {} Does Not Exist. Kindly create it first.'.format(new_room))
+            return
+
+        room_object = [x for x in available_rooms if x.room_name == new_room][0]
+        print('room object', room_object, room_object.room_type)
+
+        if room_object.room_type == 'office':
+            if len(room_object.occupants) == 6:
+                print('Office {} is fully occupied'.format(new_room))
+                return
+            else:
+                room_object.occupants.append(person_object)
+                print('{} has been re-allocated to room {}'.format(person_object.person_name[0], new_room))
+                current_room_occupied.occupants.remove(person_object)
+
+        elif room_object.room_type == 'livingspace':
+            if len(room_object.occupants) == 4:
+                print('Livingspace {} is fully occupied'.format(new_room))
+                return
+            else:
+                room_object.occupants.append(person_object)
+                print('{} has been re-allocated to room {}'.format(person_object.person_name[0], new_room))
+                current_room_occupied.occupants.remove(person_object)
+
+
+
