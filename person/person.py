@@ -21,13 +21,15 @@ class Fellow(Person):
     '''
 
     def __init__(self, fellow_name='', accommodation=False):
-        self.fellow_name = fellow_name
+        self.person_name = fellow_name
         self.accommodation = accommodation
+        self.person_id = None # Personnel number
 
-    def add_person(self, fellow_name, accommodation):
-        self.fellow_name = fellow_name
+    def add_person(self, fellow_name, accommodation, id):
+        self.person_name = fellow_name
         self.accommodation = accommodation
-        print('Fellow {0} {1} has been successfully added.\n'.format(self.fellow_name[0],self.fellow_name[1]))
+        self.person_id= id
+        print('Fellow {0} {1} has been successfully added.\n'.format(self.person_name[0], self.person_name[1]))
         if not accommodation:
             print('{0} does not wish to be accomodated\n'.format(fellow_name[0]))
         return self
@@ -40,8 +42,11 @@ class Staff(Person):
 
     def __init__(self, staff_name=''):
         self.person_name = staff_name
+        self.person_id = None  # Personnel number
 
-    def add_person(self, staff_name=''):
+    def add_person(self, id, staff_name=''):
         self.person_name = staff_name
+        self.person_id = id
+
         print('Staff {0} {1} has been successfully added.\n'.format(staff_name[0], staff_name[1]))
         return self
