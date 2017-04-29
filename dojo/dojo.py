@@ -261,17 +261,14 @@ class DojoManager(object):
 
         available_people = self.fellows + self.staff_members
         available_people_ids = [x.person_id for x in available_people]
-        print(relocate_id, available_people_ids)
 
         if int(relocate_id) not in available_people_ids:
             print('Employee {} does not exist'.format(relocate_id))
             return
 
         person_object = [x for x in available_people if x.person_id == int(relocate_id)][0]
-
         all_rooms = self.office_block + self.livingspaces
         current_room_occupied = [x for x in all_rooms if person_object in x.occupants][0] # Find current room occupied by person
-        print(current_room_occupied.room_name, new_room)
 
         if current_room_occupied.room_name == new_room:
             print('Cant relocate a person to a room he/she is currently occupying.')
@@ -285,7 +282,6 @@ class DojoManager(object):
             return
 
         room_object = [x for x in available_rooms if x.room_name == new_room][0]
-        print('room object', room_object, room_object.room_type)
 
         if room_object.room_type == 'office':
             if len(room_object.occupants) == 6:
