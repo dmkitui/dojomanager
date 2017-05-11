@@ -1,6 +1,8 @@
 # dojomanager
 #dojo_manager.py
 
+[![Coverage Status](https://coveralls.io/repos/github/kitui/dojomanager/badge.svg?branch=master)](https://coveralls.io/github/kitui/dojomanager?branch=master)
+
 1. dojo_manager.py
 
 A commandline program to manage the automated management of the two types of rooms availabel at the dojo available for new staff and fellow
