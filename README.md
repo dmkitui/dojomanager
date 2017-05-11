@@ -3,6 +3,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/kitui/dojomanager/badge.svg?branch=master)](https://coveralls.io/github/kitui/dojomanager?branch=master)
 
+[![Build Status](https://travis-ci.org/kitui/dojomanager.svg?branch=master)](https://travis-ci.org/kitui/dojomanager)
+
 1. dojo_manager.py
 
 A commandline program to manage the automated management of the two types of rooms availabel at the dojo available for new staff and fellow
