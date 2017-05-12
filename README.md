@@ -17,10 +17,25 @@ Clone/download this repo and run it via the commandline. Check the list of Requi
 
 ## 3. Usage
 
-Usage: dojo_manager.py create_room (<room_type>) <room_name>...
+Usage: dojo_manager.py [command]
 
-dojo_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
-
+Commands:
+```
+    add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
+    create_room Creates a room type of <room_type> called <room_name>
+    add_person Adds a person, and assigns the person to a randomly chosen existing room
+    add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
+    reallocate_person <person_identifier> <new_room_name>
+    print_room <room_name>
+    print_allocations [<-o=filename>]
+    print_unallocated [<-o=filename>]
+    load_people (<people_file>)
+    save_state [--db=sqlite_database]​
+    load_state [--db=sqlite_database]​
+    help
+    clear
+    exit
+```
 arguments: create_room Creates a room type of <room_type> called <room_name> add_person Adds a person, and assigns the person to a randomly chosen existing room
 
 ## 4. Contributing
