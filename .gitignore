@@ -100,3 +100,4 @@ person/__pycache__/
 personel/
 room/__pycache__/
 rooms/
+.DS_Store
