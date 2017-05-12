@@ -29,7 +29,7 @@ def docopt_cmd(func):
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
 
-            print('Dojo Manager V.1: Invalid argument value(s)')
+            print('Amity Manager V.1: Invalid argument value(s)')
             print(e)
             return
 
@@ -53,7 +53,7 @@ class DocoptManager(cmd.Cmd):
     '''
 
     intro = '\n       ___________ANDELA KENYA______________\n' \
-            '       The Dojo Room Allocations Management\n' \
+            '       The Amity Room Allocations Management\n' \
             '       _____________Version 0.0_____________\n' \
             '\n' \
             'Usage:\n'\
@@ -108,8 +108,8 @@ class DocoptManager(cmd.Cmd):
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def do_exit(self, user_input):
-        '''To exit from Dojo Manager Session'''
-        print('\nDojo Manager V0. Exiting...')
+        '''To exit from Amity Manager Session'''
+        print('\nAmity Manager V0. Exiting...')
         return True
 
     @docopt_cmd
@@ -172,5 +172,5 @@ if __name__ == '__main__':
     try:
         DocoptManager().cmdloop()
     except (KeyboardInterrupt, SystemExit):
-        print('Dojo Manager V0. Exit.')
+        print('Amity Manager V0. Exit.')
         print('____________________________')
