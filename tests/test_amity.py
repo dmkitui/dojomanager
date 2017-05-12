@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 '''
-Test cases for the dojo_manager.py module
+Test cases for the amity_manager.py module
 '''
 
 import unittest
 import sys
 from os import path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from dojo.dojo import DojoManager
+from amity.amity import AmityManager
 
 
 class TestCreateRoom(unittest.TestCase):
@@ -25,7 +25,7 @@ class TestCreateRoom(unittest.TestCase):
                    'Livingspace': True, '<wants_accommodation>': 'M', 'Fellow': True, 'Staff':
                         False, '<-o=filename>' : 'output' }
 
-    instance = DojoManager()
+    instance = AmityManager()
 
     def test_initial_state(self):
         self.assertEqual([self.instance.office_block,
@@ -47,14 +47,14 @@ class TestCreateRoom(unittest.TestCase):
                         'No Offices currently available for allocation\n')
 
     def test_allocate_room_when_non_is_available2(self):
-        self.instance.livingspaces = []
+        self.instance.living_spaces = []
         self.assertTrue(self.instance.allocate_livingroom(self.user_inputs3['<person_name>']),
                         'No Livingspace currently available for allocation\n')
 
 
 
     def test_add_office(self):
-        self.instance = DojoManager()
+        self.instance = AmityManager()
         self.instance.create_room(self.user_inputs)
         self.assertEqual(len(self.instance.office_block), 1, 'Office not added')
 
