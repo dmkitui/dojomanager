@@ -18,6 +18,11 @@ class AmityManager(object):
     personnel_id = 1
 
     def create_room(self, user_input):
+        '''
+        Function to create a room in the amity model
+        :param user_input: cli arguments from which room_name and room_type arguments are parsed.
+        :return: specific errors incase of any errors or print statements to display status.
+        '''
 
         if user_input['Livingspace']:
             room_type = 'Livingspace'
@@ -255,6 +260,10 @@ class AmityManager(object):
             self.add_person(user_details)
 
     def reallocate_person(self, user_input):
+        ''' Function to reallocate a person from one room to another one.
+        :argument: user_input from which the argument 'relocate_id' shall be parsed. This is the id of the person to me moved.
+        :return: None.
+        '''
 
         relocate_id = user_input['<person_identifier>']
         new_room = user_input['<new_room_name>']
