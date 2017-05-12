@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import random
-from models.person import Staff, Fellow
-from models.room import Office, LivingSpace
+from ..models.person import Staff, Fellow
+from ..models.room import Office, LivingSpace
 import os
 
 
