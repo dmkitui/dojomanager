@@ -1,5 +1,5 @@
-# dojomanager
-# dojo_manager.py
+# amitymanager
+# amity_manager.py
 
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/57db3d31e7774dafbf64944faefdcce8/badge.svg)](https://www.quantifiedcode.com/app/project/57db3d31e7774dafbf64944faefdcce8)
 
@@ -7,7 +7,7 @@
 
 [![Build Status](https://travis-ci.org/kitui/dojomanager.svg?branch=master)](https://travis-ci.org/kitui/dojomanager)
 
-## 1. dojo_manager.py
+## 1. amity_manager.py
 
 A commandline program to manage the automated management of the two types of rooms available at the Amity facility available for new staff and fellow
 
@@ -17,7 +17,7 @@ Clone/download this repo and run it via the commandline. Check the list of Requi
 
 ## 3. Usage
 
-Usage: dojo_manager.py [command]
+Usage: amity_manager.py [command]
 
 Commands:
 ```
@@ -36,8 +36,6 @@ Commands:
     clear
     exit
 ```
-arguments: create_room Creates a room type of <room_type> called <room_name> add_person Adds a person, and assigns the person to a randomly chosen existing room
-
 ## 4. Contributing
 
 Fork it!
