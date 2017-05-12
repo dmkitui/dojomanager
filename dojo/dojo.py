@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import random
-from person.person import Staff, Fellow
-from room.room import Office, LivingSpace
+from models.person import Staff, Fellow
+from models.room import Office, LivingSpace
 import os
 
 
@@ -13,9 +13,9 @@ class DojoManager(object):
     fellows = []
     staff_members = []
     office_block = []
-    livingspaces = []
+    living_spaces = []
     un_allocated = []
-    personel_id = 1
+    personnel_id = 1
 
     def create_room(self, user_input):
 
@@ -25,7 +25,7 @@ class DojoManager(object):
             room_type = 'Office'
 
         room_names = user_input['<room_name>']
-        existing_rooms = self.livingspaces + self.office_block
+        existing_rooms = self.living_spaces + self.office_block
         existing_room_names = [x.room_name for x in existing_rooms] # Get list of already existing room names
 
         for room_name in room_names:
@@ -46,7 +46,7 @@ class DojoManager(object):
         elif room_type == 'Livingspace':
             b = LivingSpace()
             room = b.create_room(room_name, 'livingspace')
-            self.livingspaces.append(room)
+            self.living_spaces.append(room)
             print('A Livingspace called {0} has been successfully created!\n'.format(room_name))
 
     def add_person(self, user_input):
@@ -73,29 +73,29 @@ class DojoManager(object):
 
         if user_input['Fellow']:
             person_class = Fellow()
-            person = person_class.add_person(name, accommodation, self.personel_id)
+            person = person_class.add_person(name, accommodation, self.personnel_id)
             self.fellows.append(person)
             self.allocate_office(person)
-            self.personel_id += 1
+            self.personnel_id += 1
             if accommodation:
                 self.allocate_livingroom(person)
         elif user_input['Staff']:
             person_class = Staff()
-            person = person_class.add_person(self.personel_id, name)
+            person = person_class.add_person(self.personnel_id, name)
             self.allocate_office(person)
             self.staff_members.append(person)
-            self.personel_id += 1
+            self.personnel_id += 1
 
     def allocate_livingroom(self, person):
         '''Function to randomly allocate a livingroom to fellows'''
 
-        if len(self.livingspaces) == 0:
+        if len(self.living_spaces) == 0:
             print('No Livingroom currently available for allocation\n')
             if person.person_name not in self.un_allocated:
                 self.un_allocated.append(person)
             return 'No Livingroom currently available for allocation\n'
 
-        available_rooms = [x for x in self.livingspaces if len(x.occupants) < 4]
+        available_rooms = [x for x in self.living_spaces if len(x.occupants) < 4]
 
         if len(available_rooms) == 0:
             print('Sorry, No livingspace currently available in any of the rooms\n')
@@ -130,7 +130,7 @@ class DojoManager(object):
         '''Prints the names of all the people in ​room_name​ on the screen.'''
 
         room_name = user_input['<room_name>']
-        available_rooms = self.office_block + self.livingspaces
+        available_rooms = self.office_block + self.living_spaces
         available_room_names = [x.room_name for x in available_rooms]
 
         if room_name not in available_room_names:
@@ -162,7 +162,7 @@ class DojoManager(object):
                 print('The output file not a valid text file')
                 return 'The output file not a valid text file\n'
 
-        rooms = self.office_block + self.livingspaces
+        rooms = self.office_block + self.living_spaces
         if len(rooms) == 0:
             print('No rooms currently occupied\n')
             return
@@ -267,14 +267,14 @@ class DojoManager(object):
             return
 
         person_object = [x for x in available_people if x.person_id == int(relocate_id)][0]
-        all_rooms = self.office_block + self.livingspaces
+        all_rooms = self.office_block + self.living_spaces
         current_room_occupied = [x for x in all_rooms if person_object in x.occupants][0] # Find current room occupied by person
 
         if current_room_occupied.room_name == new_room:
             print('Cant relocate a person to a room he/she is currently occupying.')
             return
 
-        available_rooms = self.office_block + self.livingspaces
+        available_rooms = self.office_block + self.living_spaces
         available_room_names = [x.room_name for x in available_rooms]
 
         if new_room not in available_room_names:

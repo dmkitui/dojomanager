@@ -47,7 +47,7 @@ class TestCreateRoom(unittest.TestCase):
                         'No Offices currently available for allocation\n')
 
     def test_allocate_room_when_non_is_available2(self):
-        self.instance.livingspaces = []
+        self.instance.living_spaces = []
         self.assertTrue(self.instance.allocate_livingroom(self.user_inputs3['<person_name>']),
                         'No Livingspace currently available for allocation\n')
 
