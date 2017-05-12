@@ -1,4 +1,4 @@
-# Personnel number#!/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 '''
@@ -15,6 +15,7 @@ import cmd
 from docopt import docopt, DocoptExit
 from amity.amity import AmityManager
 import os
+
 
 def docopt_cmd(func):
     """
@@ -85,7 +86,7 @@ class DocoptManager(cmd.Cmd):
             '\n\n'
 
     prompt = 'Enter Command: '
-    dojo_manager = AmityManager()
+    amity_manager = AmityManager()
 
     @docopt_cmd
     def do_create_room(self, user_input):
@@ -93,7 +94,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             create_room (Office|Livingspace) (<room_name>...)
         '''
-        self.dojo_manager.create_room(user_input)
+        self.amity_manager.create_room(user_input)
 
     @docopt_cmd
     def do_add_person(self, user_input):
@@ -101,7 +102,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
         '''
-        self.dojo_manager.add_person(user_input)
+        self.amity_manager.add_person(user_input)
 
     def do_clear(self, user_input):
         '''To clear screen'''
@@ -118,7 +119,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_room <room_name>
         '''
-        self.dojo_manager.print_room(user_input)
+        self.amity_manager.print_room(user_input)
 
     @docopt_cmd
     def do_print_allocations(self, user_input):
@@ -126,7 +127,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_allocations [<-o=filename>]
         '''
-        self.dojo_manager.print_allocations(user_input)
+        self.amity_manager.print_allocations(user_input)
 
     @docopt_cmd
     def do_print_unallocated(self, user_input):
@@ -134,7 +135,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_unallocated [<-o=filename>]
         '''
-        self.dojo_manager.print_unallocated(user_input)
+        self.amity_manager.print_unallocated(user_input)
 
     @docopt_cmd
     def do_reallocate_person(self, user_input):
@@ -142,7 +143,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             reallocate_person <person_identifier> <new_room_name>
         '''
-        self.dojo_manager.reallocate_person(user_input)
+        self.amity_manager.reallocate_person(user_input)
 
     @docopt_cmd
     def do_load_people(self, user_input):
@@ -150,7 +151,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             load_people (<people_file>)
         '''
-        self.dojo_manager.load_people(user_input)
+        self.amity_manager.load_people(user_input)
 
     @docopt_cmd
     def do_save_state(self, user_input):
