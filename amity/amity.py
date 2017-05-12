@@ -6,9 +6,9 @@ from models.room import Office, LivingSpace
 import os
 
 
-class DojoManager(object):
+class AmityManager(object):
     '''
-    Class Dojo to model the dojo complex, and manage all the data models
+    Class Dojo to model the amity complex, and manage all the data models
     '''
     fellows = []
     staff_members = []
@@ -50,7 +50,7 @@ class DojoManager(object):
             print('A Livingspace called {0} has been successfully created!\n'.format(room_name))
 
     def add_person(self, user_input):
-        '''Funcction to add individuals to the dojo'''
+        '''Funcction to add individuals to the amity'''
         name = user_input['<person_name>']
         wants_accommodation = user_input['<wants_accommodation>']
 

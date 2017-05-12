@@ -95,7 +95,7 @@ ENV/
 # Rope project settings
 .ropeproject
 .idea/
-dojo/__pycache__/
+amity/__pycache__/
 person/__pycache__/
 personel/
 room/__pycache__/

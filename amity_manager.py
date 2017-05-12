@@ -3,8 +3,8 @@
 
 '''
 Usage:
-    dojo_manager.py create_room (Office|Livingspace) <room_name>...
-    dojo_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
+    amity_manager.py create_room (Office|Livingspace) <room_name>...
+    amity_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
 
 arguments:
     create_room Creates a room type of <room_type> called <room_name>
@@ -13,7 +13,7 @@ arguments:
 
 import cmd
 from docopt import docopt, DocoptExit
-from dojo.dojo import DojoManager
+from amity.amity import AmityManager
 import os
 
 def docopt_cmd(func):
@@ -85,7 +85,7 @@ class DocoptManager(cmd.Cmd):
             '\n\n'
 
     prompt = 'Enter Command: '
-    dojo_manager = DojoManager()
+    dojo_manager = AmityManager()
 
     @docopt_cmd
     def do_create_room(self, user_input):

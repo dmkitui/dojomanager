@@ -5,7 +5,7 @@
 class Room(object):
 
     '''
-    base class Room to instantiate and hold attributes for the facilities at the dojo
+    base class Room to instantiate and hold attributes for the facilities at the amity
     '''
 
     def __init__(self, room_name='', room_type=''):
