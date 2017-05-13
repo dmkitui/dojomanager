@@ -30,7 +30,7 @@ class AmityManager(object):
             room_type = 'Office'
 
         room_names = user_input['<room_name>']
-        
+
         for room_name in room_names:
             existing_room_names = [x.room_name for x in self.office_block] + [x.room_name for x in self.living_spaces] # Get list of already existing room names
             if room_name in existing_room_names:
@@ -157,7 +157,12 @@ class AmityManager(object):
         print('Occupants of room {} : {}\n'.format(room_name, print_output))
 
     def print_allocations(self, user_input):
-        '''Function to print room allocations, and optionally output same to file'''
+        '''
+        Function to print room allocations, and optionally output same to file
+        :param user_input from which output filename if present is parsed from.
+        :return: Returns relevant error messages, or prints out information on success
+        '''
+
 
         if user_input['<-o=filename>']:
             output_file = user_input['<-o=filename>']
@@ -193,7 +198,12 @@ class AmityManager(object):
                     print('Room allocations saved to file {}'.format(output_file))
 
     def print_unallocated(self, user_input):
-        '''prints list of the unallocated people'''
+        '''
+        Function to print list of the unallocated people
+        :param user_input: 
+        :return: prints list of unallocated people if available, or error messages.
+        '''
+        ''''''
 
         if len(self.un_allocated) == 0:
             print('There are currently no unallocated people')
@@ -216,7 +226,11 @@ class AmityManager(object):
                 print('List of the unallocated saved to {}'.format(output_file))
 
     def load_people(self, user_input):
-        '''Function to laod people into rooms from a specified text file'''
+        '''
+        Function to load people into rooms from a specified text file
+        :param user_input: User input from which the input textfile is parsed from
+        :return: Print status messages or returns error messages.
+        '''
 
         text_file = user_input['<people_file>']
 
