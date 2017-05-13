@@ -5,7 +5,7 @@
 class Room(object):
 
     '''
-    base class Room to instantiate and hold attributes for the facilities at the dojo
+    base class Room to instantiate and hold attributes for the facilities at the amity
     '''
 
     def __init__(self, room_name='', room_type=''):
@@ -25,8 +25,7 @@ class Room(object):
 class Office(Room):
 
     '''
-    Subclass of Room to model offices
-    with attributes room_name and room_type
+    Subclass of Room to model offices with attributes room_name and room_type
     '''
     def __init__(self, room_name='', room_type=''):
         self.room_name = room_name

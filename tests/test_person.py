@@ -9,8 +9,8 @@ import unittest
 import sys
 from os import path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from person.person import Person, Staff, Fellow
-from room.room import Office, LivingSpace, Room
+from models.person import Person, Staff, Fellow
+from models.room import Office, LivingSpace, Room
 
 
 class TestAddPerson(unittest.TestCase):

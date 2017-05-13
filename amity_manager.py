@@ -1,10 +1,10 @@
-# Personnel number#!/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 '''
 Usage:
-    dojo_manager.py create_room (Office|Livingspace) <room_name>...
-    dojo_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
+    amity_manager.py create_room (Office|Livingspace) <room_name>...
+    amity_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
 
 arguments:
     create_room Creates a room type of <room_type> called <room_name>
@@ -13,8 +13,9 @@ arguments:
 
 import cmd
 from docopt import docopt, DocoptExit
-from dojo.dojo import DojoManager
+from amity.amity import AmityManager
 import os
+
 
 def docopt_cmd(func):
     """
@@ -29,7 +30,7 @@ def docopt_cmd(func):
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
 
-            print('Dojo Manager V.1: Invalid argument value(s)')
+            print('Amity Manager V.1: Invalid argument value(s)')
             print(e)
             return
 
@@ -53,7 +54,7 @@ class DocoptManager(cmd.Cmd):
     '''
 
     intro = '\n       ___________ANDELA KENYA______________\n' \
-            '       The Dojo Room Allocations Management\n' \
+            '       The Amity Room Allocations Management\n' \
             '       _____________Version 0.0_____________\n' \
             '\n' \
             'Usage:\n'\
@@ -85,7 +86,7 @@ class DocoptManager(cmd.Cmd):
             '\n\n'
 
     prompt = 'Enter Command: '
-    dojo_manager = DojoManager()
+    amity_manager = AmityManager()
 
     @docopt_cmd
     def do_create_room(self, user_input):
@@ -93,7 +94,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             create_room (Office|Livingspace) (<room_name>...)
         '''
-        self.dojo_manager.create_room(user_input)
+        self.amity_manager.create_room(user_input)
 
     @docopt_cmd
     def do_add_person(self, user_input):
@@ -101,15 +102,15 @@ class DocoptManager(cmd.Cmd):
         Usage:
             add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
         '''
-        self.dojo_manager.add_person(user_input)
+        self.amity_manager.add_person(user_input)
 
     def do_clear(self, user_input):
         '''To clear screen'''
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def do_exit(self, user_input):
-        '''To exit from Dojo Manager Session'''
-        print('\nDojo Manager V0. Exiting...')
+        '''To exit from Amity Manager Session'''
+        print('\nAmity Manager V0. Exiting...')
         return True
 
     @docopt_cmd
@@ -118,7 +119,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_room <room_name>
         '''
-        self.dojo_manager.print_room(user_input)
+        self.amity_manager.print_room(user_input)
 
     @docopt_cmd
     def do_print_allocations(self, user_input):
@@ -126,7 +127,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_allocations [<-o=filename>]
         '''
-        self.dojo_manager.print_allocations(user_input)
+        self.amity_manager.print_allocations(user_input)
 
     @docopt_cmd
     def do_print_unallocated(self, user_input):
@@ -134,7 +135,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_unallocated [<-o=filename>]
         '''
-        self.dojo_manager.print_unallocated(user_input)
+        self.amity_manager.print_unallocated(user_input)
 
     @docopt_cmd
     def do_reallocate_person(self, user_input):
@@ -142,7 +143,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             reallocate_person <person_identifier> <new_room_name>
         '''
-        self.dojo_manager.reallocate_person(user_input)
+        self.amity_manager.reallocate_person(user_input)
 
     @docopt_cmd
     def do_load_people(self, user_input):
@@ -150,7 +151,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             load_people (<people_file>)
         '''
-        self.dojo_manager.load_people(user_input)
+        self.amity_manager.load_people(user_input)
 
     @docopt_cmd
     def do_save_state(self, user_input):
@@ -172,5 +173,5 @@ if __name__ == '__main__':
     try:
         DocoptManager().cmdloop()
     except (KeyboardInterrupt, SystemExit):
-        print('Dojo Manager V0. Exit.')
+        print('Amity Manager V0. Exit.')
         print('____________________________')
