@@ -30,10 +30,9 @@ class AmityManager(object):
             room_type = 'Office'
 
         room_names = user_input['<room_name>']
-        existing_rooms = self.living_spaces + self.office_block
-        existing_room_names = [x.room_name for x in existing_rooms] # Get list of already existing room names
-
+        
         for room_name in room_names:
+            existing_room_names = [x.room_name for x in self.office_block] + [x.room_name for x in self.living_spaces] # Get list of already existing room names
             if room_name in existing_room_names:
                 print('A Room called {} already exists\n'.format(room_name))
                 continue
@@ -43,14 +42,14 @@ class AmityManager(object):
         '''Function to call create_room function for the case of multiple
         room arguments'''
         if room_type == 'Office':
-            a = Office()
-            room = a.create_room(room_name, 'office')
+            office_instance = Office()
+            room = office_instance.create_room(room_name, 'office')
             self.office_block.append(room)
             print('An Office called {0} has been successfully created!\n'.format(room_name))
 
         elif room_type == 'Livingspace':
-            b = LivingSpace()
-            room = b.create_room(room_name, 'livingspace')
+            livingspace_instance = LivingSpace()
+            room = livingspace_instance.create_room(room_name, 'livingspace')
             self.living_spaces.append(room)
             print('A Livingspace called {0} has been successfully created!\n'.format(room_name))
 
