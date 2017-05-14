@@ -5,7 +5,7 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/kitui/dojomanager/badge.svg?branch=master)](https://coveralls.io/github/kitui/dojomanager?branch=master)
 
-[![Build Status](https://travis-ci.org/kitui/dojomanager.svg?branch=master)](https://travis-ci.org/kitui/dojomanager)
+[![Build Status](https://travis-ci.org/kitui/dojomanager.svg?branch=ft-tests-refactor)](https://travis-ci.org/kitui/dojomanager)
 
 ## 1. amity_manager.py
 
