@@ -11,13 +11,13 @@ class Room(object):
     def __init__(self, room_name='', room_type=''):
         self.room_name = room_name
         self.room_type = room_type
-        self.all_rooms = []
+        # self.all_rooms = []
         self.occupants = []
 
     def create_room(self, room_name, room_type):
         self.room_name = room_name
         self.room_type = room_type
-        self.all_rooms.append(self)
+        # self.all_rooms.append(self)
         self.occupants = []
         return self
 
