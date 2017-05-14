@@ -7,5 +7,5 @@ install:
   - pip install coveralls
 # command to run tests
 script: pytest
-  - coverage run --source=dojomanager amity_manager.py test
+  - coverage run --source=amity,models,tests amity_manager.py test
 after_success: coveralls
