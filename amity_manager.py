@@ -94,7 +94,15 @@ class DocoptManager(cmd.Cmd):
         Usage:
             create_room (Office|Livingspace) (<room_name>...)
         '''
-        self.amity_manager.create_room(user_input)
+
+        if user_input['Livingspace']:
+            room_type = 'Livingspace'
+        else:
+            room_type = 'Office'
+
+        room_names = user_input['<room_name>']
+
+        self.amity_manager.create_room(room_names, room_type)
 
     @docopt_cmd
     def do_add_person(self, user_input):
@@ -102,7 +110,14 @@ class DocoptManager(cmd.Cmd):
         Usage:
             add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
         '''
-        self.amity_manager.add_person(user_input)
+        name = user_input['<person_name>']
+        wants_accommodation = user_input['<wants_accommodation>']
+
+        if user_input['Fellow']:
+            person_type = 'Fellow'
+        elif user_input['Staff']:
+            person_type = 'Staff'
+        self.amity_manager.add_person(name, person_type, wants_accommodation)
 
     def do_clear(self, user_input):
         '''To clear screen'''
@@ -119,7 +134,8 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_room <room_name>
         '''
-        self.amity_manager.print_room(user_input)
+        room_name = user_input['<room_name>']
+        self.amity_manager.print_room(room_name)
 
     @docopt_cmd
     def do_print_allocations(self, user_input):
