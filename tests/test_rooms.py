@@ -9,26 +9,23 @@ class TestCreateRoom(unittest.TestCase):
     '''
     Class to run test cases for the rooms class
     '''
-    def test_create_room_successfully(self):
-        my_class_instance = Room()
-        initial_room_count = len(my_class_instance.all_rooms)
-        blue_office = my_class_instance.create_room('blue', 'office')
-        self.assertTrue(blue_office)
-        new_room_count = len(my_class_instance.all_rooms)
-        self.assertEqual(new_room_count - initial_room_count, 1)
+    def setUp(self):
+        self.office_instance = Office()
+        self.living_space_instance = LivingSpace()
 
     def test_create_office(self):
-        my_class = Office()
-        rhino_office = my_class.create_room('Rhino', 'Office')
-        self.assertIsInstance(rhino_office, Room, 'Formed Object not of the '
-                                                  'right class')
+        green_office = self.office_instance.create_room('Green', 'Office')
+        self.assertIsInstance(green_office, Office, 'Formed Object not of the right class')
+        self.assertTrue(green_office.room_name, 'Green')
+        self.assertEquals(green_office.occupants, [])
+        self.assertEquals(green_office.room_type, 'Office')
 
     def test_create_living_space(self):
-        my_class = LivingSpace()
-        comfy_livingspace = my_class.create_room('Comfy', 'livingspace')
-        self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the '
-                                                  'right class')
+        comfy_livingspace = self.living_space_instance.create_room('Comfy', 'Livingspace')
+        self.assertIsInstance(comfy_livingspace, Room, 'Formed Object not of the right class')
         self.assertEqual(comfy_livingspace.room_name, 'Comfy')
+        self.assertEquals(comfy_livingspace.occupants, [])
+        self.assertEquals(comfy_livingspace.room_type, 'Livingspace')
 
 if __name__ == '__main__':
     unittest.main()
