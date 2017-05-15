@@ -141,7 +141,7 @@ class AmityManager(object):
         print('{0} has been allocated the office {1}\n'.format(person.person_name[0], random_office.room_name))
 
     def print_room(self, room_name):
-        '''Prints the names of all the people in ​room_name​ on the screen.'''
+        '''Prints the names of all the people in ​specified room_name​.'''
         available_rooms = self.office_block + self.living_spaces
         available_room_names = [x.room_name for x in available_rooms]
 
