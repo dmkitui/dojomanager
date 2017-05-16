@@ -61,11 +61,15 @@ class AmityManager(object):
     def add_person(self, name, person_type, wants_accommodation):
         '''
         Function to add individuals to the amity
-        :param name: User input from which <person_name> or <wants_accomodation> arguments are parsed from
+        :param name: List of new persons name [first_name, second_name]
         :param wants_accommodation: argument that specifies if person to be added wants accommodation or not. Should be either 'Y', 'N', 'y' or 'n' 
         :param person_type: New person type, either 'Staff' or 'Fellow'
         :return: prints to the console on successful creation, returns relevant error messages on errors
         '''
+
+        if len(name[0]) <= 1 or len(name[1]) <= 1:
+            print('Abbreviations not allowed. Please input full first name and full second name of the individual.')
+            return
 
         if wants_accommodation:
             if person_type == 'Staff':
@@ -205,17 +209,17 @@ class AmityManager(object):
                         f.write('\n\n')
                     print('Room allocations saved to file {}'.format(output_file))
 
-    def print_unallocated(self, user_input):
+    def print_unallocated(self, unallocated_file_name):
         '''
         Function to print list of the unallocated people
-        :param user_input: 
+        :param unallocated_file_name: a text (.txt) file to which unallocated people names shall be saved.
         :return: prints list of unallocated people if available, or error messages.
         '''
         ''''''
 
         if len(self.un_allocated_persons) == 0:
             print('There are currently no unallocated people')
-            return 'There are currently no unallocated people'
+            return
         else:
             un_allocated_list = set(self.un_allocated_persons)
             names = [x.person_name for x in un_allocated_list] #list of names in the form [firstname, lastnames]
@@ -223,11 +227,11 @@ class AmityManager(object):
             out = '\n'.join(list_of_names)
             print(out)
 
-            if user_input['<-o=filename>']:
-                output_file = user_input['<-o=filename>']
+            if unallocated_file_name:
+                output_file = unallocated_file_name
                 if not output_file.endswith('.txt'):
-                    print('Invalid file format')
-                    return 'Invalid file format'
+                    print('Invalid output file format')
+                    return
 
                 with open(output_file, 'w') as f:
                     f.write(out)
