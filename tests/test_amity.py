@@ -196,5 +196,3 @@ class TestAmityModule(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    # assert not hasattr(sys.stdout, "getvalue")
-    # unittest.main(module=__name__, buffer=False, exit=False)

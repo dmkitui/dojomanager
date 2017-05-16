@@ -12,6 +12,7 @@ class TestCreateRoom(unittest.TestCase):
     def setUp(self):
         self.office_instance = Office()
         self.living_space_instance = LivingSpace()
+        self.room_instance = Room()
 
     def test_create_office(self):
         green_office = self.office_instance.create_room('Green', 'Office')
@@ -26,6 +27,12 @@ class TestCreateRoom(unittest.TestCase):
         self.assertEqual(comfy_livingspace.room_name, 'Comfy')
         self.assertEquals(comfy_livingspace.occupants, [])
         self.assertEquals(comfy_livingspace.room_type, 'Livingspace')
+
+    def test_room_class(self):
+        new_room = self.room_instance.create_room('new_room', 'Office')
+        self.assertIsInstance(new_room, Room)
+        self.assertEquals(new_room.occupants, [])
+        self.assertEquals(new_room.room_type, 'Office')
 
 if __name__ == '__main__':
     unittest.main()

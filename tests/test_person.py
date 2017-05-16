@@ -38,7 +38,7 @@ class TestAddPerson(unittest.TestCase):
 
         print_output = terminal_output.getvalue().strip()
         self.assertEqual(print_output, 'Staff Daniel Kitui has been successfully added.')
-        self.assertIsInstance(daniel, Staff, 'Formed object no of the required class')
+        self.assertIsInstance(daniel, Staff, 'Formed object not of the required class')
         self.assertEqual(daniel.person_id, 3)
 
     def test_add_fellow_with_accommodation_flag(self):
