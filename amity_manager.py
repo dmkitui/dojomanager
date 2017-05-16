@@ -151,7 +151,12 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_unallocated [<-o=filename>]
         '''
-        self.amity_manager.print_unallocated(user_input)
+        if user_input['<-o=filename>']:
+            unallocated_file_name = user_input['<-o=filename>']
+        else:
+            unallocated_file_name = None
+
+        self.amity_manager.print_unallocated(unallocated_file_name)
 
     @docopt_cmd
     def do_reallocate_person(self, user_input):
