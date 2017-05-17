@@ -12,7 +12,6 @@ class Room(object):
         '''Initialize class Room'''
         self.room_name = room_name
         self.room_type = room_type
-        # self.all_rooms = []
         self.occupants = []
 
     def create_room(self, room_name, room_type):
@@ -24,7 +23,6 @@ class Room(object):
         '''
         self.room_name = room_name
         self.room_type = room_type
-        # self.all_rooms.append(self)
         self.occupants = []
         return self
 
@@ -60,7 +58,7 @@ class LivingSpace(Room):
     '''
 
     def __init__(self, room_name='', room_type=''):
-        '''Function to initialize the Livingspace class'''
+        '''Function to initialize the LivingSpace class'''
         self.room_name = room_name
         self.room_type = room_type
         self.occupants = []
