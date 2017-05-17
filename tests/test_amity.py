@@ -216,5 +216,60 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         self.assertEqual(print_output, 'The specified file does not exist')
 
+    def test_19_reallocate_person(self):
+        '''Test reallocate_person functionality'''
+        self.amity_instance.fellows = [] # reset amity lists.
+        self.amity_instance.office_block = []
+        self.amity_instance.living_spaces = []
+        self.amity_instance.staff_members = []
+        self.amity_instance.personnel_id = 1 # Reset personel ids list
+
+        self.amity_instance.create_room(['Bungoma'], 'Office') # Create new office
+        self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
+
+        self.amity_instance.create_room(['Kitale'], 'Office') # Create new office, for relocation testing
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.reallocate_person(1, 'Kitale')
+
+        print_output = terminal_output.getvalue().strip()
+        self.assertEquals(print_output, 'Daniel has been re-allocated to room Kitale')
+
+    def test_20_reallocate_person_same_room_they_already_occupy(self):
+        '''Test reallocate_person to a non-existent room'''
+        self.amity_instance.fellows = [] # reset amity lists.
+        self.amity_instance.office_block = []
+        self.amity_instance.living_spaces = []
+        self.amity_instance.staff_members = []
+        self.amity_instance.personnel_id = 1 # Reset personel ids list
+
+        self.amity_instance.create_room(['Bungoma'], 'Office') # Create new office
+        self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
+
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.reallocate_person(1, 'Bungoma') # Relocate to same office currently occupied
+
+        print_output = terminal_output.getvalue().strip()
+        self.assertEquals(print_output, 'Cant relocate a person to a room he/she is currently occupying.')
+
+    def test_20_reallocate_person_non_existent_room(self):
+        '''Test reallocate_person to a room that doesnt currently exist'''
+        self.amity_instance.fellows = [] # reset amity lists.
+        self.amity_instance.office_block = []
+        self.amity_instance.living_spaces = []
+        self.amity_instance.staff_members = []
+        self.amity_instance.personnel_id = 1 # Reset personel ids list
+
+        self.amity_instance.create_room(['Bungoma'], 'Office') # Create new office
+        self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
+
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.reallocate_person(1, 'Mombasa') # Relocate to an office that currently doesnt exist.
+
+        print_output = terminal_output.getvalue().strip()
+        self.assertEquals(print_output, 'Room Mombasa Does Not Exist.')
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
