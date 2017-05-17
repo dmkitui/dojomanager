@@ -237,22 +237,19 @@ class AmityManager(object):
                     f.write(out)
                 print('List of the unallocated saved to {}'.format(output_file))
 
-    def load_people(self, user_input):
+    def load_people(self, text_file):
         '''
         Function to load people into rooms from a specified text file
         :param user_input: User input from which the input textfile is parsed from
         :return: Print status messages or returns error messages.
         '''
-
-        text_file = user_input['<people_file>']
-
         if not text_file.endswith('.txt'):
-            print('Invalid text file name')
-            return 'Invalid text file name'
+            print('Invalid input file name')
+            return
 
         elif not os.path.isfile(text_file): # To check if file exists
             print('The specified file does not exist')
-            return 'The specified file does not exist'
+            return
 
         with open(text_file) as f:
             content = f.readlines()
@@ -284,25 +281,22 @@ class AmityManager(object):
             }
             self.add_person(user_details)
 
-    def reallocate_person(self, user_input):
+    def reallocate_person(self, relocate_id, new_room):
         ''' Function to reallocate a person from one room to another one.
-        :argument: user_input from which the argument 'relocate_id' shall be parsed. This is the id of the person to me moved.
+        :argument relocate_id:This is the id of the person to me moved.
+        :argument new_room: THe room a person specified by the relocate_id is to be moved to.
         :return: None.
         '''
-
-        relocate_id = user_input['<person_identifier>']
-        new_room = user_input['<new_room_name>']
-
-        available_people = self.fellows + self.staff_members
-        available_people_ids = [x.person_id for x in available_people]
+        available_people = self.fellows + self.staff_members  # List of all people objects present
+        available_people_ids = [x.person_id for x in available_people]  # List of available people ids
 
         if int(relocate_id) not in available_people_ids:
             print('Employee {} does not exist'.format(relocate_id))
             return
 
-        person_object = [x for x in available_people if x.person_id == int(relocate_id)][0]
-        all_rooms = self.office_block + self.living_spaces
-        current_room_occupied = [x for x in all_rooms if person_object in x.occupants][0] # Find current room occupied by person
+        person_object = [x for x in available_people if x.person_id == int(relocate_id)][0]  # Get person object belonging to the specified ID
+        available_rooms = self.office_block + self.living_spaces # Get list of all room object available.
+        current_room_occupied = [x for x in available_rooms if person_object in x.occupants][0] # Find current room occupied by person
 
         if current_room_occupied.room_name == new_room:
             print('Cant relocate a person to a room he/she is currently occupying.')
@@ -312,7 +306,7 @@ class AmityManager(object):
         available_room_names = [x.room_name for x in available_rooms]
 
         if new_room not in available_room_names:
-            print('Room {} Does Not Exist. Kindly create it first.'.format(new_room))
+            print('Room {} Does Not Exist.'.format(new_room))
             return
 
         room_object = [x for x in available_rooms if x.room_name == new_room][0]

@@ -202,21 +202,19 @@ class TestAmityModule(unittest.TestCase):
         self.assertEqual(print_output, 'Daniel Kitui\nInvalid output file format')
         self.assertFalse(os.path.isfile('Unallocated_People.pdf')) # Confirm specified file has not been created
 
+    def test_18_load_people_file_format(self):
+        '''Test for the file input format'''
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.load_people('input_file.pdf') # Incorrect file name
 
+        print_output = terminal_output.getvalue().strip()
+        self.assertEqual(print_output, 'Invalid input file name')
 
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.load_people('file_does_not_exist.txt')  # Incorrect file name
 
-
-    #
-    # # Task 2 tests
-    #
-    # def test_valid_output_file_for_allocations(self):
-    #     self.assertEqual(self.instance.print_allocations(self.user_inputs3), 'The output file not a valid text file\n')
-    #
-    #
-    # def test_valid_output_file_for_print_unallocated(self):
-    #     self.instance.un_allocated = ['daniel kitui', 'Dan M']
-    #     self.assertEqual(self.instance.print_unallocated(self.user_inputs3),
-    #                      'Invalid file format')
+        print_output = terminal_output.getvalue().strip()
+        self.assertEqual(print_output, 'The specified file does not exist')
 
 if __name__ == '__main__':
     unittest.main()

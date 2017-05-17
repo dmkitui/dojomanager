@@ -164,7 +164,9 @@ class DocoptManager(cmd.Cmd):
         Usage:
             reallocate_person <person_identifier> <new_room_name>
         '''
-        self.amity_manager.reallocate_person(user_input)
+        relocate_id = user_input['<person_identifier>']
+        new_room = user_input['<new_room_name>']
+        self.amity_manager.reallocate_person(relocate_id, new_room)
 
     @docopt_cmd
     def do_load_people(self, user_input):
@@ -172,7 +174,8 @@ class DocoptManager(cmd.Cmd):
         Usage:
             load_people (<people_file>)
         '''
-        self.amity_manager.load_people(user_input)
+        text_input_file = user_input['<people_file>']
+        self.amity_manager.load_people(text_input_file)
 
     @docopt_cmd
     def do_save_state(self, user_input):
