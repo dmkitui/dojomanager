@@ -148,11 +148,14 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.print_unallocated(None) # No output file specified.
         print_output = terminal_output.getvalue().strip()
         self.assertEqual(print_output, 'There are currently no unallocated people')
-        # Test print_unallocated when one is present
-        self.amity_instance.fellows = [] # reset amity lists.
+
+    def test_15_print_unallocated_when_one_is_present(self):
+        '''Test print_unallocated when one is present'''
+        self.amity_instance.fellows = []  # reset amity lists.
         self.amity_instance.office_block = []
         self.amity_instance.living_spaces = []
         self.amity_instance.staff_members = []
+        self.amity_instance.un_allocated_persons = []
         # Add person
         with screen_output() as (terminal_output, err):
             self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
@@ -163,7 +166,18 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         self.assertEqual(print_output, 'Daniel Kitui')
 
-        #Test print_unallocated with output file specified
+    def test_16_print_unallocated_with_file_output_specified(self):
+        '''Test print_unallocated with output file specified'''
+        self.amity_instance.fellows = [] # reset amity lists.
+        self.amity_instance.office_block = []
+        self.amity_instance.living_spaces = []
+        self.amity_instance.staff_members = []
+        self.amity_instance.un_allocated_persons = []
+
+        # Add person
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
+
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated('Unallocated_People.txt')
         print_output = terminal_output.getvalue().strip()
@@ -171,6 +185,16 @@ class TestAmityModule(unittest.TestCase):
         self.assertTrue(os.path.isfile('Unallocated_People.txt')) # Confirm file exists in current directory
 
         # Test print_unallocated with wrong output file format
+    def test_17_print_unallocated_wrong_output_file_format(self):
+        '''print_unallocated with invalid output file format'''
+        self.amity_instance.fellows = [] # reset amity lists.
+        self.amity_instance.office_block = []
+        self.amity_instance.living_spaces = []
+        self.amity_instance.staff_members = []
+        self.amity_instance.un_allocated_persons = [] # Reset list of unallocated people
+
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
 
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated('Unallocated_People.pdf')
