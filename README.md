@@ -2,9 +2,7 @@
 # amity_manager.py
 
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/57db3d31e7774dafbf64944faefdcce8/badge.svg)](https://www.quantifiedcode.com/app/project/57db3d31e7774dafbf64944faefdcce8)
-
 [![Coverage Status](https://coveralls.io/repos/github/kitui/dojomanager/badge.svg?branch=ft-tests-refactor)](https://coveralls.io/github/kitui/dojomanager?branch=ft-tests-refactor)
-
 [![Build Status](https://travis-ci.org/kitui/dojomanager.svg?branch=ft-tests-refactor)](https://travis-ci.org/kitui/dojomanager)
 
 ## 1. amity_manager.py
