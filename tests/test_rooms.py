@@ -38,5 +38,5 @@ class TestCreateRoom(unittest.TestCase):
         self.assertEquals(new_room.occupants, [])
         self.assertEquals(new_room.room_type, 'Office')
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()

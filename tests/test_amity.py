@@ -286,7 +286,6 @@ class TestAmityModule(unittest.TestCase):
         '''Test reallocate_person to a room that doesnt currently exist'''
 
         self.reset()
-
         self.amity_instance.create_room(['Bungoma'], 'Office') # Create new office
         self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
 
@@ -302,8 +301,5 @@ class TestAmityModule(unittest.TestCase):
     def test_24_load_state(self):
         pass
 
-
-
-
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()

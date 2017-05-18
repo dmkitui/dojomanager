@@ -61,5 +61,5 @@ class TestAddPerson(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         self.assertEqual(print_output, 'Fellow Daniel Kitui has been successfully added.\n\nDaniel does not wish to be accommodated')
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
