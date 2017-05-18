@@ -21,7 +21,7 @@ def screen_output():
     old_out, old_err = sys.stdout, sys.stderr
     try:
         sys.stdout, sys.stderr = new_out, new_err
-        yield sys.stdout, sys.stderr
+        yield sys.stdout, sys.stderr # Return stdout output one by one.
     finally:
         sys.stdout, sys.stderr = old_out, old_err
 
@@ -32,6 +32,15 @@ class TestAmityModule(unittest.TestCase):
     def setUp(self):
         '''Setup the test instance'''
         self.amity_instance = AmityManager()
+
+    def reset(self):
+        '''Reset the test environment'''
+        self.amity_instance.fellows = []
+        self.amity_instance.office_block = []
+        self.amity_instance.living_spaces = []
+        self.amity_instance.staff_members = []
+        self.amity_instance.personnel_id = 1
+        self.amity_instance.un_allocated_persons = []
 
     def test_00_initial_state(self):
         '''Test initial states of the various lists'''
@@ -89,8 +98,8 @@ class TestAmityModule(unittest.TestCase):
 
     def test_08_add_person_no_rooms_available(self):
         '''Test adding person when no room is available'''
-        self.amity_instance.office_block = []
-        self.amity_instance.living_spaces = []
+
+        self.reset()
         with screen_output() as (terminal_output, err):
             dan = self.amity_instance.add_person(['Daniel', 'Kitui'], 'Staff', None)
         print_output = terminal_output.getvalue().strip()
@@ -104,7 +113,7 @@ class TestAmityModule(unittest.TestCase):
             dan = self.amity_instance.add_person(['Daniel', 'Kitui'], 'Staff', 'Y')
         print_output = terminal_output.getvalue().strip()
         self.assertEquals(print_output, 'Staff are not entitled to accommodation')
-        self.assertEqual(len(self.amity_instance.staff_members), 1)
+        self.assertEqual(len(self.amity_instance.staff_members), 0)
 
     def test_10_add_person_with_wrong_wants_accommodation_argument(self):
         '''Tests adding a person with an invalid wants_accommodation argument'''
@@ -158,11 +167,8 @@ class TestAmityModule(unittest.TestCase):
 
     def test_16_print_unallocated_when_one_is_present(self):
         '''Test print_unallocated when one is present'''
-        self.amity_instance.fellows = []  # reset amity lists.
-        self.amity_instance.office_block = []
-        self.amity_instance.living_spaces = []
-        self.amity_instance.staff_members = []
-        self.amity_instance.un_allocated_persons = []
+
+        self.reset()
         # Add person
         with screen_output() as (terminal_output, err):
             self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
@@ -175,11 +181,8 @@ class TestAmityModule(unittest.TestCase):
 
     def test_17_print_unallocated_with_file_output_specified(self):
         '''Test print_unallocated with output file specified'''
-        self.amity_instance.fellows = [] # reset amity lists.
-        self.amity_instance.office_block = []
-        self.amity_instance.living_spaces = []
-        self.amity_instance.staff_members = []
-        self.amity_instance.un_allocated_persons = []
+
+        self.reset()
 
         # Add person
         with screen_output() as (terminal_output, err):
@@ -191,20 +194,17 @@ class TestAmityModule(unittest.TestCase):
         self.assertEqual(print_output, 'Daniel Kitui\nList of the unallocated saved to Unallocated_People.txt')
         self.assertTrue(os.path.isfile('Unallocated_People.txt')) # Confirm file exists in current directory
 
-        # Test print_unallocated with wrong output file format
     def test_18_print_unallocated_wrong_output_file_format(self):
         '''print_unallocated with invalid output file format'''
-        self.amity_instance.fellows = [] # reset amity lists.
-        self.amity_instance.office_block = []
-        self.amity_instance.living_spaces = []
-        self.amity_instance.staff_members = []
-        self.amity_instance.un_allocated_persons = [] # Reset list of unallocated people
+
+        self.reset()
 
         with screen_output() as (terminal_output, err):
             self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
 
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated('Unallocated_People.pdf')
+
         print_output = terminal_output.getvalue().strip()
         self.assertEqual(print_output, 'Daniel Kitui\nInvalid output file format')
         self.assertFalse(os.path.isfile('Unallocated_People.pdf')) # Confirm specified file has not been created
@@ -225,11 +225,8 @@ class TestAmityModule(unittest.TestCase):
 
     def test_20_reallocate_person(self):
         '''Test reallocate_person functionality'''
-        self.amity_instance.fellows = [] # reset amity lists.
-        self.amity_instance.office_block = []
-        self.amity_instance.living_spaces = []
-        self.amity_instance.staff_members = []
-        self.amity_instance.personnel_id = 1 # Reset personel ids list
+
+        self.reset()
 
         self.amity_instance.create_room(['Bungoma'], 'Office') # Create new office
         self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
@@ -243,11 +240,8 @@ class TestAmityModule(unittest.TestCase):
 
     def test_21_reallocate_person_same_room_they_already_occupy(self):
         '''Test reallocate_person to a non-existent room'''
-        self.amity_instance.fellows = [] # reset amity lists.
-        self.amity_instance.office_block = []
-        self.amity_instance.living_spaces = []
-        self.amity_instance.staff_members = []
-        self.amity_instance.personnel_id = 1 # Reset personel ids list
+
+        self.reset()
 
         self.amity_instance.create_room(['Bungoma'], 'Office') # Create new office
         self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
@@ -260,11 +254,8 @@ class TestAmityModule(unittest.TestCase):
 
     def test_22_reallocate_person_non_existent_room(self):
         '''Test reallocate_person to a room that doesnt currently exist'''
-        self.amity_instance.fellows = [] # reset amity lists.
-        self.amity_instance.office_block = []
-        self.amity_instance.living_spaces = []
-        self.amity_instance.staff_members = []
-        self.amity_instance.personnel_id = 1 # Reset personel ids list
+
+        self.reset()
 
         self.amity_instance.create_room(['Bungoma'], 'Office') # Create new office
         self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
