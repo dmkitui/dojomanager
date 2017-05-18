@@ -7,9 +7,8 @@ class Person(object):
         '''Initialize class'''
         self.person_name = name
         self.accommodation = accommodation
-        self.job_group = job_group
 
-    def add_person(self, name, job_group, accommodation):
+    def add_person(self, name, accommodation):
         '''
         Function to protoype the person object
         :param name: Person name in the form ['first_name', 'last_name']
