@@ -86,7 +86,7 @@ class DocoptManager(cmd.Cmd):
             '\n\n'
 
     prompt = 'Enter Command: '
-    amity_manager = AmityManager()
+    amity = AmityManager()
 
     @docopt_cmd
     def do_create_room(self, user_input):
@@ -102,7 +102,7 @@ class DocoptManager(cmd.Cmd):
 
         room_names = user_input['<room_name>']
 
-        self.amity_manager.create_room(room_names, room_type)
+        self.amity.create_room(room_names, room_type)
 
     @docopt_cmd
     def do_add_person(self, user_input):
@@ -117,7 +117,7 @@ class DocoptManager(cmd.Cmd):
             person_type = 'Fellow'
         elif user_input['Staff']:
             person_type = 'Staff'
-        self.amity_manager.add_person(name, person_type, wants_accommodation)
+        self.amity.add_person(name, person_type, wants_accommodation)
 
     def do_clear(self, user_input):
         '''To clear screen'''
@@ -135,7 +135,7 @@ class DocoptManager(cmd.Cmd):
             print_room <room_name>
         '''
         room_name = user_input['<room_name>']
-        self.amity_manager.print_room(room_name)
+        self.amity.print_room(room_name)
 
     @docopt_cmd
     def do_print_allocations(self, user_input):
@@ -143,7 +143,7 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_allocations [<-o=filename>]
         '''
-        self.amity_manager.print_allocations(user_input)
+        self.amity.print_allocations(user_input)
 
     @docopt_cmd
     def do_print_unallocated(self, user_input):
@@ -156,7 +156,7 @@ class DocoptManager(cmd.Cmd):
         else:
             unallocated_file_name = None
 
-        self.amity_manager.print_unallocated(unallocated_file_name)
+        self.amity.print_unallocated(unallocated_file_name)
 
     @docopt_cmd
     def do_reallocate_person(self, user_input):
@@ -166,7 +166,7 @@ class DocoptManager(cmd.Cmd):
         '''
         relocate_id = user_input['<person_identifier>']
         new_room = user_input['<new_room_name>']
-        self.amity_manager.reallocate_person(relocate_id, new_room)
+        self.amity.reallocate_person(relocate_id, new_room)
 
     @docopt_cmd
     def do_load_people(self, user_input):
@@ -175,7 +175,7 @@ class DocoptManager(cmd.Cmd):
             load_people (<people_file>)
         '''
         text_input_file = user_input['<people_file>']
-        self.amity_manager.load_people(text_input_file)
+        self.amity.load_people(text_input_file)
 
     @docopt_cmd
     def do_save_state(self, user_input):
