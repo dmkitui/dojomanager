@@ -238,14 +238,14 @@ class AmityManager(object):
     def load_people(self, text_file):
         '''
         Function to load people into rooms from a specified text file
-        :param user_input: User input from which the input textfile is parsed from
+        :param text_file: Input text file that contains list of people
         :return: Print status messages or returns error messages.
         '''
         if not text_file.endswith('.txt'):
             print('Invalid input file name')
             return
 
-        elif not os.path.isfile(text_file): # To check if file exists
+        if not os.path.isfile(text_file): # To check if file exists
             print('The specified file does not exist')
             return
 
