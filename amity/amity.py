@@ -24,14 +24,12 @@ class AmityManager(object):
         :return: specific errors incase of any errors or print statements to display status.
         '''
 
-        # if user_input['Livingspace']:
-        #     room_type = 'Livingspace'
-        # else:
-        #     room_type = 'Office'
-        #
-        # room_names = user_input['<room_name>']
-
         for room_name in room_names:
+            if self.names_check(room_name):
+                pass
+            else:
+                print('{} is not a valid room name. Room not created'.format(room_name))
+                continue
             # Get list of already existing room names.
             existing_room_names = [x.room_name for x in self.office_block] + [x.room_name for x in self.living_spaces]
             if room_name in existing_room_names:
@@ -67,8 +65,8 @@ class AmityManager(object):
         :return: prints to the console on successful creation, returns relevant error messages on errors
         '''
 
-        if len(name[0]) <= 1 or len(name[1]) <= 1:
-            print('Abbreviations not allowed. Please input full first name and full second name of the individual.')
+        if not self.names_check(name[0]) or not self.names_check(name[1]):
+            print('Invalid Person Name.')
             return
 
         if wants_accommodation:
@@ -280,6 +278,22 @@ class AmityManager(object):
                 'Staff': staff
             }
             self.add_person(user_details)
+
+    def names_check(self, name):
+        '''
+        Function to validate name variables
+        :param name: String to be validated
+        :return: True if validated, else False
+        '''
+        if len(name) <= 1 or name.isnumeric():
+            return False
+
+        chars = ['#', '$', '%', '^', '*', '?', '!', '<', '>', ':', ';']  # Set of characters not allowed to be in name strings
+
+        for char in chars:
+            if char in name:
+                return False
+        return True
 
     def reallocate_person(self, relocate_id, new_room):
         ''' Function to reallocate a person from one room to another one.
