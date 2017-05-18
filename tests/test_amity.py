@@ -224,6 +224,7 @@ class TestAmityModule(unittest.TestCase):
         self.assertIn('List of the unallocated saved to Unallocated_People.txt', print_output)
         self.assertTrue(os.path.isfile('Unallocated_People.txt')) # Confirm file exists in current directory
         self.reset()
+        os.unlink('Unallocated_People.txt') # Finally delete the 'Unallocated_People.txt' to clean up the test environment
 
     def test_print_unallocated_wrong_output_file_format(self):
         '''print_unallocated with invalid output file format'''
