@@ -32,17 +32,17 @@ class Fellow(Person):
         self.accommodation = accommodation
         self.person_id = None # Personnel number
 
-    def add_person(self, fellow_name, accommodation, id):
+    def add_person(self, fellow_name, accommodation, person_id):
         '''
         Function to create a new person object of type Fellow, and add the object to the list of fellows
         :param fellow_name: list in the form ['first_name', 'second_name']
         :param accommodation: Flag for want_accommodation. Either 'Y/y' or 'N/n'
-        :param id: Person_id that represent employee unique number.
+        :param person_id: Person_id that represent employee unique number.
         :return: the created person object.
         '''
         self.person_name = fellow_name
         self.accommodation = accommodation
-        self.person_id= id
+        self.person_id= person_id
         print('Fellow {0} {1} has been successfully added.\n'.format(self.person_name[0], self.person_name[1]))
         if not accommodation:
             print('{0} does not wish to be accommodated\n'.format(fellow_name[0]))
@@ -62,15 +62,15 @@ class Staff(Person):
         self.person_name = staff_name
         self.person_id = None  # Personnel number
 
-    def add_person(self, id, staff_name=''):
+    def add_person(self, person_id, staff_name=''):
         '''
         Function to create a new person of type staff object.
-        :param id: Person_id that represent employee unique number
+        :param person_id: Person_id that represent employee unique number
         :param staff_name: Name of staff member in the form ['first_name', 'Last_name']
         :return: The created new person object.
         '''
         self.person_name = staff_name
-        self.person_id = id
+        self.person_id = person_id
 
         print('Staff {0} {1} has been successfully added.\n'.format(staff_name[0], staff_name[1]))
         return self
