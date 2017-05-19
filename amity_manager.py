@@ -188,10 +188,11 @@ class DocoptManager(cmd.Cmd):
     @docopt_cmd
     def do_load_state(self, user_input):
         '''
-        Usage:
+        Usage:  
             load_state <sqlite_database>​
         '''
-        print('Not yet implemented')
+        db_name = user_input['<sqlite_database>​']
+        self.amity.load_state(db_name)
 
 if __name__ == '__main__':
     try:
