@@ -343,5 +343,25 @@ class AmityManager(object):
                 print('{} has been re-allocated to room {}'.format(person_object.person_name[0], new_room))
                 current_room_occupied.occupants.remove(person_object)
 
+    def load_state(self, database_name):
+        '''
+        Function to load data from the specified database
+        :param database_name: The sqlite database that contains the data
+        :return: prints confirmation message that the data has been loaded or error message in case of failure.
+        '''
+        if not os.path.isfile(database_name):
+            print('The specified database does not exist.')
+            return
 
+        if not str(database_name).endswith('.db') or not str(database_name).endswith('.sqlite'):
+            print('The specified file is not a valid database file.')
+            return
+
+    def save_state(self, database='amity_data.db'):
+        '''
+        Fuction to save the program data to a specified database, or to a default one if none is specified
+        :param database: The database to which data will be saved in.
+        :return: Print statement on success or errors.
+        '''
+        pass
 
