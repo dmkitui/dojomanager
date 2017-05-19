@@ -33,6 +33,10 @@ class TestAmityModule(unittest.TestCase):
         '''Setup the test instance'''
         self.amity_instance = AmityManager()
 
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.add_person(['D', 'K'], 'Fellow', 'Y')
+        print_output = terminal_output.getvalue().strip()
+
     # Manual implemetation of the tearDown() method, while I learn how to make it make work properly
     def reset(self):
         '''Reset the test environment'''
@@ -58,7 +62,6 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.add_person(['D', 'K'], 'Fellow', 'Y')
         print_output = terminal_output.getvalue().strip()
         self.assertEquals(print_output, 'Invalid Person Name.')
-
 
     def test_create_office(self):
         '''Test successful creation of office.'''
@@ -300,13 +303,30 @@ class TestAmityModule(unittest.TestCase):
     def test_save_state(self):
         pass
 
-    def test_load_state(self):
+    def test_load_state_db_does_not_exist(self):
+        '''Test load_state functionality'''
         self.reset()
         with screen_output() as (terminal_output, err):
             self.amity_instance.load_state('db_doesnt_exist.db')
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'The specified database does not exist')
+        self.assertEqual(print_output, 'The specified database does not exist.')
+
+    def test_load_state_invalid_database_name(self):
+        '''Test load_state for invalid name'''
+
+        self.reset()
+
+        fake_db = open('not_db.txt', 'w+')
+        fake_db.close()
+
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.load_state('not_db.txt') # Load a wrong format file
+
+        print_output = terminal_output.getvalue().strip()
+        self.assertEqual(print_output, 'The specified file is not a valid database file.')
+
+        os.unlink('not_db.txt')
 
 
 # if __name__ == '__main__':
