@@ -11,7 +11,6 @@ from os import path
 from io import StringIO
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from models.person import Person, Staff, Fellow
-from models.room import Office, LivingSpace, Room
 from contextlib import contextmanager
 
 
@@ -25,6 +24,7 @@ def screen_output():
         yield sys.stdout, sys.stderr
     finally:
         sys.stdout, sys.stderr = old_out, old_err
+
 
 class TestAddPerson(unittest.TestCase):
     ''' Class to test the person model'''
