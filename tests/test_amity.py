@@ -33,8 +33,10 @@ class TestAmityModule(unittest.TestCase):
         '''Setup the test instance'''
         self.amity_instance = AmityManager()
 
+    # Manual implemetation of the tearDown() method, while I learn how to make it make work properly
     def reset(self):
         '''Reset the test environment'''
+
         self.amity_instance.fellows = []
         self.amity_instance.office_block = []
         self.amity_instance.living_spaces = []
@@ -281,7 +283,6 @@ class TestAmityModule(unittest.TestCase):
 
         print_output = terminal_output.getvalue().strip()
         self.assertEquals(print_output, 'Cant relocate a person to a room he/she is currently occupying.')
-        self.reset()
 
     def test_reallocate_person_to_non_existent_room(self):
         '''Test reallocate_person to a room that doesnt currently exist'''
@@ -296,11 +297,17 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         self.assertEquals(print_output, 'Room Mombasa Does Not Exist.')
 
-    def test_23_save_state(self):
+    def test_save_state(self):
         pass
 
-    def test_24_load_state(self):
-        pass
+    def test_load_state(self):
+        self.reset()
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.load_state('db_doesnt_exist.db')
+
+        print_output = terminal_output.getvalue().strip()
+        self.assertEqual(print_output, 'The specified database does not exist')
+
 
 # if __name__ == '__main__':
 #     unittest.main()
