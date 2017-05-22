@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import random
+import shutil
 from models.person import Staff, Fellow
 from models.room import Office, LivingSpace
 import os
@@ -27,7 +28,7 @@ class AmityManager(object):
         '''
         terminal = Terminal()
         # margin from the left of terminal.
-        width = os.get_terminal_size().columns
+        width = shutil.get_terminal_size().columns
         margin = int(width) - 20
         spacer = ' ' * int(margin / 4)
 
