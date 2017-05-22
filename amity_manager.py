@@ -12,6 +12,7 @@ arguments:
 '''
 
 import cmd
+import shutil
 from docopt import docopt, DocoptExit
 from amity.amity import AmityManager
 import os
@@ -19,7 +20,7 @@ from blessings import Terminal
 
 
 # The left margin print margin
-width = os.get_terminal_size().columns # Current width of the terminal
+width = shutil.get_terminal_size().columns # Current width of the terminal
 margin = int(width) - 50
 spacer1 = ' ' * int(margin / 2) # Indentation for the heading
 spacer2 = ' ' * int(margin / 4) # Indentation for the subsequent prints
