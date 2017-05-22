@@ -43,9 +43,9 @@ class Fellow(Person):
         self.person_name = fellow_name
         self.accommodation = accommodation
         self.person_id= person_id
-        print('Fellow {0} {1} has been successfully added.\n'.format(self.person_name[0], self.person_name[1]))
-        if not accommodation:
-            print('{0} does not wish to be accommodated\n'.format(fellow_name[0]))
+        # print('Fellow {0} {1} has been successfully added.\n'.format(self.person_name[0], self.person_name[1]))
+        # if not accommodation:
+        #     print('{0} does not wish to be accommodated\n'.format(fellow_name[0]))
         return self
 
 
@@ -62,7 +62,7 @@ class Staff(Person):
         self.person_name = staff_name
         self.person_id = None  # Personnel number
 
-    def add_person(self, person_id, staff_name=''):
+    def add_person(self, staff_name, person_id,):
         '''
         Function to create a new person of type staff object.
         :param person_id: Person_id that represent employee unique number
@@ -72,5 +72,4 @@ class Staff(Person):
         self.person_name = staff_name
         self.person_id = person_id
 
-        print('Staff {0} {1} has been successfully added.\n'.format(staff_name[0], staff_name[1]))
         return self
