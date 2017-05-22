@@ -15,6 +15,15 @@ import cmd
 from docopt import docopt, DocoptExit
 from amity.amity import AmityManager
 import os
+from blessings import Terminal
+
+
+# The left margin print margin
+width = os.get_terminal_size().columns # Current width of the terminal
+margin = int(width) - 50
+spacer1 = ' ' * int(margin / 2) # Indentation for the heading
+spacer2 = ' ' * int(margin / 4) # Indentation for the subsequent prints
+term = Terminal()  # Instance of Terminal from blessings package
 
 
 def docopt_cmd(func):
@@ -23,6 +32,7 @@ def docopt_cmd(func):
     of the docopt parsing to the called action.
     """
     def fn(self, arg):
+        # terminal = Terminal()
         try:
             opt = docopt(fn.__doc__, arg)
 
@@ -30,8 +40,9 @@ def docopt_cmd(func):
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
 
-            print('Amity Manager V.1: Invalid argument value(s)')
-            print(e)
+            print('\n{term}Amity Manager V.1: Invalid argument value(s){term_normal}\n'.format(term=term.red, term_normal=term.normal))
+            print('{term}{error_message}{term_normal}'.format(error_message=e, term=term.white, term_normal=term.normal))
+            print('\n')
             return
 
         except SystemExit:
@@ -53,39 +64,49 @@ class DocoptManager(cmd.Cmd):
     functionality from other module
     '''
 
-    intro = '\n       ___________ANDELA KENYA______________\n' \
-            '       The Amity Room Allocations Management\n' \
-            '       _____________Version 0.0_____________\n' \
-            '\n' \
-            'Usage:\n'\
-            '   create_room (Office|Livingspace) <room_name>...\n' \
-            '   add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]\n' \
-            '   reallocate_person <person_identifier> <new_room_name>\n' \
-            '   print_room <room_name>\n' \
-            '   print_allocations [<-o=filename>]\n' \
-            '   print_unallocated [<-o=filename>]\n' \
-            '   load_people (<people_file>)\n' \
-            '   save_state [--db=sqlite_database]​\n' \
-            '   load_state [--db=sqlite_database]​\n' \
-            '   help\n' \
-            '   clear\n' \
-            '   exit\n' \
-            'arguments:\n' \
-            '   create_room Creates a room type of <room_type> called <room_name>\n' \
-            '   add_person Adds a person, and assigns the person to a randomly chosen existing room\n' \
-            '   reallocate_person Move person <person_identifier> to room <new_room_name>\n' \
-            '   print_room Prints the occupants fo the stated room\n' \
-            '   print_allocations Prints how the people are allocated in the different rooms\n' \
-            '   print_unallocated Prints people who are not located in any rooms\n' \
-            '   laod_people Loads people into the sysytem from input text file\n' \
-            '   save_state Saves the data in the program to specified database\n' \
-            '   load_state Loads the data form specified database\n' \
-            '   help Prints this help message\n' \
-            '   clear Clears the screen\n' \
-            '   exit Exits this interactive session\n' \
-            '\n\n'
+    # width = os.get_terminal_size().columns
+    # margin = int(width) - 50
+    # spacer1 = ' ' * int(margin / 2)
+    # spacer2 = ' ' * int(margin / 4)
+    # term = Terminal()
 
-    prompt = 'Enter Command: '
+    intro = '\n' \
+            '\n' \
+            '{space}       {term1}________________ANDELA_______________{term_normal}\n' \
+            '{space}       {term1}The Amity Room Allocations Management{term_normal}\n' \
+            '{space}       {term1}_____________Version 0.0_____________{term_normal}\n' \
+            '{term_normal}\n' \
+            '{space2}{term2}Usage:{term_normal}\n'\
+            '{space2}   create_room (Office|Livingspace) <room_name>...\n' \
+            '{space2}   add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]\n' \
+            '{space2}   reallocate_person <person_identifier> <new_room_name>\n' \
+            '{space2}   print_room <room_name>\n' \
+            '{space2}   print_allocations [<-o=filename>]\n' \
+            '{space2}   print_unallocated [<-o=filename>]\n' \
+            '{space2}   load_people (<people_file>)\n' \
+            '{space2}   save_state [--db=sqlite_database]​\n' \
+            '{space2}   load_state [--db=sqlite_database]​\n' \
+            '{space2}   help\n' \
+            '{space2}   clear\n' \
+            '{space2}   exit\n' \
+            '\n' \
+            '{space2}{term2}arguments:{term_normal}\n' \
+            '{space2}   create_room         - Creates room(s) of type <room_type> with the specified name(s)\n' \
+            '{space2}   add_person          - Adds a person, and assigns the person to a randomly chosen existing room\n' \
+            '{space2}   reallocate_person   - Move person with the <person_identifier> to room <new_room_name>\n' \
+            '{space2}   print_room          - Prints the occupants of the specified room\n' \
+            '{space2}   print_allocations   - Prints the current occupants of all existing rooms\n' \
+            '{space2}   print_unallocated   - Prints people who are not located in any rooms\n' \
+            '{space2}   laod_people         - Loads people into the system from the specified input text file\n' \
+            '{space2}   save_state          - Saves the data in the program to the specified database\n' \
+            '{space2}   load_state          - Loads the data form specified database\n' \
+            '{space2}   help                - Prints this help message\n' \
+            '{space2}   clear               - Clears the screen\n' \
+            '{space2}   exit                - Exits this interactive session\n' \
+            '\n\n'.format(term1=term.bold_white, term2=term.white, term_normal=term.normal, space=spacer1, space2=spacer2)
+
+    prompt = '{space2}{term1}Enter Command:  {term_normal}'.format(term1=term.bold_white, term_normal=term.normal, space2=spacer2)
+
     amity = AmityManager()
 
     @docopt_cmd
@@ -143,7 +164,8 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_allocations [<-o=filename>]
         '''
-        self.amity.print_allocations(user_input)
+        output_file = user_input['<-o=filename>']
+        self.amity.print_allocations(output_file)
 
     @docopt_cmd
     def do_print_unallocated(self, user_input):
@@ -151,10 +173,8 @@ class DocoptManager(cmd.Cmd):
         Usage:
             print_unallocated [<-o=filename>]
         '''
-        if user_input['<-o=filename>']:
-            unallocated_file_name = user_input['<-o=filename>']
-        else:
-            unallocated_file_name = None
+
+        unallocated_file_name = user_input['<-o=filename>']
 
         self.amity.print_unallocated(unallocated_file_name)
 
