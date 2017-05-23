@@ -124,7 +124,7 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         # self.assertEquals(print_output,
         self.assertEqual(len(self.amity_instance.staff_members), 1)
-        self.assertEqual(len(self.amity_instance.un_allocated_persons), 1)
+        self.assertEqual(len(self.amity_instance.un_allocated_persons['staff']), 1)
 
     def test_add_person_staff_with_wants_accommodation(self):
         '''Test adding staff with a argument for wants accommodation'''
