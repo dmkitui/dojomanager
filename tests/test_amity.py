@@ -33,10 +33,6 @@ class TestAmityModule(unittest.TestCase):
         '''Setup the test instance'''
         self.amity_instance = AmityManager()
 
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.add_person(['D', 'K'], 'Fellow', 'Y')
-        print_output = terminal_output.getvalue().strip()
-
     # Manual implemetation of the tearDown() method, while I learn how to make it make work properly
     def reset(self):
         '''Reset the test environment'''
@@ -46,7 +42,7 @@ class TestAmityModule(unittest.TestCase):
         self.amity_instance.living_spaces = []
         self.amity_instance.staff_members = []
         self.amity_instance.personnel_id = 1
-        self.amity_instance.un_allocated_persons = []
+        self.amity_instance.un_allocated_persons = {'fellows': [], 'staff': []}
 
     def test_initial_state(self):
         '''Test initial states of the various lists'''
@@ -128,7 +124,7 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         # self.assertEquals(print_output,
         self.assertEqual(len(self.amity_instance.staff_members), 1)
-        self.assertEqual(len(self.amity_instance.un_allocated_persons), 1)
+        self.assertEqual(len(self.amity_instance.un_allocated_persons['staff']), 1)
 
     def test_add_person_staff_with_wants_accommodation(self):
         '''Test adding staff with a argument for wants accommodation'''
@@ -150,27 +146,25 @@ class TestAmityModule(unittest.TestCase):
         self.assertEquals(print_output, 'Argument for Accommodation can only be either Y/y or N/n')
         self.assertEqual(len(self.amity_instance.fellows), 0)
 
-    def test_allocate_office_when_none_is_available(self):
+    def test_add_person_no_office_available(self):
         '''Tests adding person when no office is available'''
 
         self.reset()
         self.amity_instance.office_block = [] # reset available offices to zero
-        self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'N')
         with screen_output() as (terminal_output, err):
-            self.amity_instance.allocate_office(self.amity_instance.fellows[0])
+            self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'N')
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'No Offices currently available for allocation')
+        self.assertIn('No Offices currently available for allocation', print_output)
 
-    def test_allocate_livingspace_when_none_is_available(self):
+    def test_add_person_no_livingspace_available(self):
         '''Tests adding person when no livingspace is available'''
 
         self.reset()
         self.amity_instance.living_spaces = [] # reset available livingspaces to zero
-        self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
         with screen_output() as (terminal_output, err):
-            self.amity_instance.allocate_livingspace(self.amity_instance.fellows[0])
+            self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'No Livingroom currently available for allocation')
+        self.assertIn('No Livingroom currently available for allocation', print_output)
 
     def test_print_room_empty(self):
         '''Tests printing an empty room'''
@@ -180,7 +174,7 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_room('Newly_Made_Room')
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'Occupants of room Newly_Made_Room : Room Newly_Made_Room is empty')
+        self.assertIn('Room is empty', print_output)
 
     def test_print_room_non_existent_room(self):
         '''Tests printing a room that does not exist yet'''
@@ -189,13 +183,12 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_room('Does_not_exist')
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'Room Does_not_exist Seems not to exist. Kindly Confirm room name')
+        self.assertEqual(print_output, 'Room Does_not_exist does not exist')
 
-    def test_print_unallocated(self):
+    def test_print_unallocated_no_one_unallocated(self):
         '''Tests the print_unallocated_functionality'''
 
         self.reset()
-        self.amity_instance.un_allocated_persons = [] # Reset list of unallocated people.
         # Test print_unallocated when none is present
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated(None) # No output file specified.
@@ -214,15 +207,13 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated(None)
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'Daniel Kitui')
+        self.assertIn('Daniel Kitui', print_output)
 
     def test_print_unallocated_with_file_output_specified(self):
         '''Test print_unallocated with output file specified'''
 
         # Add person
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
-
+        self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated('Unallocated_People.txt')
         print_output = terminal_output.getvalue().strip()
@@ -285,7 +276,7 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.reallocate_person(1, 'Bungoma') # Relocate to same office currently occupied
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'Cant relocate a person to a room he/she is currently occupying.')
+        self.assertEquals(print_output, 'You cannot relocate a person to a room he/she is currently occupying.')
 
     def test_reallocate_person_to_non_existent_room(self):
         '''Test reallocate_person to a room that doesnt currently exist'''
@@ -298,7 +289,7 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.reallocate_person(1, 'Mombasa')  # Relocate to an office that currently doesnt exist.
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'Room Mombasa Does Not Exist.')
+        self.assertEquals(print_output, 'Room Mombasa does not exist.')
 
     def test_save_state(self):
         pass
