@@ -42,7 +42,7 @@ class TestAmityModule(unittest.TestCase):
         self.amity_instance.living_spaces = []
         self.amity_instance.staff_members = []
         self.amity_instance.personnel_id = 1
-        self.amity_instance.un_allocated_persons = []
+        self.amity_instance.un_allocated_persons = {'fellows': [], 'staff': []}
 
     def test_initial_state(self):
         '''Test initial states of the various lists'''
@@ -189,7 +189,6 @@ class TestAmityModule(unittest.TestCase):
         '''Tests the print_unallocated_functionality'''
 
         self.reset()
-        self.amity_instance.un_allocated_persons = [] # Reset list of unallocated people.
         # Test print_unallocated when none is present
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated(None) # No output file specified.
