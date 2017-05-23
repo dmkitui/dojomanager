@@ -157,9 +157,10 @@ class DocoptManager(cmd.Cmd):
     def do_save_state(self, user_input):
         '''
         Usage:
-            save_state [--db=sqlite_database]​
+            save_state [<--db=sqlite_database>]
         '''
-        print('Not yet implemented')
+        db_name = user_input['<--db=sqlite_database>']
+        self.amity.save_state(db_name)
 
     @docopt_cmd
     def do_load_state(self, user_input):
