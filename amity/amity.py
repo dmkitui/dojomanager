@@ -16,7 +16,7 @@ class AmityManager(object):
     staff_members = []
     office_block = []
     living_spaces = []
-    un_allocated_persons = []
+    un_allocated_persons = {'fellows': [], 'staff': []}
     personnel_id = 1
 
     def print_message(self, message, message_state='success'):
@@ -122,8 +122,10 @@ class AmityManager(object):
                 random_office.occupants.append(new_fellow)
                 self.print_message('{0} has been allocated the office {1}'.format(new_fellow.person_name[0], random_office.room_name))
             else:
-                if new_fellow.person_name not in self.un_allocated_persons:
-                    self.un_allocated_persons.append(new_fellow)
+                un_allocated_fellows = self.un_allocated_persons['fellows']
+                if new_fellow not in un_allocated_fellows:
+                    un_allocated_fellows.append(new_fellow)
+                    self.un_allocated_persons['fellows'] = un_allocated_fellows
 
             if accommodation:
                 random_livingspace = self.allocate_livingspace()
@@ -131,8 +133,10 @@ class AmityManager(object):
                     random_livingspace.occupants.append(new_fellow)
                     self.print_message('{0} has been allocated the livingspace {1}'.format(new_fellow.person_name[0], random_livingspace.room_name))
                 else:
-                    if new_fellow.person_name not in self.un_allocated_persons:
-                        self.un_allocated_persons.append(new_fellow)
+                    un_allocated_fellows = self.un_allocated_persons['fellows']
+                    if new_fellow not in un_allocated_fellows:
+                        un_allocated_fellows.append(new_fellow)
+                        self.un_allocated_persons['fellows'] = un_allocated_fellows
             else:
                 self.print_message('{0} does not wish to be accommodated'.format(new_fellow.person_name[0]))
 
@@ -148,8 +152,10 @@ class AmityManager(object):
                 random_office.occupants.append(new_staff)
                 self.print_message('{0} has been allocated the office {1}'.format(new_staff.person_name[0], random_office.room_name))
             else:
-                if new_staff.person_name not in self.un_allocated_persons:
-                    self.un_allocated_persons.append(new_staff)
+                un_allocated_staff = self.un_allocated_persons['staff']
+                if new_staff not in un_allocated_staff:
+                    un_allocated_staff.append(new_staff)
+                    self.un_allocated_persons['staff'] = un_allocated_staff
         print('\n')
 
     def allocate_livingspace(self):
@@ -272,11 +278,11 @@ class AmityManager(object):
         '''
         ''''''
 
-        if len(self.un_allocated_persons) == 0:
+        if len(self.un_allocated_persons['fellows']) == 0 and len(self.un_allocated_persons['staff']) == 0:
             self.print_message('There are currently no unallocated people', 'error')
             return
         else:
-            un_allocated_list = set(self.un_allocated_persons)
+            un_allocated_list = self.un_allocated_persons['fellows'] + self.un_allocated_persons['staff']
             unallocated_data = {}
             for person in un_allocated_list:
                 name = ' '.join(person.person_name)
