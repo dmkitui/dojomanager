@@ -36,9 +36,13 @@ class AmityManager(object):
         margin = int(width) - 20
         spacer = ' ' * int(margin / 4)
 
-        if message_state == 'success':
+        if message_state == 'success':  # For an operation succeeded
             state = terminal.green
-        elif message_state == 'error':
+
+        elif message_state == 'info':  # For you program information.
+            state = terminal.yellow
+
+        elif message_state == 'error':  # On error in program operation
             state = terminal.red
 
         print('{spacer}{state}{message}{terminal_normal}'.format(state=state, spacer=spacer, message= message, terminal_normal=terminal.normal))
@@ -150,17 +154,6 @@ class AmityManager(object):
             self.staff_members.append(new_staff)
             self.personnel_id += 1
             self.print_message('Staff {0} {1} has been successfully added.'.format(new_staff.person_name[0], new_staff.person_name[1]))
-        #
-        #     random_office = self.allocate_office()
-        #     if random_office:
-        #         random_office.occupants.append(new_staff)
-        #         self.print_message('{0} has been allocated the office {1}'.format(new_staff.person_name[0], random_office.room_name))
-        #     else:
-        #         un_allocated_staff = self.un_allocated_persons['staff']
-        #         if new_staff not in un_allocated_staff:
-        #             un_allocated_staff.append(new_staff)
-        #             self.un_allocated_persons['staff'] = un_allocated_staff
-        # print('\n')
 
             random_office = self.allocate_office()
             if random_office:
@@ -398,7 +391,7 @@ class AmityManager(object):
         '''
 
         ##TODO Check to only reallocate person to a similar type of room
-    
+
         available_people = self.fellows + self.staff_members  # List of all people objects present
         available_people_ids = [x.person_id for x in available_people]  # List of available people ids
 
@@ -481,10 +474,12 @@ class AmityManager(object):
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        self.print_message('Saving program state')
+        title = '{:_^60}'.format('PROGRAM SAVE STATE')
+        self.print_message(title)
+        print('\n')
 
         if self.fellows:
-            change = True
+            changes = True
             self.print_message('Saving Fellows data...')
             for fellow in self.fellows:
                 name = ' '.join(fellow.person_name)
@@ -492,10 +487,10 @@ class AmityManager(object):
                 session.add(new_fellow)
             session.commit()
         else:
-            self.print_message('No fellows around...')
+            self.print_message('No fellows around...', 'info')
 
         if self.staff_members:
-            change = True
+            changes = True
             self.print_message('Saving Staff data...')
             for staff in self.staff_members:
                 name = ' '.join(staff.person_name)
@@ -504,10 +499,10 @@ class AmityManager(object):
             session.commit()
 
         else:
-            self.print_message('No staff to save at this moment')
+            self.print_message('No staff to save at this moment', 'info')
 
         if self.office_block:
-            change = True
+            changes = True
             self.print_message('Saving offices data...')
             for room in self.office_block:
                 people_ids = [x.person_id for x in room.occupants]
@@ -516,10 +511,10 @@ class AmityManager(object):
                 session.add(new_room)
             session.commit()
         else:
-            self.print_message('No offices to speak of...')
+            self.print_message('No offices to speak of...', 'info')
 
         if self.living_spaces:
-            change = True
+            changes = True
             self.print_message('Saving livingspace data...')
             for room in self.living_spaces:
                 people_ids = [x.person_id for x in room.occupants]
@@ -529,13 +524,13 @@ class AmityManager(object):
             session.commit()
 
         else:
-            self.print_message('No livingspaces available...')
+            self.print_message('No livingspaces available...', 'info')
 
         fellows = self.un_allocated_persons['fellows']
         staff = self.un_allocated_persons['staff']
 
         if fellows:
-            change = True
+            changes = True
             self.print_message('Saving unallocated fellow data...')
             for person in fellows:
                 name = ' '.join(person.person_name)
@@ -543,10 +538,10 @@ class AmityManager(object):
                 session.add(unallocated_person)
             session.commit()
         else:
-            self.print_message('No fellows currently unallocated')
+            self.print_message('No fellows currently unallocated', 'info')
 
         if staff:
-            change = True
+            changes = True
             self.print_message('Saving unallocated staff data...')
             for person in staff:
                 name = ' '.join(person.person_name)
@@ -554,15 +549,15 @@ class AmityManager(object):
                 session.add(unallocated_person)
             session.commit()
         else:
-            self.print_message('No staff currently unallocated')
+            self.print_message('No staff currently unallocated', 'info')
 
         current_employment_id = PersonelIdsDb(self.personnel_id)
         session.add(current_employment_id)
         session.commit()
         print('')
         if changes:
-            self.print_message('Program data uccessfully saved!')
+            self.print_message('Program data successfully saved!')
+            os.unlink(db_name + '-backup')
         else:
-            self.print_message('No data to save.')
-
+            self.print_message('No data to save.', 'info')
 
