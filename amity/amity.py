@@ -396,6 +396,9 @@ class AmityManager(object):
         :argument new_room: THe room a person specified by the relocate_id is to be moved to.
         :return: None.
         '''
+
+        ##TODO Check to only reallocate person to a similar type of room
+    
         available_people = self.fellows + self.staff_members  # List of all people objects present
         available_people_ids = [x.person_id for x in available_people]  # List of available people ids
 
@@ -459,6 +462,8 @@ class AmityManager(object):
         :return: Print statement on success or errors.
         '''
 
+        changes = False # Flag to track if theres data to be saved
+
         if database is None:
             db_name = 'amity_data.db'
         else:
@@ -479,6 +484,7 @@ class AmityManager(object):
         self.print_message('Saving program state')
 
         if self.fellows:
+            change = True
             self.print_message('Saving Fellows data...')
             for fellow in self.fellows:
                 name = ' '.join(fellow.person_name)
@@ -489,6 +495,7 @@ class AmityManager(object):
             self.print_message('No fellows around...')
 
         if self.staff_members:
+            change = True
             self.print_message('Saving Staff data...')
             for staff in self.staff_members:
                 name = ' '.join(staff.person_name)
@@ -500,6 +507,7 @@ class AmityManager(object):
             self.print_message('No staff to save at this moment')
 
         if self.office_block:
+            change = True
             self.print_message('Saving offices data...')
             for room in self.office_block:
                 people_ids = [x.person_id for x in room.occupants]
@@ -511,6 +519,7 @@ class AmityManager(object):
             self.print_message('No offices to speak of...')
 
         if self.living_spaces:
+            change = True
             self.print_message('Saving livingspace data...')
             for room in self.living_spaces:
                 people_ids = [x.person_id for x in room.occupants]
@@ -526,6 +535,7 @@ class AmityManager(object):
         staff = self.un_allocated_persons['staff']
 
         if fellows:
+            change = True
             self.print_message('Saving unallocated fellow data...')
             for person in fellows:
                 name = ' '.join(person.person_name)
@@ -536,6 +546,7 @@ class AmityManager(object):
             self.print_message('No fellows currently unallocated')
 
         if staff:
+            change = True
             self.print_message('Saving unallocated staff data...')
             for person in staff:
                 name = ' '.join(person.person_name)
@@ -544,5 +555,14 @@ class AmityManager(object):
             session.commit()
         else:
             self.print_message('No staff currently unallocated')
+
+        current_employment_id = PersonelIdsDb(self.personnel_id)
+        session.add(current_employment_id)
+        session.commit()
+        print('')
+        if changes:
+            self.print_message('Program data uccessfully saved!')
+        else:
+            self.print_message('No data to save.')
 
 
