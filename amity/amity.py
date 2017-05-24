@@ -7,13 +7,9 @@ from models.room import Office, LivingSpace
 from models.database import Base, FellowDb, StaffDb, OfficeblockDb, LivingspaceDb, PersonelIdsDb, UnallocatedDb
 import os
 from blessings import Terminal
-<<<<<<< HEAD
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-
-=======
->>>>>>> develop
+# from sqlalchemy.ext.declarative import declarative_base
 
 
 class AmityManager(object):
@@ -154,7 +150,17 @@ class AmityManager(object):
             self.staff_members.append(new_staff)
             self.personnel_id += 1
             self.print_message('Staff {0} {1} has been successfully added.'.format(new_staff.person_name[0], new_staff.person_name[1]))
-<<<<<<< HEAD
+        #
+        #     random_office = self.allocate_office()
+        #     if random_office:
+        #         random_office.occupants.append(new_staff)
+        #         self.print_message('{0} has been allocated the office {1}'.format(new_staff.person_name[0], random_office.room_name))
+        #     else:
+        #         un_allocated_staff = self.un_allocated_persons['staff']
+        #         if new_staff not in un_allocated_staff:
+        #             un_allocated_staff.append(new_staff)
+        #             self.un_allocated_persons['staff'] = un_allocated_staff
+        # print('\n')
 
             random_office = self.allocate_office()
             if random_office:
@@ -167,20 +173,6 @@ class AmityManager(object):
                     self.un_allocated_persons['staff'] = un_allocated_staff
         print('\n')
 
-=======
-
-            random_office = self.allocate_office()
-            if random_office:
-                random_office.occupants.append(new_staff)
-                self.print_message('{0} has been allocated the office {1}'.format(new_staff.person_name[0], random_office.room_name))
-            else:
-                un_allocated_staff = self.un_allocated_persons['staff']
-                if new_staff not in un_allocated_staff:
-                    un_allocated_staff.append(new_staff)
-                    self.un_allocated_persons['staff'] = un_allocated_staff
-        print('\n')
-
->>>>>>> develop
     def allocate_livingspace(self):
         '''Function to randomly allocate a livingroom to fellows'''
 
@@ -235,19 +227,14 @@ class AmityManager(object):
 
         title = '{:_^60}'.format('PRINT ROOM')
         self.print_message(title)
-<<<<<<< HEAD
+        self.print_message('Room Name: {}'.format(room_name.upper()))
+        self.print_message('{space:->60}'.format(space='-'))
+        self.print_message('Room Occupants: {}\n'.format(print_output))
 
         self.print_message('Room Name: {}'.format(room_name.upper()))
         self.print_message('{space:->60}'.format(space='-'))
         self.print_message('Room Occupants: {}\n'.format(print_output))
 
-=======
-
-        self.print_message('Room Name: {}'.format(room_name.upper()))
-        self.print_message('{space:->60}'.format(space='-'))
-        self.print_message('Room Occupants: {}\n'.format(print_output))
-
->>>>>>> develop
     def print_allocations(self, output_file):
         '''
         Function to print room allocations, and optionally output same to file
@@ -387,19 +374,12 @@ class AmityManager(object):
             self.add_person(user_details)
 
     def names_check(self, name):
-<<<<<<< HEAD
         '''
         Function to validate name variables
         :param name: String to be validated
         :return: True if validated, else False
         '''
-=======
-        '''
-        Function to validate name variables
-        :param name: String to be validated
-        :return: True if validated, else False
-        '''
->>>>>>> develop
+
         if len(name) <= 1 or name.isnumeric():
             return False
 
@@ -471,7 +451,6 @@ class AmityManager(object):
         if not str(database_name).endswith('.db') or not str(database_name).endswith('.sqlite'):
             self.print_message('The specified file is not a valid database file.')
             return
-<<<<<<< HEAD
 
     def save_state(self, database):
         '''
@@ -566,27 +545,4 @@ class AmityManager(object):
         else:
             self.print_message('No staff currently unallocated')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> develop
-
-    def save_state(self, database='amity_data.db'):
-        '''
-        Fuction to save the program data to a specified database, or to a default one if none is specified
-        :param database: The database to which data will be saved in.
-        :return: Print statement on success or errors.
-        '''
-        pass
 
