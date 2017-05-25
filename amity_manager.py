@@ -21,9 +21,9 @@ from blessings import Terminal
 # The left margin print margin
 terminal = Terminal()  # Instance of Terminal from blessings package
 width = terminal.width # Current width of the terminal
-margin = int(width) - 50
-spacer1 = ' ' * int(margin / 2) # Indentation for the heading
-spacer2 = ' ' * int(margin / 4) # Indentation for the subsequent prints
+margin = width - 50
+spacer1 = ' ' * int(margin / 2)  # Indentation for the heading
+spacer2 = ' ' * int(margin / 4)  # Indentation for the subsequent prints
 
 
 def docopt_cmd(func):
