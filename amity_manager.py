@@ -103,9 +103,9 @@ class DocoptManager(cmd.Cmd):
             '{space2}   help                - Prints this help message\n' \
             '{space2}   clear               - Clears the screen\n' \
             '{space2}   exit                - Exits this interactive session\n' \
-            '\n\n'.format(term1=term.bold_white, term2=term.white, term_normal=term.normal, space=spacer1, space2=spacer2)
+            '\n\n'.format(term1=terminal.bold_white, term2=terminal.white, term_normal=terminal.normal, space=spacer1, space2=spacer2)
 
-    prompt = '{space2}{term1}Enter Command:  {term_normal}'.format(term1=term.bold_white, term_normal=term.normal, space2=spacer2)
+    prompt = '{space2}{term1}Enter Command:  {term_normal}'.format(term1=terminal.bold_white, term_normal=terminal.normal, space2=spacer2)
 
     amity = AmityManager()
 
