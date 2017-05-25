@@ -19,7 +19,7 @@ class AmityManager(object):
     office_block = []
     living_spaces = []
     un_allocated_persons = {'fellows': [], 'staff': []}
-    personnel_id = 1
+    personnel_id = 'AND/000'
 
     def print_message(self, message, message_state='success'):
         '''
@@ -88,6 +88,18 @@ class AmityManager(object):
             self.living_spaces.append(room)
             self.print_message('A Livingspace called {0} has been successfully created!'.format(room_name))
 
+    def new_personnel_number(self):
+        '''
+        Funtion to return new personel ID based on the current number
+        :return: personel_number
+        '''
+        current = self.personnel_id
+        num = current.split('/')[1]
+        new_number = format(int(num) + 1, '03d')
+
+        self.personnel_id = 'AND/' + new_number  # Update current personel_id
+        return 'AND/' + new_number
+
     def add_person(self, name, person_type, wants_accommodation):
         '''
         Function to add individuals to the amity
@@ -120,8 +132,8 @@ class AmityManager(object):
 
         if person_type == 'Fellow':
             person_class = Fellow()
-            new_fellow = person_class.add_person(name, accommodation, self.personnel_id)
-            self.personnel_id += 1  # increment personel_id variable for the next employee
+            person_number = self.new_personnel_number()
+            new_fellow = person_class.add_person(name, accommodation, person_number)
             self.fellows.append(new_fellow)
             self.print_message('Fellow {0} {1} has been successfully added.'.format(new_fellow.person_name[0], new_fellow.person_name[1]))
             # self.allocate_office(person)
@@ -151,9 +163,9 @@ class AmityManager(object):
 
         elif person_type == 'Staff':
             person_class = Staff()
-            new_staff = person_class.add_person(name, self.personnel_id)
+            person_id = self.new_personnel_number()
+            new_staff = person_class.add_person(name, person_id)
             self.staff_members.append(new_staff)
-            self.personnel_id += 1
             self.print_message('Staff {0} {1} has been successfully added.'.format(new_staff.person_name[0], new_staff.person_name[1]))
 
             random_office = self.allocate_office()
@@ -225,9 +237,6 @@ class AmityManager(object):
         self.print_message('{space:->60}'.format(space='-'))
         self.print_message('Room Occupants: {}\n'.format(print_output))
 
-        self.print_message('Room Name: {}'.format(room_name.upper()))
-        self.print_message('{space:->60}'.format(space='-'))
-        self.print_message('Room Occupants: {}\n'.format(print_output))
 
     def print_allocations(self, output_file):
         '''
@@ -449,19 +458,22 @@ class AmityManager(object):
             self.print_message('The specified file is not a valid database file.')
             return
 
-    def save_state(self, database):
+    def save_state(self, database_name):
         '''
         Fuction to save the program data to a specified database, or to a default one if none is specified
-        :param database: The database, if specified to which data will be saved in.
+        :param database_name: The database, if specified to which data will be saved in.
         :return: Print statement on success or errors.
         '''
 
         changes = False # Flag to track if theres data to be saved
 
-        if database is None:
-            db_name = 'amity_data.db'
+        if database_name is None:
+            db_name = 'data/amity_data.db'
         else:
-            db_name = database
+            if not str(database_name).endswith('.db'): # Enforce database name to end in '.db'
+                self.print_message('Invalid database name. Make sure the name ends with ".db".', 'error')
+                return
+            db_name = 'data/' + database_name
 
         # If database exists, back it up first, then delete after successful saving to fresh database.
         if os.path.exists(db_name):
@@ -557,8 +569,12 @@ class AmityManager(object):
         session.commit()
         print('')
         if changes:
-            self.print_message('Program data successfully saved!')
-            os.unlink(db_name + '-backup')
+            self.print_message('Program data successfully saved to {}!'.format(db_name))
+            try:
+                os.unlink(db_name + '-backup')  # Delete backed-up data, if present
+            except:
+                pass
+
         else:
             self.print_message('No data to save.', 'info')
 
