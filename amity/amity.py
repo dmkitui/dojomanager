@@ -255,18 +255,18 @@ class AmityManager(object):
 
         for room_name, room_details in allocations_data.items():
             print('\n')
-            self.print_message('Room name: {name}{space: >20}Room Type: {type}'.format(name=room_name.upper(), space=' ', type=room_details[1]))  # Additional feature, specify room type
+            self.print_message('Room name: {name}{space: >20}Room Type: {type}'.format(name=room_name.upper(), space=' ', type=room_details[1]), 'info')  # Additional feature, specify room type
             self.print_message('{line:->60}'.format(line='-'))
 
-            self.print_message('Room Occupants:\n')
+            self.print_message('Room Occupants:\n', 'info')
 
             if isinstance(room_details[0], str):
-                msg = '{:^60}'.format('ROOM IS EMPTY')
-                self.print_message(msg)
+                msg = '{:^60}'.format('ROOM IS EMPTY', 'error')
+                self.print_message(msg, 'error')
                 print('\n')
             else:
                 for name, person_id in room_details[0].items():
-                    self.print_message('{space: >15}{name: <20} - {id: <3}'.format(space='*', name=name, id=person_id))
+                    self.print_message('{space: >15}{name: <20} - {id: <3}'.format(space='*', name=name, id=person_id), 'info')
                 print('\n')
 
         if output_file:
@@ -289,7 +289,7 @@ class AmityManager(object):
         ''''''
 
         if len(self.un_allocated_persons['fellows']) == 0 and len(self.un_allocated_persons['staff']) == 0:
-            self.print_message('There are currently no unallocated people', 'error')
+            self.print_message('There are currently no unallocated people', 'info')
             return
         else:
             un_allocated_list = self.un_allocated_persons['fellows'] + self.un_allocated_persons['staff']
@@ -359,7 +359,7 @@ class AmityManager(object):
 
             user_details = {
                 '<person_name>': name,
-                '<wants_accommodation>' : wants_accomodation,
+                '<wants_accommodation>': wants_accomodation,
                 'Fellow': fellow,
                 'Staff': staff
             }
