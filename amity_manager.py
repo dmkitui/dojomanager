@@ -40,8 +40,8 @@ def docopt_cmd(func):
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
 
-            print('\n{term}Amity Manager V.1: Invalid argument value(s){term_normal}\n'.format(term=term.red, term_normal=term.normal))
-            print('{term}{error_message}{term_normal}'.format(error_message=e, term=term.white, term_normal=term.normal))
+            print('\n{term}Amity Manager V.1: Invalid argument value(s){term_normal}\n'.format(term=terminal.red, term_normal=terminal.normal))
+            print('{term}{error_message}{term_normal}'.format(error_message=e, term=terminal.white, term_normal=terminal.normal))
             print('\n')
             return
 
