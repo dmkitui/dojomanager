@@ -1,6 +1,4 @@
-from sqlalchemy import Column, Integer, Enum, Unicode, UnicodeText, String, ForeignKey, PickleType
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -11,7 +9,7 @@ class FellowDb(Base):
 
     id = Column(Integer, primary_key=True)
     person_name = Column(String(50))
-    person_id = Column(Integer)
+    person_id = Column(String)
 
     def __init__(self, person_name, person_id):
         self.person_name = person_name
@@ -24,7 +22,7 @@ class StaffDb(Base):
     __tablename__ = 'staff'
 
     person_name = Column(String)
-    person_id = Column(Integer, primary_key=True)
+    person_id = Column(String, primary_key=True)
 
     def __init__(self, person_name, person_id):
         self.person_name = person_name
@@ -56,7 +54,7 @@ class LivingspaceDb(Base):
 class UnallocatedDb(Base):
     __tablename__ = 'unallocated'
     person_name = Column(String)
-    person_id = Column(Integer, primary_key=True)
+    person_id = Column(String, primary_key=True)
     person_type = Column(String)
 
     def __init__(self, person_name, person_id, person_type):
@@ -68,7 +66,7 @@ class UnallocatedDb(Base):
 class PersonelIdsDb(Base):
     __tablename__ = 'personelid'
 
-    current_id = Column(Integer, primary_key=True)
+    current_id = Column(String, primary_key=True)
 
     def __init__(self, current_id):
         self.current_id = current_id
