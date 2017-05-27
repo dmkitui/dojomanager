@@ -41,8 +41,12 @@ class TestAmityModule(unittest.TestCase):
         self.amity_instance.office_block = []
         self.amity_instance.living_spaces = []
         self.amity_instance.staff_members = []
-        self.amity_instance.personnel_id = 1
+        self.amity_instance.personnel_id = 0
         self.amity_instance.un_allocated_persons = {'fellows': [], 'staff': []}
+        try:
+            os.unlink('data/*')
+        except:
+            pass
 
     def test_initial_state(self):
         '''Test initial states of the various lists'''
@@ -160,7 +164,6 @@ class TestAmityModule(unittest.TestCase):
         '''Tests adding person when no livingspace is available'''
 
         self.reset()
-        self.amity_instance.living_spaces = [] # reset available livingspaces to zero
         with screen_output() as (terminal_output, err):
             self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'Y')
         print_output = terminal_output.getvalue().strip()
@@ -260,10 +263,10 @@ class TestAmityModule(unittest.TestCase):
 
         self.amity_instance.create_room(['Kitale'], 'Office') # Create new office, for relocation testing
         with screen_output() as (terminal_output, err):
-            self.amity_instance.reallocate_person(1, 'Kitale')
+            self.amity_instance.reallocate_person('AND/S/001', 'Kitale')
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'Daniel has been re-allocated to room Kitale')
+        self.assertIn('Daniel has been re-allocated to room Kitale', print_output)
 
     def test_reallocate_person_same_room_they_already_occupy(self):
         '''Test reallocate_person to a non-existent room'''
@@ -273,10 +276,10 @@ class TestAmityModule(unittest.TestCase):
         self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
 
         with screen_output() as (terminal_output, err):
-            self.amity_instance.reallocate_person(1, 'Bungoma') # Relocate to same office currently occupied
+            self.amity_instance.reallocate_person('AND/S/001', 'Bungoma') # Relocate to same office currently occupied
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'You cannot relocate a person to a room he/she is currently occupying.')
+        self.assertIn('You cannot relocate a person to a room they are currently occupying.', print_output)
 
     def test_reallocate_person_to_non_existent_room(self):
         '''Test reallocate_person to a room that doesnt currently exist'''
@@ -286,13 +289,10 @@ class TestAmityModule(unittest.TestCase):
         self.amity_instance.add_person(['Daniel','Kitui'], 'Staff', None) # Staff will be allocated to the available Bungoma office
 
         with screen_output() as (terminal_output, err):
-            self.amity_instance.reallocate_person(1, 'Mombasa')  # Relocate to an office that currently doesnt exist.
+            self.amity_instance.reallocate_person('AND/S/001', 'Mombasa')  # Relocate to an office that currently doesnt exist.
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'Room Mombasa does not exist.')
-
-    def test_save_state(self):
-        pass
+        self.assertIn('Room Mombasa does not exist.', print_output)
 
     def test_load_state_db_does_not_exist(self):
         '''Test load_state functionality'''
@@ -318,6 +318,35 @@ class TestAmityModule(unittest.TestCase):
         self.assertEqual(print_output, 'The specified file is not a valid database file.')
 
         os.unlink('not_db.txt')
+
+    def test_save_state_database_name(self):
+        '''Test save state functionalities- naming of database'''
+        self.reset()
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.save_state('amity_data')
+
+        print_output = terminal_output.getvalue().strip()
+        self.assertIn('Invalid database name. Make sure the name ends with ".db".', print_output)
+
+    #     # test with valid name
+    #     self.reset()
+    #     self.amity_instance.create_room(['Green', 'White', 'Blue'], 'Office')
+    #     with screen_output() as (terminal_output, err):
+    #         self.amity_instance.save_state('trial.db')
+    #
+    #     print_output = terminal_output.getvalue().strip()
+    #     self.assertIn('Program data successfully saved to /data/trial.db', print_output)
+    #
+    # def test_save_state_default_database(self):
+    #     '''Test saving to default database, no database name supplied'''
+    #     self.reset()
+    #     with screen_output() as (terminal_output, err):
+    #         self.amity_instance.save_state(None)
+    #
+    #     print_output = terminal_output.getvalue().strip()
+    #     self.assertIn('Program data successfully saved to /data/amity_data.py', print_output)
+
+
 
 
 # if __name__ == '__main__':
