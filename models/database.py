@@ -66,7 +66,18 @@ class UnallocatedDb(Base):
 class PersonelIdsDb(Base):
     __tablename__ = 'personelid'
 
-    current_id = Column(String, primary_key=True)
+    current_id = Column(Integer, primary_key=True)
 
     def __init__(self, current_id):
         self.current_id = current_id
+
+class MaxRoomOccupants(Base):
+    __tablename__ = 'room constraints'
+
+    office_max_occupants = Column(Integer, primary_key=True)
+    livingspace_max_occupants = Column(Integer)
+
+    def __init__(self, office_max_occupants, livingspace_max_occupants):
+        self.office_max_occupants = office_max_occupants
+        self.livingspace_max_occupants = livingspace_max_occupants
+
