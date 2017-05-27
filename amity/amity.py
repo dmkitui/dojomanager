@@ -19,7 +19,7 @@ class AmityManager(object):
     staff_members = []
     office_block = []
     living_spaces = []
-    un_allocated_persons = {'fellows': [], 'staff': []}
+    un_allocated_persons = {'fellows-acc': [], 'fellows-office': [], 'staff': []}
     personnel_id = 0
     office_max_occupants = 6
     livingspace_max_occupants = 4
@@ -149,7 +149,7 @@ class AmityManager(object):
                 random_office.occupants.append(new_fellow)
                 self.print_message('{0} has been allocated the office {1}'.format(new_fellow.person_name[0], random_office.room_name))
             else:
-                self.un_allocated_persons['fellows'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
+                self.un_allocated_persons['fellows-office'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
 
             if accommodation:
                 random_livingspace = self.allocate_livingspace()
@@ -157,7 +157,7 @@ class AmityManager(object):
                     random_livingspace.occupants.append(new_fellow)
                     self.print_message('{0} has been allocated the livingspace {1}'.format(new_fellow.person_name[0], random_livingspace.room_name))
                 else:
-                    self.un_allocated_persons['fellows'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
+                    self.un_allocated_persons['fellows-acc'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
 
             else:
                 self.print_message('{0} does not wish to be accommodated'.format(new_fellow.person_name[0]))
@@ -296,26 +296,35 @@ class AmityManager(object):
         :param unallocated_file_name: an optional  text (.txt) file to which unallocated people names shall be saved.
         :return: prints list of unallocated people if available, or error messages.
         '''
-        ''''''
+        unallocated_people = set(self.un_allocated_persons['fellows-office'] + self.un_allocated_persons['staff'] + self.un_allocated_persons['fellows-acc'])
 
-        if len(self.un_allocated_persons['fellows']) == 0 and len(self.un_allocated_persons['staff']) == 0:
+        if len(unallocated_people) == 0:
             self.print_message('There are currently no unallocated people', 'info')
             return
         else:
-            un_allocated_list = self.un_allocated_persons['fellows'] + self.un_allocated_persons['staff']
             unallocated_data = {}
-            for person in un_allocated_list:
+            for person in unallocated_people:
                 name = ' '.join(person.person_name)
                 person_id = person.person_id
-                unallocated_data[person_id] = name
+
+                if person in set(self.un_allocated_persons['fellows-office']) & set(self.un_allocated_persons['fellows-acc']):
+                    needs = 'Livingspace and Office'
+
+                elif person in self.un_allocated_persons['fellows-office'] or person in self.un_allocated_persons['staff']:
+                    needs = 'Office'
+
+                elif person in self.un_allocated_persons['fellows-acc'] and person not in self.un_allocated_persons['fellows-office']:
+                    needs = 'Livingspace'
+
+                unallocated_data[person_id] = name, needs
 
             title = '{:_^60}'.format('UNALLOCATED PERSONS')
             print('\n')
             self.print_message(title)
-            self.print_message('NAME{0: >40}PERSONNEL NUMBER'.format(' '))
-            # print('\n')
-            for person_id, person_name in unallocated_data.items():
-                self.print_message('{name: <20}{space: >29}{number}'.format(name=person_name, space=' ', number=person_id))
+            self.print_message('{pn: <20}{name: <20}{ua: >40}'.format(name='NAME', ua='UNALLOCATED', pn='PERSONNEL NUMBER'))
+
+            for person_id, person_details in unallocated_data.items():
+                self.print_message('{number: <20}{name: <20}{needs}'.format(needs=person_details[1], name=person_details[0], number=person_id), 'info')
             print('\n')
 
             if unallocated_file_name:
@@ -325,8 +334,8 @@ class AmityManager(object):
 
                 with open(unallocated_file_name, 'w') as f:
                     f.write(title)
-                    f.write('\nNAME{0: >40}PERSONNEL NUMBER\n'.format(' '))
-                    f.writelines('{name: <25}{space: >29}{number}\n'.format(name=k, space=' ', number=v) for k, v in unallocated_data.items())
+                    f.write('\n({pn: <10}{name: <30}{wants: <15}\n'.format(pn='P.NUMBER', name='NAME', wants='WANTS'))
+                    f.writelines('{person_id: <10}{name: <30}{needs: <15}\n'.format(name=v[0], needs=v[1], person_id=k) for k, v in unallocated_data.items())
 
                 self.print_message('List of the unallocated saved to {}'.format(unallocated_file_name))
                 print('\n')
