@@ -234,7 +234,7 @@ class AmityManager(object):
         self.print_message('Room Name: {}'.format(room_name.upper()))
         self.print_message('{space:->60}'.format(space='-'))
         self.print_message('Room Occupants: {}\n'.format(print_output))
-        
+
     def print_allocations(self, output_file):
         '''
         Function to print room allocations, and optionally output same to file
@@ -330,6 +330,46 @@ class AmityManager(object):
 
                 self.print_message('List of the unallocated saved to {}'.format(unallocated_file_name))
                 print('\n')
+
+    def print_free_rooms(self):
+        '''Function to print a list of the rooms with free space'''
+
+        title = '{:_^60}'.format('AVAILABLE SPACES')
+        print('\n')
+        self.print_message(title)
+
+        if self.office_block:
+            free_offices = [x for x in self.office_block if len(x.occupants) < self.office_max_occupants]
+            offices_data = {}
+            for office in free_offices:
+                offices_data[office.room_name] = self.office_max_occupants - len(office.occupants)
+
+            if bool(offices_data):
+                self.print_message('OFFICE NAME                  AVAILABLE SPACE')
+                for office, space_available in offices_data.items():
+                    self.print_message('  {name}:                            {space}'.format(name=office, space=space_available))
+            else:
+                self.print_message('No Office space available')
+
+        else:
+            self.print_message('No offices available')
+
+        if self.living_spaces:
+            free_livingspaces = [x for x in self.living_spaces if len(x.occupants) < self.livingspace_max_occupants]
+            livingspaces_data = {}
+            for room in free_livingspaces:
+                livingspaces_data[room.room_name] = self.livingspace_max_occupants - len(room.occupants)
+
+            if bool(livingspaces_data):
+                self.print_message('LIVINGSPACE NAME                    AVAILABLE SPACE')
+                for name, spaces_available in livingspaces_data.items():
+                    self.print_message('  {name}:                             {space}'.format(name=name, space=spaces_available))
+            else:
+                self.print_message('No space available in livingspaces.')
+
+        else:
+            self.print_message('No livingspaces available.')
+
 
     def load_people(self, text_file):
         '''
