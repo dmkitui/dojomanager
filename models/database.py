@@ -7,9 +7,8 @@ Base = declarative_base()
 class FellowDb(Base):
     __tablename__ = 'fellows'
 
-    id = Column(Integer, primary_key=True)
     person_name = Column(String(50))
-    person_id = Column(String)
+    person_id = Column(String, primary_key=True)
 
     def __init__(self, person_name, person_id):
         self.person_name = person_name
@@ -32,6 +31,7 @@ class StaffDb(Base):
 class OfficeblockDb(Base):
 
     __tablename__ = 'officeblock'
+
     room_name = Column(String, primary_key=True)
     room_occupants = Column(String)
 
@@ -43,6 +43,7 @@ class OfficeblockDb(Base):
 class LivingspaceDb(Base):
 
     __tablename__ = 'livingspace'
+
     room_name = Column(String, primary_key=True)
     room_occupants = Column(String)
 
@@ -56,11 +57,13 @@ class UnallocatedDb(Base):
     person_name = Column(String)
     person_id = Column(String, primary_key=True)
     person_type = Column(String)
+    need = Column(String)
 
-    def __init__(self, person_name, person_id, person_type):
+    def __init__(self, person_name, person_id, person_type, need):
         self.person_name = person_name
         self.person_id = person_id
         self.person_type = person_type
+        self.need = need
 
 
 class PersonelIdsDb(Base):
@@ -74,7 +77,8 @@ class PersonelIdsDb(Base):
 class MaxRoomOccupants(Base):
     __tablename__ = 'room constraints'
 
-    office_max_occupants = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, sqlite_autoincrement=True)
+    office_max_occupants = Column(Integer)
     livingspace_max_occupants = Column(Integer)
 
     def __init__(self, office_max_occupants, livingspace_max_occupants):
