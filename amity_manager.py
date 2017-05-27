@@ -215,6 +215,14 @@ class DocoptManager(cmd.Cmd):
         db_name = user_input['<sqlite_database>​']
         self.amity.load_state(db_name)
 
+    @docopt_cmd
+    def do_print_free_rooms(self, user_input):
+        '''
+        Usage:
+            print_free_rooms
+        '''
+        self.amity.print_free_rooms()
+
 if __name__ == '__main__':
     try:
         DocoptManager().cmdloop()
