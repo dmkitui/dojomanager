@@ -77,8 +77,7 @@ class PersonelIdsDb(Base):
 class MaxRoomOccupants(Base):
     __tablename__ = 'room constraints'
 
-    id = Column(Integer, primary_key=True, sqlite_autoincrement=True)
-    office_max_occupants = Column(Integer)
+    office_max_occupants = Column(Integer, primary_key=True)
     livingspace_max_occupants = Column(Integer)
 
     def __init__(self, office_max_occupants, livingspace_max_occupants):
