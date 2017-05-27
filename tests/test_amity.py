@@ -42,7 +42,7 @@ class TestAmityModule(unittest.TestCase):
         self.amity_instance.living_spaces = []
         self.amity_instance.staff_members = []
         self.amity_instance.personnel_id = 0
-        self.amity_instance.un_allocated_persons = {'fellows': [], 'staff': []}
+        self.amity_instance.un_allocated_persons = {'fellows_acc': [], 'fellows_office': [], 'staff': []}
         try:
             os.unlink('data/*')
         except:
