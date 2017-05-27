@@ -19,7 +19,7 @@ class AmityManager(object):
     staff_members = []
     office_block = []
     living_spaces = []
-    un_allocated_persons = {'fellows-acc': [], 'fellows-office': [], 'staff': []}
+    un_allocated_persons = {'fellows_acc': [], 'fellows_office': [], 'staff': []}
     personnel_id = 0
     office_max_occupants = 6
     livingspace_max_occupants = 4
@@ -149,7 +149,7 @@ class AmityManager(object):
                 random_office.occupants.append(new_fellow)
                 self.print_message('{0} has been allocated the office {1}'.format(new_fellow.person_name[0], random_office.room_name))
             else:
-                self.un_allocated_persons['fellows-office'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
+                self.un_allocated_persons['fellows_office'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
 
             if accommodation:
                 random_livingspace = self.allocate_livingspace()
@@ -157,7 +157,7 @@ class AmityManager(object):
                     random_livingspace.occupants.append(new_fellow)
                     self.print_message('{0} has been allocated the livingspace {1}'.format(new_fellow.person_name[0], random_livingspace.room_name))
                 else:
-                    self.un_allocated_persons['fellows-acc'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
+                    self.un_allocated_persons['fellows_acc'].append(new_fellow)  # Add new_fellow to list of unallocated fellows
 
             else:
                 self.print_message('{0} does not wish to be accommodated'.format(new_fellow.person_name[0]))
@@ -296,7 +296,7 @@ class AmityManager(object):
         :param unallocated_file_name: an optional  text (.txt) file to which unallocated people names shall be saved.
         :return: prints list of unallocated people if available, or error messages.
         '''
-        unallocated_people = set(self.un_allocated_persons['fellows-office'] + self.un_allocated_persons['staff'] + self.un_allocated_persons['fellows-acc'])
+        unallocated_people = set(self.un_allocated_persons['fellows_office'] + self.un_allocated_persons['staff'] + self.un_allocated_persons['fellows_acc'])
 
         if len(unallocated_people) == 0:
             self.print_message('There are currently no unallocated people', 'info')
@@ -307,13 +307,13 @@ class AmityManager(object):
                 name = ' '.join(person.person_name)
                 person_id = person.person_id
 
-                if person in set(self.un_allocated_persons['fellows-office']) & set(self.un_allocated_persons['fellows-acc']):
+                if person in set(self.un_allocated_persons['fellows_office']) & set(self.un_allocated_persons['fellows_acc']):
                     needs = 'Livingspace and Office'
 
-                elif person in self.un_allocated_persons['fellows-office'] or person in self.un_allocated_persons['staff']:
+                elif person in self.un_allocated_persons['fellows_office'] or person in self.un_allocated_persons['staff']:
                     needs = 'Office'
 
-                elif person in self.un_allocated_persons['fellows-acc'] and person not in self.un_allocated_persons['fellows-office']:
+                elif person in self.un_allocated_persons['fellows_acc'] and person not in self.un_allocated_persons['fellows_office']:
                     needs = 'Livingspace'
 
                 unallocated_data[person_id] = name, needs
@@ -600,19 +600,31 @@ class AmityManager(object):
             session.commit()
 
         else:
-            self.print_message('No iving paces available...', 'info')
+            self.print_message('No living paces available...', 'info')
 
-        fellows = self.un_allocated_persons['fellows']
+        fellows_office = self.un_allocated_persons['fellows_office']
+        fellows_accommodation = self.un_allocated_persons['fellows_acc']
         staff = self.un_allocated_persons['staff']
 
+        fellows = fellows_office + fellows_accommodation
+
         if fellows:
-            changes = True
-            self.print_message('Saving unallocated fellow data...')
-            for person in fellows:
+            for person in fellows_office:
                 name = ' '.join(person.person_name)
-                unallocated_person = UnallocatedDb(person_name=name, person_id=person.person_id, person_type='fellow')
+                person_id = person.person_id
+
+                if person in fellows_accommodation and person in fellows_office:
+                    need = 'accommodation and office'
+
+                elif person in fellows_office and person not in fellows_accommodation:
+                    need = 'office'
+
+                elif person in fellows_accommodation:
+                    need = 'accommodation'
+
+                unallocated_person = UnallocatedDb(person_name=name, person_id=person_id, person_type='fellow', need=need)
                 session.add(unallocated_person)
-            session.commit()
+                session.commit()
         else:
             self.print_message('No fellows currently unallocated', 'info')
 
@@ -621,7 +633,7 @@ class AmityManager(object):
             self.print_message('Saving unallocated staff data...')
             for person in staff:
                 name = ' '.join(person.person_name)
-                unallocated_person = UnallocatedDb(person_name=name, person_id=person.person_id, person_type='staff')
+                unallocated_person = UnallocatedDb(person_name=name, person_id=person.person_id, person_type='staff', need='office')
                 session.add(unallocated_person)
             session.commit()
         else:
