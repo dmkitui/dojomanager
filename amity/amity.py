@@ -233,9 +233,8 @@ class AmityManager(object):
         self.print_message(title)
         self.print_message('Room Name: {}'.format(room_name.upper()))
         self.print_message('{space:->60}'.format(space='-'))
-        self.print_message('Room Occupants: {}\n'.format(print_output)
-
-
+        self.print_message('Room Occupants: {}\n'.format(print_output))
+        
     def print_allocations(self, output_file):
         '''
         Function to print room allocations, and optionally output same to file
