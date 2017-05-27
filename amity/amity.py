@@ -276,7 +276,7 @@ class AmityManager(object):
                 print('\n')
             else:
                 for person_id, name in room_details[0].items():
-                    self.print_message('{space: >15}{name: <20} - {id: <3}'.format(space='*', name=name, id=person_id), 'info')
+                    self.print_message('{space: >15}{name: <20} - {id: <10}'.format(space='*', name=name, id=person_id), 'info')
                 print('\n')
 
         if output_file:
@@ -321,10 +321,10 @@ class AmityManager(object):
             title = '{:_^60}'.format('UNALLOCATED PERSONS')
             print('\n')
             self.print_message(title)
-            self.print_message('{pn: <20}{name: <20}{ua: >40}'.format(name='NAME', ua='UNALLOCATED', pn='PERSONNEL NUMBER'))
+            self.print_message('{pn: <20}{name: <20}{ua: <15}'.format(name='NAME', ua='UNALLOCATED', pn='PERSONNEL NUMBER'))
 
             for person_id, person_details in unallocated_data.items():
-                self.print_message('{number: <20}{name: <20}{needs}'.format(needs=person_details[1], name=person_details[0], number=person_id), 'info')
+                self.print_message('{number: <20}{name: <20}{needs: <}'.format(needs=person_details[1], name=person_details[0], number=person_id), 'info')
             print('\n')
 
             if unallocated_file_name:
@@ -354,9 +354,9 @@ class AmityManager(object):
                 offices_data[office.room_name] = self.office_max_occupants - len(office.occupants)
 
             if bool(offices_data):
-                self.print_message('OFFICE NAME                  AVAILABLE SPACE')
+                self.print_message('  {name: <30}{avail_space: <15}'.format(name='Office Name', avail_space='Available Space'))
                 for office, space_available in offices_data.items():
-                    self.print_message('  {name}:                            {space}'.format(name=office, space=space_available))
+                    self.print_message('  {name: <30} -{space:}'.format(name=office, space=space_available))
             else:
                 self.print_message('No Office space available')
 
@@ -370,9 +370,9 @@ class AmityManager(object):
                 livingspaces_data[room.room_name] = self.livingspace_max_occupants - len(room.occupants)
 
             if bool(livingspaces_data):
-                self.print_message('LIVINGSPACE NAME                    AVAILABLE SPACE')
+                self.print_message('{name: <30}{avail_space: <10}'.format(name='LIVINGSPACE NAME', avail_space='AVAILABLE SPACE'))
                 for name, spaces_available in livingspaces_data.items():
-                    self.print_message('  {name}:                             {space}'.format(name=name, space=spaces_available))
+                    self.print_message('  {name: <30}: -{space: < 10}'.format(name=name, space=spaces_available))
             else:
                 self.print_message('No space available in livingspaces.')
 
