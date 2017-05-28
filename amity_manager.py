@@ -5,6 +5,7 @@
 Usage:
     amity_manager.py create_room (Office|Livingspace) <room_name>...
     amity_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
+    amity_manager.py load_state (<db_base>)
 
 arguments:
     create_room Creates a room type of <room_type> called <room_name>
@@ -39,7 +40,7 @@ def docopt_cmd(func):
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
 
-            print('\n{spacer}{term}Amity Manager V.1: Invalid argument value(s){term_normal}\n'.format(term=terminal.red, spacer=spacer2, term_normal=terminal.normal))
+            print('\n{spacer}{term}Amity Manager 0.0.0.1: Invalid argument value(s){term_normal}\n'.format(term=terminal.red, spacer=spacer2, term_normal=terminal.normal))
             print('{spacer}{term}{error_message}{term_normal}'.format(error_message=e, term=terminal.white, term_normal=terminal.normal, spacer=spacer2))
             print('\n')
             return
@@ -220,9 +221,9 @@ class DocoptManager(cmd.Cmd):
     def do_load_state(self, user_input):
         '''
         Usage:  
-            load_state <sqlite_database>​
+            load_state (<sqlite_database>)
         '''
-        db_name = user_input['<sqlite_database>​']
+        db_name = user_input['<sqlite_database>']
         self.amity.load_state(db_name)
 
     @docopt_cmd
@@ -237,7 +238,7 @@ class DocoptManager(cmd.Cmd):
     def do_delete_room(self, user_input):
         '''
         Usage:
-            delete_room (<room_name>)
+            delete_room (<room_name>
         '''
         room_name = user_input['<room_name>']
         self.amity.delete_room(room_name)

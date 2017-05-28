@@ -17,10 +17,10 @@ class AmityManager(object):
     '''
     Class Dojo to model the amity complex, and manage all the data models
     '''
-    fellows = []
-    staff_members = []
-    office_block = []
-    living_spaces = []
+    fellows = []                        # List of persons of type fellow
+    staff_members = []                  # List of persons of type staff members
+    office_block = []                   # list of offices
+    living_spaces = []                  # list of livingspaces
     un_allocated_persons = {'fellows_acc': [], 'fellows_office': [], 'staff': []}
     personnel_id = 0
     office_max_occupants = 6
@@ -56,7 +56,6 @@ class AmityManager(object):
 
     def title_printer(self, title):
         '''Function to print titles of the various program screens'''
-        print('\n')
         msg = '{:_^80}'.format(title)
         print('\n')
         self.print_message(msg)
@@ -103,6 +102,8 @@ class AmityManager(object):
             room = livingspace_instance.create_room(room_name, 'livingspace')
             self.living_spaces.append(room)
             self.print_message('A Livingspace called {0} has been successfully created!'.format(room_name))
+
+        return room
 
     def new_personnel_number(self, person_type):
         '''
@@ -607,24 +608,6 @@ class AmityManager(object):
                 self.print_message('Employee has been removed from {type} {name}'.format(type=room.room_type, name=room.room_name))
 
 
-
-    def load_state(self, database_name):
-        '''
-        Function to load data from the specified database
-        :param database_name: The sqlite database that contains the data
-        :return: prints confirmation message that the data has been loaded or error message in case of failure.
-        '''
-
-        self.title_printer('LOAD FROM DATABASE')
-
-        if not os.path.isfile(database_name):
-            self.print_message('The specified database does not exist.')
-            return
-
-        if not str(database_name).endswith('.db') or not str(database_name).endswith('.sqlite'):
-            self.print_message('The specified file is not a valid database file.')
-            return
-
     def save_state(self, database_name):
         '''
         Fuction to save the program data to a specified database, or to a default one if none is specified
@@ -754,7 +737,6 @@ class AmityManager(object):
                 os.unlink(db_name + '-backup')  # Delete backed-up data, if present
             except:
                 pass
-
             self.data_saved = True
 
         else:
@@ -773,8 +755,8 @@ class AmityManager(object):
                 pass
 
         while True:
-            if changes and not self.data_saved:  # When there is data in the system
-                self.print_message('There is unsaved data. Do you want to SAVE?')
+            if not self.data_saved and changes:  # When there is unsaved data in the system
+                self.print_message('There are unsaved data. Do you want to SAVE?')
                 response = input('{qn: >100}'.format(qn='Type YES to save now, NO to exit without saving. Response:  '))
             else:
                 print('\n\n')
@@ -797,4 +779,114 @@ class AmityManager(object):
             else:
                 print('\n')
                 self.print_message('      Incorrect response.', 'error')
+
+    def load_state(self, database_name):
+        '''
+        Function to load data from the specified database
+        :param database_name: The sqlite database that contains the data
+        :return: prints confirmation message that the data has been loaded or error message in case of failure.
+        '''
+
+        self.title_printer('LOAD FROM DATABASE')
+        if not str(database_name).endswith('.db'):
+            self.print_message('The specified file is not a valid database file.', 'error')
+            return
+
+        if not os.path.isfile(database_name):
+            self.print_message('The specified database does not exist.', 'error')
+            return
+
+        engine = create_engine("sqlite:///{}".format(database_name))
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        if session.query(FellowDb):
+            self.print_message('Reading Fellows data')
+            for entry in session.query(FellowDb):
+                fellow_instance = Fellow()
+                name = entry.person_name.split(' ')
+                fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
+                self.fellows.append(fellow_object)
+        else:
+            self.print_message('No Fellow data in database', 'info')
+
+        if session.query(StaffDb):
+            self.print_message('Reading staff data...')
+            for entry in session.query(StaffDb):
+                staff_instance = Staff()
+                name = entry.person_name.split(' ')
+                staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
+                self.staff_members.append(staff_member)
+            self.print_message('Staff data loaded successfully')
+        else:
+            self.print_message('No Staff data found in database', 'info')
+
+        if session.query(UnallocatedDb):
+            self.print_message('Reading Unallocated people data', 'info')
+            for entry in session.query(UnallocatedDb):
+                name = entry.person_name.split(' ')
+                if entry.person_type == 'staff':
+                    staff_instance = Staff()
+                    staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
+                    self.un_allocated_persons['staff'].append(staff_member)
+
+                elif entry.person_type == 'fellow':
+                    fellow_instance = Fellow()
+                    fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
+                    if entry.need == 'office':
+                        self.un_allocated_persons['fellows_office'].append(fellow_object)
+                    elif entry.need == 'accommodation':
+                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
+                    elif entry.need == 'accommodation and office':
+                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
+                        self.un_allocated_persons['fellows_office'].append(fellow_object)
+
+            self.print_message('Unallocated data loaded successfully')
+
+        else:
+            self.print_message('No Unallocated data found in database', 'info')
+
+        if session.query(PersonelIdsDb):
+            for entry in session.query(PersonelIdsDb):
+                self.personnel_id = entry.current_id
+            self.print_message('Current personnel id updated')
+        else:
+            self.print_message('No personnel id number data found', 'info')
+
+        if session.query(MaxRoomOccupants):
+            self.print_message('Reading maximum office and livingspace occupants information...')
+            for entry in session.query(MaxRoomOccupants):
+                self.office_max_occupants = entry.office_max_occupants
+                self.livingspace_max_occupants = entry.livingspace_max_occupants
+
+            self.print_message('Data for maximum occupants for each room type room loaded')
+
+        if session.query(OfficeblockDb):
+            self.print_message('Reading data for office block...')
+            for entry in session.query(OfficeblockDb):
+                room_name = entry.room_name
+                room_object = self.add_room(room_name, 'Office')
+
+                room_occupant_ids = entry.room_occupants.split(', ')
+                all_people = self.fellows + self.staff_members  # all people currently loaded
+                for person_id in room_occupant_ids:  # Find the corresponding people objects
+                    person_object = [x for x in all_people if x.person_id == person_id][0]
+                    room_object.occupants.append(person_object)
+            self.print_message('Office block data successfully Loaded')
+        else:
+            self.print_message('No office data in database.', 'info')
+
+        if session.query(LivingspaceDb):
+            self.print_message('Reading data for livingspaces...')
+            for entry in session.query(LivingspaceDb):
+                room_name = entry.room_name
+                room_object = self.add_room(room_name, 'Livingspace')
+
+                room_occupant_ids = entry.room_occupants.split(', ')
+                for person_id in room_occupant_ids:  # Find the corresponding people objects
+                    person_object = [x for x in self.fellows if x.person_id == person_id][0]
+                    room_object.occupants.append(person_object)
+            self.print_message('Livingspace data successfully Loaded')
+        else:
+            self.print_message('No Livingspace data in database.', 'info')
 
