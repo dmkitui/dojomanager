@@ -168,6 +168,15 @@ class DocoptManager(cmd.Cmd):
         self.amity.print_allocations(output_file)
 
     @docopt_cmd
+    def do_remove_person(self, user_input):
+        '''
+        Usage:
+            remove_person (<personnel_id>)
+        '''
+        personnel_id = user_input['<personnel_id>']
+        self.amity.remove_person(personnel_id)
+
+    @docopt_cmd
     def do_print_unallocated(self, user_input):
         '''
         Usage:
