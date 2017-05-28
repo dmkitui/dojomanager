@@ -72,7 +72,7 @@ class DocoptManager(cmd.Cmd):
             '\n' \
             '{space}       {term1}________________ANDELA_______________{term_normal}\n' \
             '{space}       {term1}The Amity Room Allocations Management{term_normal}\n' \
-            '{space}       {term1}_____________Version 0.0_____________{term_normal}\n' \
+            '{space}       {term1}_____________Version 0.0.0.1_____________{term_normal}\n' \
             '{term_normal}\n' \
             '{space2}{term2}Usage:{term_normal}\n'\
             '{space2}   create_room (Office|Livingspace) <room_name>...\n' \
@@ -84,6 +84,8 @@ class DocoptManager(cmd.Cmd):
             '{space2}   load_people (<people_file>)\n' \
             '{space2}   save_state [--db=sqlite_database]​\n' \
             '{space2}   load_state [--db=sqlite_database]​\n' \
+            '{space2}   remove_person (<person_id>)\n' \
+            '{space2}   print_free_rooms\n' \
             '{space2}   help\n' \
             '{space2}   clear\n' \
             '{space2}   exit\n' \
@@ -98,6 +100,8 @@ class DocoptManager(cmd.Cmd):
             '{space2}   laod_people         - Loads people into the system from the specified input text file\n' \
             '{space2}   save_state          - Saves the data in the program to the specified database\n' \
             '{space2}   load_state          - Loads the data form specified database\n' \
+            '{space2}   remove_person       - Removes the person of the specified person id\n' \
+            '{space2}   print_free_rooms    - Prints the available spaces in all rooms\n' \
             '{space2}   help                - Prints this help message\n' \
             '{space2}   clear               - Clears the screen\n' \
             '{space2}   exit                - Exits this interactive session\n' \
