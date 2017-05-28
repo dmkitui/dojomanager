@@ -32,7 +32,6 @@ def docopt_cmd(func):
     of the docopt parsing to the called action.
     """
     def fn(self, arg):
-        # terminal = Terminal()
         try:
             opt = docopt(fn.__doc__, arg)
 
@@ -40,14 +39,13 @@ def docopt_cmd(func):
             # The DocoptExit is thrown when the args do not match.
             # We print a message to the user and the usage block.
 
-            print('\n{term}Amity Manager V.1: Invalid argument value(s){term_normal}\n'.format(term=terminal.red, term_normal=terminal.normal))
-            print('{term}{error_message}{term_normal}'.format(error_message=e, term=terminal.white, term_normal=terminal.normal))
+            print('\n{spacer}{term}Amity Manager V.1: Invalid argument value(s){term_normal}\n'.format(term=terminal.red, spacer=spacer2, term_normal=terminal.normal))
+            print('{spacer}{term}{error_message}{term_normal}'.format(error_message=e, term=terminal.white, term_normal=terminal.normal, spacer=spacer2))
             print('\n')
             return
 
         except SystemExit:
             # The SystemExit exception prints the usage for --help
-            # We do not need to do the print here.
             return
 
         return func(self, opt)
@@ -146,8 +144,7 @@ class DocoptManager(cmd.Cmd):
 
     def do_exit(self, user_input):
         '''To exit from Amity Manager Session'''
-        print('\nAmity Manager V0. Exiting...')
-        return True
+        self.amity.exit_gracefully()
 
     @docopt_cmd
     def do_print_room(self, user_input):
@@ -236,5 +233,4 @@ if __name__ == '__main__':
     try:
         DocoptManager().cmdloop()
     except (KeyboardInterrupt, SystemExit):
-        print('Amity Manager V0. Exit.')
-        print('____________________________')
+        pass
