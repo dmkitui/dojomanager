@@ -119,7 +119,6 @@ class AmityManager(object):
         if not self.names_check(name[0]) or not self.names_check(name[1]):
             self.print_message('Invalid Person Name.', 'error')
             return
-
         if wants_accommodation:
             if person_type == 'Staff':
                 self.print_message('Staff are not entitled to accommodation', 'error')
@@ -136,7 +135,6 @@ class AmityManager(object):
                 return
         else:
             accommodation = False
-
         if person_type == 'Fellow':
             person_class = Fellow()
             person_number = self.new_personnel_number('fellow')
@@ -161,7 +159,6 @@ class AmityManager(object):
 
             else:
                 self.print_message('{0} does not wish to be accommodated'.format(new_fellow.person_name[0]))
-
         elif person_type == 'Staff':
             person_class = Staff()
             person_id = self.new_personnel_number('staff')
@@ -175,7 +172,6 @@ class AmityManager(object):
                 self.print_message('{0} has been allocated the office {1}'.format(new_staff.person_name[0], random_office.room_name))
             else:
                 self.un_allocated_persons['staff'].append(new_staff)  # Add new_staff to list of unallocated Staff
-
 
     def allocate_livingspace(self):
         '''Function to randomly allocate a livingroom to fellows'''
@@ -276,7 +272,7 @@ class AmityManager(object):
                 print('\n')
             else:
                 for person_id, name in room_details[0].items():
-                    self.print_message('{space: >15}{name: <20} - {id: <10}'.format(space='*', name=name, id=person_id), 'info')
+                    self.print_message('{space: >15}{name: <20} - {id: <10}'.format(space='*', name=name, id=person_id))
                 print('\n')
 
         if output_file:
@@ -318,13 +314,13 @@ class AmityManager(object):
 
                 unallocated_data[person_id] = name, needs
 
-            title = '{:_^60}'.format('UNALLOCATED PERSONS')
+            title = '{:_^80}'.format('UNALLOCATED PERSONS')
             print('\n')
             self.print_message(title)
-            self.print_message('{pn: <20}{name: <20}{ua: <15}'.format(name='NAME', ua='UNALLOCATED', pn='PERSONNEL NUMBER'))
+            self.print_message('{pn: <20}  {name: <35}{ua: <15}'.format(name='NAME', ua='UNALLOCATED', pn='PERSONNEL NUMBER'))
 
             for person_id, person_details in unallocated_data.items():
-                self.print_message('{number: <20}{name: <20}{needs: <}'.format(needs=person_details[1], name=person_details[0], number=person_id), 'info')
+                self.print_message('  {number: <20}{name: <35}{needs: <15}'.format(needs=person_details[1], name=person_details[0], number=person_id), 'info')
             print('\n')
 
             if unallocated_file_name:
@@ -387,42 +383,28 @@ class AmityManager(object):
         :return: Print status messages or returns error messages.
         '''
         if not text_file.endswith('.txt'):
-            print('Invalid input file name')
+            self.print_message('Invalid input file name', 'error')
             return
 
         if not os.path.isfile(text_file): # To check if file exists
-            print('The specified file does not exist')
+            self.print_message('The specified file does not exist', 'error')
             return
 
         with open(text_file) as f:
             content = f.readlines()
 
-        content = [x.strip() for x in content]
+            stripped_content = [x.strip() for x in content]
 
-        for person in content:
-
+        for person in stripped_content:
             details = person.split(' ')
             name = [details[0], details[1]]
-            job_type = details[2]
+            person_type = details[2].title()        # Convert the person type to Title case
+            try:
+                wants_accommodation = details[3]
+            except IndexError:
+                wants_accommodation = None
 
-            if job_type == 'FELLOW':
-                fellow = True
-                staff = False
-            elif job_type == 'STAFF':
-                staff = True
-                fellow = False
-                wants_accomodation = False
-
-            if len(details) == 4:
-                wants_accomodation = details[3]
-
-            user_details = {
-                '<person_name>': name,
-                '<wants_accommodation>': wants_accomodation,
-                'Fellow': fellow,
-                'Staff': staff
-            }
-            self.add_person(user_details)
+            self.add_person(name, person_type, wants_accommodation)
 
     def names_check(self, name):
         '''
