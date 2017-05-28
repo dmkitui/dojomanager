@@ -61,7 +61,7 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             self.amity_instance.add_person(['D', 'K'], 'Fellow', 'Y')
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'Invalid Person Name.')
+        self.assertIn('Invalid Person Name.', print_output)
 
     def test_create_office(self):
         '''Test successful creation of office.'''
@@ -70,7 +70,7 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             green_office = self.amity_instance.create_room(['Green'], 'Office')
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'An Office called Green has been successfully created!')
+        self.assertIn('An Office called Green has been successfully created!', print_output)
         self.assertEqual(len(self.amity_instance.office_block), 1, 'Office not added')
 
     def test_create_livingspace(self):
@@ -101,13 +101,13 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             self.amity_instance.create_room(['Violet'], 'Office')
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'An Office called Violet has been successfully created!')
+        self.assertIn('An Office called Violet has been successfully created!', print_output)
 
         # Create second room with the same name
         with screen_output() as (terminal_output, err):
             self.amity_instance.create_room(['Violet'], 'Office')
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'A room called Violet already exists')
+        self.assertIn('A room called Violet already exists', print_output)
 
     def test_invalid_room_names(self):
         '''Test invalid room names'''
@@ -117,7 +117,7 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.create_room(['#Dojo'], 'Office')
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, '#Dojo is not a valid room name. Room not created')
+        self.assertIn('#Dojo is not a valid room name. Room not created', print_output)
 
     def test_add_person_no_rooms_available(self):
         '''Test adding person when no room is available'''
@@ -137,7 +137,7 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             dan = self.amity_instance.add_person(['Daniel', 'Kitui'], 'Staff', 'Y')
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'Staff are not entitled to accommodation')
+        self.assertIn('Staff are not entitled to accommodation', print_output)
         self.assertEqual(len(self.amity_instance.staff_members), 0)
 
     def test_add_person_with_wrong_wants_accommodation_argument(self):
@@ -147,7 +147,7 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             dan = self.amity_instance.add_person(['Daniel', 'Kitui'], 'Fellow', 'No')
         print_output = terminal_output.getvalue().strip()
-        self.assertEquals(print_output, 'Argument for Accommodation can only be either Y/y or N/n')
+        self.assertIn('Argument for Accommodation can only be either Y/y or N/n', print_output)
         self.assertEqual(len(self.amity_instance.fellows), 0)
 
     def test_add_person_no_office_available(self):
@@ -186,7 +186,7 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_room('Does_not_exist')
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'Room Does_not_exist does not exist')
+        self.assertIn('Room Does_not_exist does not exist', print_output)
 
     def test_print_unallocated_no_one_unallocated(self):
         '''Tests the print_unallocated_functionality'''
@@ -196,7 +196,7 @@ class TestAmityModule(unittest.TestCase):
         with screen_output() as (terminal_output, err):
             self.amity_instance.print_unallocated(None) # No output file specified.
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'There are currently no unallocated people')
+        self.assertIn('There are currently no unallocated people', print_output)
 
     def test_print_unallocated_when_one_is_present(self):
         '''Test print_unallocated when one is present'''
@@ -245,13 +245,13 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.load_people('input_file.pdf') # Incorrect file name
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'Invalid input file name')
+        self.assertIn('Invalid input file name', print_output)
 
         with screen_output() as (terminal_output, err):
             self.amity_instance.load_people('file_does_not_exist.txt')  # Incorrect file name
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'The specified file does not exist')
+        self.assertIn('The specified file does not exist', print_output)
         self.reset()
 
     def test_reallocate_person(self):
@@ -301,7 +301,7 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.load_state('db_doesnt_exist.db')
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'The specified database does not exist.')
+        self.assertIn('The specified database does not exist.', print_output, )
 
     def test_load_state_invalid_database_name(self):
         '''Test load_state for invalid name'''
@@ -315,7 +315,7 @@ class TestAmityModule(unittest.TestCase):
             self.amity_instance.load_state('not_db.txt') # Load a wrong format file
 
         print_output = terminal_output.getvalue().strip()
-        self.assertEqual(print_output, 'The specified file is not a valid database file.')
+        self.assertIn('The specified file is not a valid database file.', print_output)
 
         os.unlink('not_db.txt')
 
