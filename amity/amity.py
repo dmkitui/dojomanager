@@ -13,9 +13,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-
-
-
 class AmityManager(object):
     '''
     Class Dojo to model the amity complex, and manage all the data models
@@ -28,7 +25,7 @@ class AmityManager(object):
     personnel_id = 0
     office_max_occupants = 6
     livingspace_max_occupants = 4
-    data_saved = False  # Flag to indicate presence of data in the program at exit time
+    data_saved = False  # Flag to indicate presence of data in the program at exit time, if not saved to database
 
     def print_message(self, message, message_state='success'):
         '''
@@ -56,15 +53,24 @@ class AmityManager(object):
             state = terminal.red
 
         print('{spacer}{state}{message}{terminal_normal}\n'.format(state=state, spacer=spacer, message= message, terminal_normal=terminal.normal))
-        # print('\n{color}{spacer}{white_line:_>60}{terminal_normal}\n'.format(spacer=spacer, white_line='_', color=terminal.white, terminal_normal=terminal.normal))
-    #@print_title
+
+    def title_printer(self, title):
+        '''Function to print titles of the various program screens'''
+        print('\n')
+        msg = '{:_^80}'.format(title)
+        print('\n')
+        self.print_message(msg)
+
+
     def create_room(self, room_names, room_type):
         '''
         Function to create a room in the amity model
         :param user_input: cli arguments from which room_name and room_type arguments are parsed.
         :return: specific errors incase of any errors or print statements to display status.
         '''
-        print('\n')
+
+        self.title_printer('CREATE ROOM')
+
         for room_name in room_names:
             if self.names_check(room_name):
                 pass
@@ -121,7 +127,9 @@ class AmityManager(object):
         :param person_type: New person type, either 'Staff' or 'Fellow'
         :return: prints to the console on successful creation, returns relevant error messages on errors
         '''
-        print('\n')
+
+        self.title_printer('ADD PERSON')
+
         if not self.names_check(name[0]) or not self.names_check(name[1]):
             self.print_message('Invalid Person Name.', 'error')
             return
@@ -210,7 +218,9 @@ class AmityManager(object):
 
     def print_room(self, room_name):
         '''Prints the names of all the people in ​specified room_name​.'''
-        print('\n')
+
+        self.title_printer('ROOM OCCUPANTS')
+
         available_rooms = self.office_block + self.living_spaces
         available_room_names = [x.room_name for x in available_rooms]
 
@@ -231,8 +241,6 @@ class AmityManager(object):
 
             print_output = ', '.join(print_names)
 
-        title = '{:_^60}'.format('PRINT ROOM')
-        self.print_message(title)
         self.print_message('Room Name: {}'.format(room_name.upper()))
         self.print_message('{space:->60}'.format(space='-'))
         self.print_message('Room Occupants: {}\n'.format(print_output))
@@ -243,6 +251,9 @@ class AmityManager(object):
         :param output_file: Optional text file to which the data is saved to.
         :return: Returns relevant error messages, or prints out information on success
         '''
+
+        self.title_printer('AMITY ALLOCATIONS')
+
         rooms = self.office_block + self.living_spaces
         if len(rooms) == 0:
             self.print_message('No rooms currently available.\n', 'error')
@@ -259,9 +270,6 @@ class AmityManager(object):
             else:
                 allocations_data[room.room_name] = ['Room is empty', room.room_type.upper()]
 
-        title = '{:_^60}'.format('ROOM ALLOCATIONS')
-        print('\n')
-        self.print_message(title)
         self.print_message('Total Rooms available: {offices} Offices and {livingspaces} Living spaces'.format(offices=len(self.office_block), livingspaces=len(self.living_spaces)))
         self.print_message('{staff} Staff Members and {fellows} Fellows are currently accommodated'.format(staff=len(self.staff_members), fellows=len(self.fellows)))
 
@@ -297,6 +305,9 @@ class AmityManager(object):
         :param unallocated_file_name: an optional  text (.txt) file to which unallocated people names shall be saved.
         :return: prints list of unallocated people if available, or error messages.
         '''
+
+        self.title_printer('UN-ALLOCATED PERSONS')
+
         unallocated_people = set(self.un_allocated_persons['fellows_office'] + self.un_allocated_persons['staff'] + self.un_allocated_persons['fellows_acc'])
 
         if len(unallocated_people) == 0:
@@ -319,9 +330,6 @@ class AmityManager(object):
 
                 unallocated_data[person_id] = name, needs
 
-            title = '{:_^80}'.format('UNALLOCATED PERSONS')
-            print('\n')
-            self.print_message(title)
             self.print_message('{pn: <20}  {name: <35}{ua: <15}'.format(name='NAME', ua='UNALLOCATED', pn='PERSONNEL NUMBER'))
 
             for person_id, person_details in unallocated_data.items():
@@ -334,7 +342,7 @@ class AmityManager(object):
                     return
 
                 with open(unallocated_file_name, 'w') as f:
-                    f.write(title)
+                    f.write('Unallocated  Persons')
                     f.write('\n({pn: <10}{name: <30}{wants: <15}\n'.format(pn='P.NUMBER', name='NAME', wants='WANTS'))
                     f.writelines('{person_id: <10}{name: <30}{needs: <15}\n'.format(name=v[0], needs=v[1], person_id=k) for k, v in unallocated_data.items())
 
@@ -344,9 +352,7 @@ class AmityManager(object):
     def print_free_rooms(self):
         '''Function to print a list of the rooms with free space'''
 
-        title = '{:_^60}'.format('AVAILABLE SPACES')
-        print('\n')
-        self.print_message(title)
+        self.title_printer('AVAILABLE ROOMS')
 
         if self.office_block:
             free_offices = [x for x in self.office_block if len(x.occupants) < self.office_max_occupants]
@@ -387,6 +393,7 @@ class AmityManager(object):
         :param text_file: Input text file that contains list of people
         :return: Print status messages or returns error messages.
         '''
+
         if not text_file.endswith('.txt'):
             self.print_message('Invalid input file name', 'error')
             return
@@ -421,7 +428,7 @@ class AmityManager(object):
         if len(name) <= 1 or name.isnumeric():
             return False
 
-        chars = ['#', '$', '%', '^', '*', '?', '!', '<', '>', ':', ';']  # Set of characters not allowed to be in name strings
+        chars = ['#', '$', '%', '^', '*', '?', '!', '<', '>', ':', ';', '(', ')', '{', '}']  # Set of characters not allowed to be in name strings
 
         for char in chars:
             if char in name:
@@ -434,6 +441,8 @@ class AmityManager(object):
         :argument new_room: THe room a person specified by the relocate_id is to be moved to.
         :return: None.
         '''
+
+        self.title_printer('REALLOCATE PERSON')
 
         available_people = list(itertools.chain(self.fellows, self.staff_members))  # List of all people objects present
         available_people_ids = [x.person_id for x in available_people]  # List of available people ids
@@ -448,7 +457,6 @@ class AmityManager(object):
         current_rooms_occupied = [x for x in available_rooms if person_object in x.occupants]  # Find current room(s) occupied by person
 
         current_occupied_room_names = [x.room_name for x in current_rooms_occupied]
-        print(current_occupied_room_names)
 
         if new_room in current_occupied_room_names:
             self.print_message('You cannot relocate a person to a room they are currently occupying.', 'error')
@@ -501,6 +509,8 @@ class AmityManager(object):
         :return: None. Prints to the screen status messages.
         '''
 
+        self.title_printer('REMOVE PERSON')
+
         regex = re.compile(r'^AND\/(S|F)\/(\d{3})')
 
         if not regex.search(personnel_id):
@@ -548,6 +558,9 @@ class AmityManager(object):
         :param database_name: The sqlite database that contains the data
         :return: prints confirmation message that the data has been loaded or error message in case of failure.
         '''
+
+        self.title_printer('LOAD FROM DATABASE')
+
         if not os.path.isfile(database_name):
             self.print_message('The specified database does not exist.')
             return
@@ -562,6 +575,8 @@ class AmityManager(object):
         :param database_name: The database, if specified to which data will be saved in.
         :return: Print statement on success or errors.
         '''
+
+        self.title_printer('SAVE TO DATABASE')
 
         changes = False # Flag to track if theres data to be saved
 
@@ -584,10 +599,6 @@ class AmityManager(object):
 
         Session = sessionmaker(bind=engine)
         session = Session()
-
-        title = '{:_^60}'.format('SAVE PROGRAM STATE')
-        self.print_message(title)
-        print('\n')
 
         if self.fellows:
             changes = True
@@ -711,24 +722,25 @@ class AmityManager(object):
                 response = input('{qn: >100}'.format(qn='Type YES to save now, NO to exit without saving. Response:  '))
             else:
                 print('\n\n')
-                self.print_message('{spacer:_^80}'.format(spacer='Amity Manager: Session Ended'))
+                self.print_message('{spacer:*^80}'.format(spacer='Amity Manager: Session Ended'))
                 print('\n')
                 sys.exit()
 
             if response == 'YES' or response == 'Yes':
                 self.save_state(None)
                 self.print_message('{msg: <80}'.format(msg='Data Saved. Session shall be Ended.'))
-                self.print_message('{msg:_^80}'.format(msg='Amity Manager: Session Ended'))
+                self.print_message('{msg:*^80}'.format(msg='Amity Manager: Session Ended'))
                 sys.exit()
 
             elif response == 'No' or response == 'NO':
                 self.print_message('{msg: ^80}'.format(msg='Data Not Saved'), 'error')
-                self.print_message('{msg:_^80}'.format(msg='Amity Manager: Session Ended'))
+                self.print_message('{msg:*^80}'.format(msg='Amity Manager: Session Ended'))
+                print('\n')
                 sys.exit()
 
             else:
                 print('\n')
-                self.print_message('      Incorrect reponse.', 'error')
+                self.print_message('      Incorrect response.', 'error')
 
 
 
