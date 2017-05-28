@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import random
 import os
+import re
 import itertools
 from models.person import Staff, Fellow
 from models.room import Office, LivingSpace
@@ -259,7 +260,6 @@ class AmityManager(object):
         self.print_message('Total Rooms available: {offices} Offices and {livingspaces} Living spaces'.format(offices=len(self.office_block), livingspaces=len(self.living_spaces)))
         self.print_message('{staff} Staff Members and {fellows} Fellows are currently accommodated'.format(staff=len(self.staff_members), fellows=len(self.fellows)))
 
-
         for room_name, room_details in allocations_data.items():
             print('\n')
             self.print_message('Room name: {name}{space: >20}Room Type: {type}'.format(name=room_name.upper(), space=' ', type=room_details[1]), 'info')  # Additional feature, specify room type
@@ -273,7 +273,7 @@ class AmityManager(object):
             else:
                 for person_id, name in room_details[0].items():
                     self.print_message('{space: >15}{name: <20} - {id: <10}'.format(space='*', name=name, id=person_id))
-                print('\n')
+            self.print_message('{:_^80}'.format('_'), 'error')
 
         if output_file:
             if not output_file.endswith('.txt'):
@@ -350,9 +350,9 @@ class AmityManager(object):
                 offices_data[office.room_name] = self.office_max_occupants - len(office.occupants)
 
             if bool(offices_data):
-                self.print_message('  {name: <30}{avail_space: <15}'.format(name='Office Name', avail_space='Available Space'))
+                self.print_message('{name: <30}{avail_space: <15}'.format(name='OFFICE NAME', avail_space='AVAILABLE SPACE'))
                 for office, space_available in offices_data.items():
-                    self.print_message('  {name: <30} -{space:}'.format(name=office, space=space_available))
+                    self.print_message('  {name: <30} -{space: <3}'.format(name=office, space=space_available))
             else:
                 self.print_message('No Office space available')
 
@@ -368,7 +368,7 @@ class AmityManager(object):
             if bool(livingspaces_data):
                 self.print_message('{name: <30}{avail_space: <10}'.format(name='LIVINGSPACE NAME', avail_space='AVAILABLE SPACE'))
                 for name, spaces_available in livingspaces_data.items():
-                    self.print_message('  {name: <30}: -{space: < 10}'.format(name=name, space=spaces_available))
+                    self.print_message('  {name: <30} -{space: <3}'.format(name=name, space=spaces_available))
             else:
                 self.print_message('No space available in livingspaces.')
 
@@ -488,6 +488,54 @@ class AmityManager(object):
                     pass
                 room_object.occupants.append(person_object)  # Add person to new room
                 self.print_message('{} has been re-allocated to room {}'.format(person_object.person_name[0], new_room))
+
+    def remove_person(self, personnel_id):
+        '''
+        To remove a person from the record
+        :param personnel_id: The person_id who is to be removed.
+        :return: None. Prints to the screen status messages.
+        '''
+
+        regex = re.compile(r'^AND\/(S|F)\/(\d{3})')
+
+        if not regex.search(personnel_id):
+            self.print_message('Incorrect Personnel ID format')
+            return
+
+        available_people = list(itertools.chain(self.fellows, self.staff_members))  # List of all people objects present
+        available_people_ids = [x.person_id for x in available_people]  # List of available people ids
+
+        if personnel_id not in available_people_ids:
+            self.print_message('Employee {} does not exist'.format(personnel_id), 'error')
+            return
+
+        person_object = [x for x in available_people if x.person_id == personnel_id][0]  # Get person object belonging to the specified ID
+
+        if personnel_id.split('/')[1] == 'S':  # If the person is staff
+            self.staff_members.remove(person_object)
+            self.print_message('Staff member {} has been removed from Staff Members list.'.format(' '.join(person_object.person_name)), 'info')
+
+        elif personnel_id.split('/')[1] == 'F':
+            self.fellows.remove(person_object)
+            self.print_message('Fellow {} has been removed from Fellows list.'.format(' '.join(person_object.person_name)), 'info')
+
+        available_rooms = list(itertools.chain(self.office_block, self.living_spaces))
+
+        occupied_rooms = [x for x in available_rooms if person_object in x.occupants]
+
+        if len(occupied_rooms) == 0:  # If the person was unallocated.
+            self.print_message('The specified person did not occupy any room.', 'info')
+            for list_of_unallocated in (self.un_allocated_persons['fellows_acc'], self.un_allocated_persons['staff'], self.un_allocated_persons['fellows_office']):
+                if person_object in list_of_unallocated:
+                    list_of_unallocated.remove(person_object)
+                    self.print_message('Employee No: {} Has been removed from the records'.format(personnel_id))
+
+        else: # Employee occupied at least one room
+            for room in occupied_rooms:
+                room.occupants.remove(person_object)
+                self.print_message('Employee has been removed from {type} {name}'.format(type=room.room_type, name=room.room_name))
+
+
 
     def load_state(self, database_name):
         '''
