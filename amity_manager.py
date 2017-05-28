@@ -233,6 +233,16 @@ class DocoptManager(cmd.Cmd):
         '''
         self.amity.print_free_rooms()
 
+    @docopt_cmd
+    def do_delete_room(self, user_input):
+        '''
+        Usage:
+            delete_room (<room_name>)
+        '''
+        room_name = user_input['<room_name>']
+        self.amity.delete_room(room_name)
+
+
 if __name__ == '__main__':
     try:
         DocoptManager().cmdloop()
