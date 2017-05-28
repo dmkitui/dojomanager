@@ -254,12 +254,12 @@ class AmityManager(object):
 
         self.title_printer('AMITY ALLOCATIONS')
 
-        rooms = self.office_block + self.living_spaces
-        if len(rooms) == 0:
+        rooms_object = self.office_block + self.living_spaces
+        if len(rooms_object) == 0:
             self.print_message('No rooms currently available.\n', 'error')
             return
         allocations_data = {}
-        for room in rooms:
+        for room in rooms_object:
             occupant_list = room.occupants
             occupant_details = {}
             if len(occupant_list) > 0:
@@ -408,13 +408,17 @@ class AmityManager(object):
             stripped_content = [x.strip() for x in content]
 
         for person in stripped_content:
-            details = person.split(' ')
-            name = [details[0], details[1]]
-            person_type = details[2].title()        # Convert the person type to Title case
             try:
-                wants_accommodation = details[3]
-            except IndexError:
-                wants_accommodation = None
+                details = person.split(' ')
+                name = [details[0], details[1]]
+                person_type = details[2].title()        # Convert the person type to Title case
+                try:
+                    wants_accommodation = details[3]
+                except IndexError:
+                    wants_accommodation = None
+            except IndexError: # Catch any wrong formatting
+                self.print_message('Wrongly formatted file/lines', 'error')
+                return
 
             self.add_person(name, person_type, wants_accommodation)
 
@@ -501,6 +505,58 @@ class AmityManager(object):
                     pass
                 room_object.occupants.append(person_object)  # Add person to new room
                 self.print_message('{} has been re-allocated to room {}'.format(person_object.person_name[0], new_room))
+
+    def reallocate_all(self):
+        '''Function to allocate people in unallocated people lists to any available spaces'''
+        pass
+
+    def delete_room(self, room_name):
+        '''
+        To delete a specified room, and add its occupants, if any, to respective unallocated list
+        :param room_name: name of the room to be deleted.
+        :return: 
+        '''
+
+        self.title_printer('DELETE ROOM')
+        # Get room object if it exists
+        all_rooms = self.office_block + self.living_spaces
+        try:
+            room_object = [x for x in all_rooms if x.room_name == room_name][0]
+        except ValueError:
+            self.print_message('Specified room does not exist!', 'error')
+            return
+
+        if room_object.room_type == 'office':
+            self.office_block.remove(room_object)
+            if len(room_object.occupants) > 0:
+                for occupant in room_object.occupants:
+                    offices_with_space = [x for x in self.office_block if len(x.occupants) < self.office_max_occupants]
+                    if offices_with_space:
+                        office = self.allocate_office()
+                        self.reallocate_person(occupant.person_id, office.room_name)
+                    else:
+                        if isinstance(occupant, Staff):
+                            self.un_allocated_persons['staff'].append(occupant)
+                            self.print_message('{name} Added to list of unallaocated staff.'.format(name=' '.join(occupant.person_name)), 'info')
+                        else:
+                            self.un_allocated_persons['fellows_office'].append(occupant)
+                            self.print_message('{name} Added to list of fellows without an office.'.format(name=' '.join(occupant.person_name)), 'info')
+
+            self.print_message('Room Deleted!')
+
+        else:
+            self.living_spaces.remove(room_object)
+            if len(room_object.occupants) > 0:
+                for occupant in room_object.occupants:
+                    livingspaces_with_space = [x for x in self.office_block if len(x.occupants) < self.livingspace_max_occupants]
+                    if livingspaces_with_space:
+                        livingspace = self.allocate_livingspace()
+                        self.reallocate_person(occupant.person_id, livingspace.room_name)
+                    else:
+                        self.un_allocated_persons['fellows_acc'].append(occupant)
+                        self.print_message('{name} Added to list of fellows without a livingspace')
+            self.print_message('Room deleted')
+
 
     def remove_person(self, personnel_id):
         '''
@@ -726,13 +782,13 @@ class AmityManager(object):
                 print('\n')
                 sys.exit()
 
-            if response == 'YES' or response == 'Yes':
+            if response.lower() == 'yes':
                 self.save_state(None)
                 self.print_message('{msg: <80}'.format(msg='Data Saved. Session shall be Ended.'))
                 self.print_message('{msg:*^80}'.format(msg='Amity Manager: Session Ended'))
                 sys.exit()
 
-            elif response == 'No' or response == 'NO':
+            elif response.lower() == 'no':
                 self.print_message('{msg: ^80}'.format(msg='Data Not Saved'), 'error')
                 self.print_message('{msg:*^80}'.format(msg='Amity Manager: Session Ended'))
                 print('\n')
@@ -741,6 +797,4 @@ class AmityManager(object):
             else:
                 print('\n')
                 self.print_message('      Incorrect response.', 'error')
-
-
 
