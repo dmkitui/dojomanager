@@ -3,6 +3,7 @@
 import random
 import os
 import re
+import sys
 import itertools
 from models.person import Staff, Fellow
 from models.room import Office, LivingSpace
@@ -10,6 +11,9 @@ from models.database import Base, FellowDb, StaffDb, OfficeblockDb, LivingspaceD
 from blessings import Terminal
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+
+
 
 
 class AmityManager(object):
@@ -24,6 +28,7 @@ class AmityManager(object):
     personnel_id = 0
     office_max_occupants = 6
     livingspace_max_occupants = 4
+    data_saved = False  # Flag to indicate presence of data in the program at exit time
 
     def print_message(self, message, message_state='success'):
         '''
@@ -52,7 +57,7 @@ class AmityManager(object):
 
         print('{spacer}{state}{message}{terminal_normal}\n'.format(state=state, spacer=spacer, message= message, terminal_normal=terminal.normal))
         # print('\n{color}{spacer}{white_line:_>60}{terminal_normal}\n'.format(spacer=spacer, white_line='_', color=terminal.white, terminal_normal=terminal.normal))
-
+    #@print_title
     def create_room(self, room_names, room_type):
         '''
         Function to create a room in the amity model
@@ -683,6 +688,47 @@ class AmityManager(object):
             except:
                 pass
 
+            self.data_saved = True
+
         else:
             self.print_message('No data to save.', 'info')
+
+    def exit_gracefully(self):
+        '''Function to ensure the programs prompts the user to save data if theres any data in the program when exit command is entered'''
+
+        changes = False # Flag to indicate presence of data in the program at exit time
+
+        for data_field in (self.fellows, self.staff_members, self.un_allocated_persons['fellows_office'], self.un_allocated_persons['staff'], self.un_allocated_persons['fellows_acc'],self.office_block,
+                           self.living_spaces):
+            if data_field:
+                changes = True
+            else:
+                pass
+
+        while True:
+            if changes and not self.data_saved:  # When there is data in the system
+                self.print_message('There is unsaved data. Do you want to SAVE?')
+                response = input('{qn: >100}'.format(qn='Type YES to save now, NO to exit without saving. Response:  '))
+            else:
+                print('\n\n')
+                self.print_message('{spacer:_^80}'.format(spacer='Amity Manager: Session Ended'))
+                print('\n')
+                sys.exit()
+
+            if response == 'YES' or response == 'Yes':
+                self.save_state(None)
+                self.print_message('{msg: <80}'.format(msg='Data Saved. Session shall be Ended.'))
+                self.print_message('{msg:_^80}'.format(msg='Amity Manager: Session Ended'))
+                sys.exit()
+
+            elif response == 'No' or response == 'NO':
+                self.print_message('{msg: ^80}'.format(msg='Data Not Saved'), 'error')
+                self.print_message('{msg:_^80}'.format(msg='Amity Manager: Session Ended'))
+                sys.exit()
+
+            else:
+                print('\n')
+                self.print_message('      Incorrect reponse.', 'error')
+
+
 
