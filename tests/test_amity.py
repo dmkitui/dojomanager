@@ -12,6 +12,7 @@ from os import path
 from contextlib import contextmanager
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from amity.amity import AmityManager
+from models.database import Base, FellowDb, StaffDb, OfficeblockDb, LivingspaceDb, PersonelIdsDb, UnallocatedDb, MaxRoomOccupants
 
 
 # Context manager to capture terminal output of print statements as most of the functions don't return value but print to t he screen.
@@ -240,6 +241,8 @@ class TestAmityModule(unittest.TestCase):
 
     def test_load_people_file_format(self):
         '''Test for the file input format'''
+        self.reset()
+
         with screen_output() as (terminal_output, err):
             self.amity_instance.load_people('input_file.pdf') # Incorrect file name
 
@@ -251,21 +254,40 @@ class TestAmityModule(unittest.TestCase):
 
         print_output = terminal_output.getvalue().strip()
         self.assertIn('The specified file does not exist', print_output)
+
+    def test_load_people(self):
         self.reset()
 
-    def test_reallocate_person(self):
-        '''Test reallocate_person functionality'''
+        self.amity_instance.load_people('input.txt')
+
+        self.assertEqual(len(self.amity_instance.un_allocated_persons['staff']), 3)
+
+    def test_print_allocation_output_filename(self):
+        '''Test for the print_allocation functionality'''
 
         self.reset()
+
         self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
         self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Staff will be allocated to the available Bungoma office
-
         self.amity_instance.create_room(['kitale'], 'office') # Create new office, for relocation testing
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.reallocate_person('AND/S/001', 'Kitale')
+        self.amity_instance.add_person(['Daniel', 'Kitui'], 'staff', None)
+        self.amity_instance.print_allocations('output.txt')
 
-        print_output = terminal_output.getvalue().strip()
-        self.assertIn('Daniel has been re-allocated to room Kitale', print_output)
+        self.assertTrue('output.txt')
+
+    # def test_reallocate_person(self):
+    #     '''Test reallocate_person functionality'''
+    #
+    #     self.reset()
+    #     self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
+    #     self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Staff will be allocated to the available Bungoma office
+    #
+    #     self.amity_instance.create_room(['kitale'], 'office') # Create new office, for relocation testing
+    #     with screen_output() as (terminal_output, err):
+    #         self.amity_instance.reallocate_person('AND/S/001', 'Kitale')
+    #
+    #     print_output = terminal_output.getvalue().strip()
+    #     self.assertIn('Daniel has been re-allocated to room Kitale', print_output)
 
     def test_reallocate_person_same_room_they_already_occupy(self):
         '''Test reallocate_person to a non-existent room'''
@@ -327,23 +349,76 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         self.assertIn('Invalid database name. Make sure the name ends with ".db".', print_output)
 
-    #     # test with valid name
-    #     self.reset()
-    #     self.amity_instance.create_room(['Green', 'White', 'Blue'], 'Office')
-    #     with screen_output() as (terminal_output, err):
-    #         self.amity_instance.save_state('trial.db')
-    #
-    #     print_output = terminal_output.getvalue().strip()
-    #     self.assertIn('Program data successfully saved to /data/trial.db', print_output)
-    #
-    # def test_save_state_default_database(self):
-    #     '''Test saving to default database, no database name supplied'''
-    #     self.reset()
-    #     with screen_output() as (terminal_output, err):
-    #         self.amity_instance.save_state(None)
-    #
-    #     print_output = terminal_output.getvalue().strip()
-    #     self.assertIn('Program data successfully saved to /data/amity_data.py', print_output)
+    def test_save_state_specified_db_name(self):
+        '''Test that save_state method with a specified name'''
+
+        self.reset()
+
+        self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
+        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Staff will be allocated to the available Bungoma office
+
+        with screen_output() as (terminal_output, err):
+            self.amity_instance.save_state('test_amity.db')
+
+        print_output = terminal_output.getvalue().strip()
+        self.assertIn('Program data successfully saved to data/test_amity.db!', print_output)
+
+        self.assertTrue('data/test_amity.db!')      # Assert db exists.
+
+        # Save state functionality
+
+        self.reset()  # reset to simulate restarted program state
+
+        self.amity_instance.load_state('test_data.db')
+
+        assert len(self.amity_instance.office_block) == 0
+        assert len(self.amity_instance.staff_members) == 0
+
+
+    def test_remove_person(self):
+
+        self.reset()
+
+        self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
+        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None)
+        self.amity_instance.add_person(['Daniel', 'Kitui'], 'fellow', 'Y')
+
+        assert len(self.amity_instance.staff_members) == 1
+        assert len(self.amity_instance.fellows) == 1
+
+        self.amity_instance.remove_person('AND/S/001')
+        self.amity_instance.remove_person('AND/F/002')
+
+        assert len(self.amity_instance.staff_members) == 0
+        assert len(self.amity_instance.fellows) == 0
+
+
+    def test_delete_room(self):
+        '''Tests thhe delete_room functionality'''
+
+        self.reset()
+
+        self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
+        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None)  # Person added to room Bungoma
+        self.amity_instance.add_person(['Daniel', 'Kitui'], 'fellow', 'Y')
+
+        self.amity_instance.delete_room('Bungoma')
+
+        assert len(self.amity_instance.office_block) == 0
+
+        assert len(self.amity_instance.un_allocated_persons['staff']) == 1
+        assert len(self.amity_instance.un_allocated_persons['fellows_office']) == 1
+
+
+
+
+
+
+
+
+
+
+
 
 
 
