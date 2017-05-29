@@ -3,8 +3,8 @@
 
 '''
 Usage:
-    amity_manager.py create_room (Office|Livingspace) <room_name>...
-    amity_manager.py add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
+    amity_manager.py create_room (<room_type>) <room_name>...
+    amity_manager.py add_person (<person_name> <person_name>) (<person_type>) [<wants_accommodation>]
     amity_manager.py load_state (<db_base>)
 
 arguments:
@@ -76,8 +76,8 @@ class DocoptManager(cmd.Cmd):
             '{space}       {term1}_____________Version 0.0.0.1_____________{term_normal}\n' \
             '{term_normal}\n' \
             '{space2}{term2}Usage:{term_normal}\n'\
-            '{space2}   create_room (Office|Livingspace) <room_name>...\n' \
-            '{space2}   add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]\n' \
+            '{space2}   create_room (<room_type>) <room_name>...\n' \
+            '{space2}   add_person (<person_name> <person_name>) (<person_type>) [<wants_accommodation>]\n' \
             '{space2}   reallocate_person <person_identifier> <new_room_name>\n' \
             '{space2}   print_room <room_name>\n' \
             '{space2}   print_allocations [<-o=filename>]\n' \
@@ -116,14 +116,10 @@ class DocoptManager(cmd.Cmd):
     def do_create_room(self, user_input):
         '''
         Usage:
-            create_room (Office|Livingspace) (<room_name>...)
+            create_room (<room_type>) (<room_name>...)
         '''
 
-        if user_input['Livingspace']:
-            room_type = 'Livingspace'
-        else:
-            room_type = 'Office'
-
+        room_type = user_input['<room_type>'].lower()
         room_names = user_input['<room_name>']
 
         self.amity.create_room(room_names, room_type)
@@ -132,15 +128,11 @@ class DocoptManager(cmd.Cmd):
     def do_add_person(self, user_input):
         '''
         Usage:
-            add_person (<person_name> <person_name>) (Fellow|Staff) [<wants_accommodation>]
+            add_person (<person_name> <person_name>) (<person_type>) [<wants_accommodation>]
         '''
         name = user_input['<person_name>']
         wants_accommodation = user_input['<wants_accommodation>']
-
-        if user_input['Fellow']:
-            person_type = 'Fellow'
-        elif user_input['Staff']:
-            person_type = 'Staff'
+        person_type = user_input['<person_type>'].lower()
         self.amity.add_person(name, person_type, wants_accommodation)
 
     def do_clear(self, user_input):
