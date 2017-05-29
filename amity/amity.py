@@ -725,6 +725,7 @@ class AmityManager(object):
                 room_object = self.add_room(room_name, 'livingspace')
 
                 room_occupant_ids = entry.room_occupants.split(', ')
+                import pdb; pdb.set_trace()
                 for person_id in room_occupant_ids:  # Find the corresponding people objects
                     person_object = [x for x in self.fellows if x.person_id == person_id][0]
                     room_object.occupants.append(person_object)
@@ -765,7 +766,7 @@ class AmityManager(object):
             if bool(livingspaces_data):
                 self.print_message('{name: <40}{avail_space: <15}'.format(name='LIVINGSPACE NAME', avail_space='AVAILABLE SPACE'))
                 for name, spaces_available in livingspaces_data.items():
-                    self.print_message('  {name: <40} -{space: <3}'.format(name=name, space=spaces_available))
+                    self.print_message('  {name: <40} {space: <3}'.format(name=name, space=spaces_available))
             else:
                 self.print_message('No space available in livingspaces.')
 
