@@ -60,7 +60,6 @@ class AmityManager(object):
         print('\n')
         self.print_message(msg)
 
-
     def create_room(self, room_names, room_type):
         '''
         Function to create a room in the amity model
@@ -70,34 +69,38 @@ class AmityManager(object):
 
         self.title_printer('CREATE ROOM')
 
+        if room_type not in ['office', 'livingspace']:
+            self.print_message('Invalid argument for room type. Valid room types are Office or Livingspace.', 'error')
+            return
+
         for room_name in room_names:
-            if self.names_check(room_name):
+            if room_name.isalpha():
                 pass
             else:
-                self.print_message('{room_name} is not a valid room name. Room not created'.format(room_name=room_name), 'error')
+                self.print_message('{room_name} is not a valid room name. Room names should not include special characters or digits. Room not created'.format(room_name=room_name),
+                                   'error')
                 continue
             # Get list of already existing room names.
-            existing_room_names = [x.room_name for x in self.office_block] + [x.room_name for x in self.living_spaces]
-            if room_name in existing_room_names:
+            existing_room_names = [x.room_name.lower() for x in self.office_block] + [x.room_name.lower() for x in self.living_spaces]
+            if room_name.lower() in existing_room_names:
                 self.print_message('A room called {} already exists'.format(room_name), 'error')
                 continue
-            self.add_room(room_name, room_type)
-        print('\n')
+            self.add_room(room_name.title(), room_type)
 
     def add_room(self, room_name, room_type):
         '''
         Function to call create_room function for the case of multiple room arguments
         :param room_name: name for the new room
-        :param room_type: tyoe of room, either 'Livingspace' or 'Office'.
+        :param room_type: tyoe of room, either 'livingspace' or 'Office'.
         :return: Prints to the console on successful creation of the specified room or error message.
         '''
-        if room_type == 'Office':
+        if room_type == 'office':
             office_instance = Office()
             room = office_instance.create_room(room_name, 'office')
             self.office_block.append(room)
             self.print_message('An Office called {0} has been successfully created!'.format(room_name))
 
-        elif room_type == 'Livingspace':
+        elif room_type == 'livingspace':
             livingspace_instance = LivingSpace()
             room = livingspace_instance.create_room(room_name, 'livingspace')
             self.living_spaces.append(room)
@@ -125,20 +128,17 @@ class AmityManager(object):
         Function to add individuals to the amity
         :param name: List of new persons name [first_name, second_name]
         :param wants_accommodation: argument that specifies if person to be added wants accommodation or not. Should be either 'Y', 'N', 'y' or 'n' 
-        :param person_type: New person type, either 'Staff' or 'Fellow'
+        :param person_type: New person type, either 'staff' or 'fellow'
         :return: prints to the console on successful creation, returns relevant error messages on errors
         '''
 
         self.title_printer('ADD PERSON')
 
-        if not self.names_check(name[0]) or not self.names_check(name[1]):
-            self.print_message('Invalid Person Name.', 'error')
+        if not name[0].isalpha() or not name[1].isalpha():
+            self.print_message('Invalid Person Name. Person Name should not include any special characters or digits.', 'error')
             return
-        if wants_accommodation:
-            if person_type == 'Staff':
-                self.print_message('Staff are not entitled to accommodation', 'error')
-                return
 
+        if wants_accommodation:
             if wants_accommodation.lower() == 'y':
                 accommodation = True
 
@@ -146,16 +146,20 @@ class AmityManager(object):
                 accommodation = False
 
             else:
-                self.print_message('Argument for Accommodation can only be either Y/y or N/n\n', 'error')
+                self.print_message('Option for Accommodation can only be either Y/y or N/n\n', 'error')
                 return
+
+            if person_type == 'staff':
+                self.print_message('Staff are not entitled to accommodation', 'error')
         else:
             accommodation = False
-        if person_type == 'Fellow':
+
+        if person_type == 'fellow':
             person_class = Fellow()
             person_number = self.new_personnel_number('fellow')
             new_fellow = person_class.add_person(name, accommodation, person_number)
             self.fellows.append(new_fellow)
-            self.print_message('Fellow {0} {1} has been successfully added.'.format(new_fellow.person_name[0], new_fellow.person_name[1]))
+            self.print_message('Fellow {0} {1} has been successfully added. Personnel No: {2}'.format(new_fellow.person_name[0], new_fellow.person_name[1], person_number))
             random_office = self.allocate_office()
 
             if random_office:
@@ -174,12 +178,13 @@ class AmityManager(object):
 
             else:
                 self.print_message('{0} does not wish to be accommodated'.format(new_fellow.person_name[0]))
-        elif person_type == 'Staff':
+
+        elif person_type == 'staff':
             person_class = Staff()
             person_id = self.new_personnel_number('staff')
             new_staff = person_class.add_person(name, person_id)
             self.staff_members.append(new_staff)
-            self.print_message('Staff {0} {1} has been successfully added.'.format(new_staff.person_name[0], new_staff.person_name[1]))
+            self.print_message('Staff {0} {1} has been successfully added. Personnel No: {2}'.format(new_staff.person_name[0], new_staff.person_name[1], person_id))
 
             random_office = self.allocate_office()
             if random_office:
@@ -187,6 +192,10 @@ class AmityManager(object):
                 self.print_message('{0} has been allocated the office {1}'.format(new_staff.person_name[0], random_office.room_name))
             else:
                 self.un_allocated_persons['staff'].append(new_staff)  # Add new_staff to list of unallocated Staff
+
+        else:
+            self.print_message('Invalid person type specified. Valid options are Fellow and Staff only', 'error')
+            return
 
     def allocate_livingspace(self):
         '''Function to randomly allocate a livingroom to fellows'''
@@ -223,13 +232,12 @@ class AmityManager(object):
         self.title_printer('ROOM OCCUPANTS')
 
         available_rooms = self.office_block + self.living_spaces
-        available_room_names = [x.room_name for x in available_rooms]
 
-        if room_name not in available_room_names:
+        if room_name.lower() not in [x.room_name.lower() for x in available_rooms]:
             self.print_message('Room {} does not exist'.format(room_name), 'error')
             return
 
-        room_object = [x for x in available_rooms if x.room_name == room_name][0]
+        room_object = [x for x in available_rooms if x.room_name.lower() == room_name.lower()][0]
         occupant_list = room_object.occupants
 
         if len(occupant_list) == 0: # When a room is empty
@@ -287,7 +295,6 @@ class AmityManager(object):
             else:
                 for person_id, name in room_details[0].items():
                     self.print_message('{space: >15}{name: <20} - {id: <10}'.format(space='*', name=name, id=person_id))
-            self.print_message('{:_^80}'.format('_'), 'error')
 
         if output_file:
             if not output_file.endswith('.txt'):
@@ -383,24 +390,7 @@ class AmityManager(object):
                 self.print_message('Wrongly formatted file/lines', 'error')
                 return
 
-            self.add_person(name, person_type, wants_accommodation)
-
-    def names_check(self, name):
-        '''
-        Function to validate name variables
-        :param name: String to be validated
-        :return: True if validated, else False
-        '''
-
-        if len(name) <= 1 or name.isnumeric():
-            return False
-
-        chars = ['#', '$', '%', '^', '*', '?', '!', '<', '>', ':', ';', '(', ')', '{', '}']  # Set of characters not allowed to be in name strings
-
-        for char in chars:
-            if char in name:
-                return False
-        return True
+            self.add_person(name, person_type.lower(), wants_accommodation)
 
     def reallocate_person(self, relocate_id, new_room):
         ''' Function to reallocate a person from one room to another one.
@@ -423,17 +413,17 @@ class AmityManager(object):
         available_rooms = list(itertools.chain(self.office_block, self.living_spaces)) # Get list of all room object available.
         current_rooms_occupied = [x for x in available_rooms if person_object in x.occupants]  # Find current room(s) occupied by person
 
-        current_occupied_room_names = [x.room_name for x in current_rooms_occupied]
+        current_occupied_room_names = [x.room_name.lower() for x in current_rooms_occupied]
 
-        if new_room in current_occupied_room_names:
+        if new_room.lower() in current_occupied_room_names:
             self.print_message('You cannot relocate a person to a room they are currently occupying.', 'error')
             return
 
         available_rooms = list(itertools.chain(self.office_block, self.living_spaces))
-        available_room_names = [x.room_name for x in available_rooms]
+        available_room_names = [x.room_name.lower() for x in available_rooms]
 
         if new_room in available_room_names:
-            room_object = [x for x in available_rooms if x.room_name == new_room][0]
+            room_object = [x for x in available_rooms if x.room_name.lower() == new_room.lower()][0]
         else:
             self.print_message('Room {} does not exist.'.format(new_room), 'error')
             return
@@ -445,12 +435,13 @@ class AmityManager(object):
             else:
                 try:
                     current_office_occupied = [x for x in current_rooms_occupied if x.room_type == 'office'][0] # Get current office occupied and remove person
+                    room_object.occupants.append(person_object)
                     current_office_occupied.occupants.remove(person_object)  # Remove the person from list of unallocated people
                 except IndexError: # person was unallocated.
                     room_object.occupants.append(person_object)  # Add person to new room
-                    if person_object in self.un_allocated_persons['staff']:
+                    if person_object.person_name in [x.person_name for x in self.un_allocated_persons['staff']]:
                         self.un_allocated_persons['staff'].remove(person_object)
-                    elif person_object in self.un_allocated_persons['fellows_office']:
+                    elif person_object.person_name in [x.person_name for x in self.un_allocated_persons['fellows_office']]:
                         self.un_allocated_persons['fellows_office'].remove(person_object)
 
                 self.print_message('{} has been re-allocated to room {}'.format(person_object.person_name[0], new_room))
@@ -468,6 +459,7 @@ class AmityManager(object):
                 try:
                     current_livingspace_occupied = [x for x in current_rooms_occupied if x.room_type == 'livingspace'][0] # Get current livingspace occupied, and remove perso
                     current_livingspace_occupied.occupants.remove(person_object)
+                    room_object.occupants.append(person_object)
                 except IndexError: # person was unallocated
                     room_object.occupants.append(person_object)  # Add person to new room
                     if person_object in self.un_allocated_persons['fellows_acc']:
@@ -596,7 +588,9 @@ class AmityManager(object):
 
         current_employment_id = PersonelIdsDb(self.personnel_id)
         session.add(current_employment_id)
+
         session.commit()
+        session.close()
 
         if changes:
             self.print_message('Program data successfully saved to {}!'.format(db_name))
@@ -625,7 +619,9 @@ class AmityManager(object):
             self.print_message('The specified database does not exist.', 'error')
             return
 
-        engine = create_engine("sqlite:///{}".format(database_name))
+        db_name = 'data/' + database_name
+
+        engine = create_engine("sqlite:///{}".format(db_name))
         Session = sessionmaker(bind=engine)
         session = Session()
 
@@ -635,7 +631,8 @@ class AmityManager(object):
                 fellow_instance = Fellow()
                 name = entry.person_name.split(' ')
                 fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
-                self.fellows.append(fellow_object)
+                if fellow_object.person_id not in [x.person_id for x in self.fellows]:                  # Check if person already in system
+                    self.fellows.append(fellow_object)
             self.print_message('    Fellow data loaded successfully', 'info')
         else:
             self.print_message('No Fellow data in database', 'info')
@@ -646,7 +643,8 @@ class AmityManager(object):
                 staff_instance = Staff()
                 name = entry.person_name.split(' ')
                 staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
-                self.staff_members.append(staff_member)
+                if staff_member.person_id not in [x.person_id for x in self.staff_members]:
+                    self.staff_members.append(staff_member)
             self.print_message('    Staff data loaded successfully', 'info')
         else:
             self.print_message('No Staff data found in database', 'info')
@@ -658,18 +656,26 @@ class AmityManager(object):
                 if entry.person_type == 'staff':
                     staff_instance = Staff()
                     staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
-                    self.un_allocated_persons['staff'].append(staff_member)
+                    if staff_member.person_id not in [x.person_id for x in self.un_allocated_persons['staff']]:
+                        self.un_allocated_persons['staff'].append(staff_member)
 
                 elif entry.person_type == 'fellow':
                     fellow_instance = Fellow()
                     fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
                     if entry.need == 'office':
-                        self.un_allocated_persons['fellows_office'].append(fellow_object)
+                        if fellow_object.person_id not in [x.person_id for x in self.un_allocated_persons['fellows_office']]:
+                            self.un_allocated_persons['fellows_office'].append(fellow_object)
+
                     elif entry.need == 'accommodation':
-                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
+                        if fellow_object.person_id not in [x.person_id for x in self.un_allocated_persons['fellows_acc']]:
+                            self.un_allocated_persons['fellows_acc'].append(fellow_object)
+
                     elif entry.need == 'accommodation and office':
-                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
-                        self.un_allocated_persons['fellows_office'].append(fellow_object)
+                        if fellow_object.person_id not in [x.person_id for x in self.un_allocated_persons['fellows_office']]:
+                            self.un_allocated_persons['fellows_office'].append(fellow_object)
+
+                        if fellow_object.person_id not in [x.person_id for x in self.un_allocated_persons['fellows_acc']]:
+                            self.un_allocated_persons['fellows_acc'].append(fellow_object)
 
             self.print_message('    Unallocated data loaded successfully', 'info')
 
@@ -695,7 +701,11 @@ class AmityManager(object):
             self.print_message('Reading data for office block...')
             for entry in session.query(OfficeblockDb):
                 room_name = entry.room_name
-                room_object = self.add_room(room_name, 'Office')
+
+                if room_name.lower() in [x.room_name.lower() for x in self.office_block]:
+                    continue
+
+                room_object = self.add_room(room_name, 'office')
 
                 room_occupant_ids = entry.room_occupants.split(', ')
                 all_people = self.fellows + self.staff_members  # all people currently loaded
@@ -710,7 +720,9 @@ class AmityManager(object):
             self.print_message('Reading data for livingspaces...')
             for entry in session.query(LivingspaceDb):
                 room_name = entry.room_name
-                room_object = self.add_room(room_name, 'Livingspace')
+                if room_name.lower() in [x.room_name.lower() for x in self.living_spaces]:
+                    continue
+                room_object = self.add_room(room_name, 'livingspace')
 
                 room_occupant_ids = entry.room_occupants.split(', ')
                 for person_id in room_occupant_ids:  # Find the corresponding people objects
@@ -810,8 +822,8 @@ class AmityManager(object):
         # Get room object if it exists
         all_rooms = self.office_block + self.living_spaces
         try:
-            room_object = [x for x in all_rooms if x.room_name == room_name][0]
-        except:
+            room_object = [x for x in all_rooms if x.room_name.lower() == room_name.lower()][0]
+        except IndexError:
             self.print_message('Specified room does not exist!', 'error')
             return
 
