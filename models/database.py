@@ -5,6 +5,7 @@ Base = declarative_base()
 
 
 class FellowDb(Base):
+    '''Class for data on fellows'''
     __tablename__ = 'fellows'
 
     person_name = Column(String(50))
@@ -17,7 +18,7 @@ class FellowDb(Base):
 
 
 class StaffDb(Base):
-
+    '''Class on data for staff members'''
     __tablename__ = 'staff'
 
     person_name = Column(String)
@@ -29,7 +30,7 @@ class StaffDb(Base):
 
 
 class OfficeblockDb(Base):
-
+    '''Class for data on the available offices'''
     __tablename__ = 'officeblock'
 
     room_name = Column(String, primary_key=True)
@@ -41,7 +42,7 @@ class OfficeblockDb(Base):
 
 
 class LivingspaceDb(Base):
-
+    '''Class on data about the available livingspaces'''
     __tablename__ = 'livingspace'
 
     room_name = Column(String, primary_key=True)
@@ -53,6 +54,7 @@ class LivingspaceDb(Base):
 
 
 class UnallocatedDb(Base):
+    '''Class on data about the unallocated individuals'''
     __tablename__ = 'unallocated'
     person_name = Column(String)
     person_id = Column(String, primary_key=True)
@@ -67,6 +69,7 @@ class UnallocatedDb(Base):
 
 
 class PersonelIdsDb(Base):
+    '''Class data about the current personnel ID'''
     __tablename__ = 'personelid'
 
     current_id = Column(Integer, primary_key=True)
@@ -75,6 +78,7 @@ class PersonelIdsDb(Base):
         self.current_id = current_id
 
 class MaxRoomOccupants(Base):
+    '''Class on data about the maximum occupants per type of room'''
     __tablename__ = 'room constraints'
 
     office_max_occupants = Column(Integer, primary_key=True)
