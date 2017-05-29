@@ -238,7 +238,7 @@ class DocoptManager(cmd.Cmd):
     def do_delete_room(self, user_input):
         '''
         Usage:
-            delete_room (<room_name>
+            delete_room (<room_name>)
         '''
         room_name = user_input['<room_name>']
         self.amity.delete_room(room_name)
