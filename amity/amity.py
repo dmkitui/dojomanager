@@ -350,44 +350,6 @@ class AmityManager(object):
                 self.print_message('List of the unallocated saved to {}'.format(unallocated_file_name))
                 print('\n')
 
-    def print_free_rooms(self):
-        '''Function to print a list of the rooms with free space'''
-
-        self.title_printer('AVAILABLE ROOMS')
-
-        if self.office_block:
-            free_offices = [x for x in self.office_block if len(x.occupants) < self.office_max_occupants]
-            offices_data = {}
-            for office in free_offices:
-                offices_data[office.room_name] = self.office_max_occupants - len(office.occupants)
-
-            if bool(offices_data):
-                self.print_message('{name: <40}{avail_space: <15}'.format(name='OFFICE NAME', avail_space='AVAILABLE SPACE'))
-                for office, space_available in offices_data.items():
-                    self.print_message('  {name: <40} -{space: <3}'.format(name=office, space=space_available))
-            else:
-                self.print_message('No Office space available')
-
-        else:
-            self.print_message('No offices available')
-
-        if self.living_spaces:
-            free_livingspaces = [x for x in self.living_spaces if len(x.occupants) < self.livingspace_max_occupants]
-            livingspaces_data = {}
-            for room in free_livingspaces:
-                livingspaces_data[room.room_name] = self.livingspace_max_occupants - len(room.occupants)
-
-            if bool(livingspaces_data):
-                self.print_message('{name: <40}{avail_space: <15}'.format(name='LIVINGSPACE NAME', avail_space='AVAILABLE SPACE'))
-                for name, spaces_available in livingspaces_data.items():
-                    self.print_message('  {name: <40} -{space: <3}'.format(name=name, space=spaces_available))
-            else:
-                self.print_message('No space available in livingspaces.')
-
-        else:
-            self.print_message('No livingspaces available.')
-
-
     def load_people(self, text_file):
         '''
         Function to load people into rooms from a specified text file
@@ -512,108 +474,6 @@ class AmityManager(object):
                         self.un_allocated_persons['fellows_acc'].remove(person_object)
 
                 self.print_message('{} has been re-allocated to room {}'.format(person_object.person_name[0], new_room))
-
-    def reallocate_all(self):
-        '''Function to allocate people in unallocated people lists to any available spaces'''
-        pass
-
-    def delete_room(self, room_name):
-        '''
-        To delete a specified room, and add its occupants, if any, to respective unallocated list
-        :param room_name: name of the room to be deleted.
-        :return: 
-        '''
-
-        self.title_printer('DELETE ROOM')
-        # Get room object if it exists
-        all_rooms = self.office_block + self.living_spaces
-        try:
-            room_object = [x for x in all_rooms if x.room_name == room_name][0]
-        except:
-            self.print_message('Specified room does not exist!', 'error')
-            return
-
-        self.print_message('Deleting room {name}'.format(room_name))
-        if room_object.room_type == 'office':
-            self.office_block.remove(room_object)
-            if len(room_object.occupants) > 0:
-                for occupant in room_object.occupants:
-                    offices_with_space = [x for x in self.office_block if len(x.occupants) < self.office_max_occupants]
-                    if offices_with_space:
-                        office = self.allocate_office()
-                        self.reallocate_person(occupant.person_id, office.room_name)
-                    else:
-                        if isinstance(occupant, Staff):
-                            self.un_allocated_persons['staff'].append(occupant)
-                            self.print_message('    {name} Added to list of unallaocated staff.'.format(name=' '.join(occupant.person_name)), 'info')
-                        else:
-                            self.un_allocated_persons['fellows_office'].append(occupant)
-                            self.print_message('    {name} Added to list of fellows without an office.'.format(name=' '.join(occupant.person_name)), 'info')
-
-            self.print_message('Room Deleted!')
-
-        else:
-            self.living_spaces.remove(room_object)
-            if len(room_object.occupants) > 0:
-                for occupant in room_object.occupants:
-                    livingspaces_with_space = [x for x in self.living_spaces if len(x.occupants) < self.livingspace_max_occupants]
-                    if livingspaces_with_space:
-                        livingspace = self.allocate_livingspace()
-                        self.reallocate_person(occupant.person_id, livingspace.room_name)
-                    else:
-                        self.un_allocated_persons['fellows_acc'].append(occupant)
-                        self.print_message('    {name} Added to list of fellows without a livingspace'.format(name=' '.join(occupant.person_name)), 'info')
-            self.print_message('Room {} deleted successfully.'.format(room_name))
-
-
-    def remove_person(self, personnel_id):
-        '''
-        To remove a person from the record
-        :param personnel_id: The person_id who is to be removed.
-        :return: None. Prints to the screen status messages.
-        '''
-
-        self.title_printer('REMOVE PERSON')
-
-        regex = re.compile(r'^AND\/(S|F)\/(\d{3})')
-
-        if not regex.search(personnel_id):
-            self.print_message('Incorrect Personnel ID format')
-            return
-
-        available_people = list(itertools.chain(self.fellows, self.staff_members))  # List of all people objects present
-        available_people_ids = [x.person_id for x in available_people]  # List of available people ids
-
-        if personnel_id not in available_people_ids:
-            self.print_message('Employee {} does not exist'.format(personnel_id), 'error')
-            return
-
-        person_object = [x for x in available_people if x.person_id == personnel_id][0]  # Get person object belonging to the specified ID
-
-        if personnel_id.split('/')[1] == 'S':  # If the person is staff
-            self.staff_members.remove(person_object)
-            self.print_message('Staff member {} has been removed from Staff Members list.'.format(' '.join(person_object.person_name)), 'info')
-
-        elif personnel_id.split('/')[1] == 'F':
-            self.fellows.remove(person_object)
-            self.print_message('Fellow {} has been removed from Fellows list.'.format(' '.join(person_object.person_name)), 'info')
-
-        available_rooms = list(itertools.chain(self.office_block, self.living_spaces))
-
-        occupied_rooms = [x for x in available_rooms if person_object in x.occupants]
-
-        if len(occupied_rooms) == 0:  # If the person was unallocated.
-            self.print_message('The specified person did not occupy any room.', 'info')
-            for list_of_unallocated in [self.un_allocated_persons['fellows_acc'], self.un_allocated_persons['staff'], self.un_allocated_persons['fellows_office']]:
-                if person_object in list_of_unallocated:
-                    list_of_unallocated.remove(person_object)
-                    self.print_message('Employee No: {} Has been removed from the records'.format(personnel_id))
-
-        else: # Employee occupied at least one room
-            for room in occupied_rooms:
-                room.occupants.remove(person_object)
-                self.print_message('Employee has been removed from {type} {name}'.format(type=room.room_type, name=room.room_name))
-
 
     def save_state(self, database_name):
         '''
@@ -749,13 +609,165 @@ class AmityManager(object):
         else:
             self.print_message('No data to save.', 'info')
 
+    def load_state(self, database_name):
+        '''
+        Function to load data from the specified database
+        :param database_name: The sqlite database that contains the data
+        :return: prints confirmation message that the data has been loaded or error message in case of failure.
+        '''
+
+        self.title_printer('LOAD FROM DATABASE')
+        if not str(database_name).endswith('.db'):
+            self.print_message('The specified file is not a valid database file.', 'error')
+            return
+
+        if not os.path.isfile(database_name):
+            self.print_message('The specified database does not exist.', 'error')
+            return
+
+        engine = create_engine("sqlite:///{}".format(database_name))
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        if session.query(FellowDb):
+            self.print_message('Reading Fellows data')
+            for entry in session.query(FellowDb):
+                fellow_instance = Fellow()
+                name = entry.person_name.split(' ')
+                fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
+                self.fellows.append(fellow_object)
+            self.print_message('    Fellow data loaded successfully', 'info')
+        else:
+            self.print_message('No Fellow data in database', 'info')
+
+        if session.query(StaffDb):
+            self.print_message('Reading staff data...')
+            for entry in session.query(StaffDb):
+                staff_instance = Staff()
+                name = entry.person_name.split(' ')
+                staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
+                self.staff_members.append(staff_member)
+            self.print_message('    Staff data loaded successfully', 'info')
+        else:
+            self.print_message('No Staff data found in database', 'info')
+
+        if session.query(UnallocatedDb):
+            self.print_message('Reading Unallocated people data')
+            for entry in session.query(UnallocatedDb):
+                name = entry.person_name.split(' ')
+                if entry.person_type == 'staff':
+                    staff_instance = Staff()
+                    staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
+                    self.un_allocated_persons['staff'].append(staff_member)
+
+                elif entry.person_type == 'fellow':
+                    fellow_instance = Fellow()
+                    fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
+                    if entry.need == 'office':
+                        self.un_allocated_persons['fellows_office'].append(fellow_object)
+                    elif entry.need == 'accommodation':
+                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
+                    elif entry.need == 'accommodation and office':
+                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
+                        self.un_allocated_persons['fellows_office'].append(fellow_object)
+
+            self.print_message('    Unallocated data loaded successfully', 'info')
+
+        else:
+            self.print_message('No Unallocated data found in database', 'info')
+
+        if session.query(PersonelIdsDb):
+            for entry in session.query(PersonelIdsDb):
+                self.personnel_id = entry.current_id
+            self.print_message('    Current personnel id updated', 'info')
+        else:
+            self.print_message('No personnel id number data found', 'info')
+
+        if session.query(MaxRoomOccupants):
+            self.print_message('Reading maximum office and livingspace occupants information...')
+            for entry in session.query(MaxRoomOccupants):
+                self.office_max_occupants = entry.office_max_occupants
+                self.livingspace_max_occupants = entry.livingspace_max_occupants
+
+            self.print_message('    Data for maximum occupants for each room type room loaded')
+
+        if session.query(OfficeblockDb):
+            self.print_message('Reading data for office block...')
+            for entry in session.query(OfficeblockDb):
+                room_name = entry.room_name
+                room_object = self.add_room(room_name, 'Office')
+
+                room_occupant_ids = entry.room_occupants.split(', ')
+                all_people = self.fellows + self.staff_members  # all people currently loaded
+                for person_id in room_occupant_ids:  # Find the corresponding people objects
+                    person_object = [x for x in all_people if x.person_id == person_id][0]
+                    room_object.occupants.append(person_object)
+            self.print_message('    Office block data successfully Loaded', 'info')
+        else:
+            self.print_message('No office data in database.', 'info')
+
+        if session.query(LivingspaceDb):
+            self.print_message('Reading data for livingspaces...')
+            for entry in session.query(LivingspaceDb):
+                room_name = entry.room_name
+                room_object = self.add_room(room_name, 'Livingspace')
+
+                room_occupant_ids = entry.room_occupants.split(', ')
+                for person_id in room_occupant_ids:  # Find the corresponding people objects
+                    person_object = [x for x in self.fellows if x.person_id == person_id][0]
+                    room_object.occupants.append(person_object)
+            self.print_message('    Livingspace data successfully Loaded', 'info')
+        else:
+            self.print_message('No Livingspace data in database.', 'info')
+
+    #_++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # ++++++++++++++++++++++++++++EXTRA FUNCTIONALITY+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    def print_free_rooms(self):
+        '''Function to print a list of the rooms with free space'''
+
+        self.title_printer('AVAILABLE ROOMS')
+
+        if self.office_block:
+            free_offices = [x for x in self.office_block if len(x.occupants) < self.office_max_occupants]
+            offices_data = {}
+            for office in free_offices:
+                offices_data[office.room_name] = self.office_max_occupants - len(office.occupants)
+
+            if bool(offices_data):
+                self.print_message('{name: <40}{avail_space: <15}'.format(name='OFFICE NAME', avail_space='AVAILABLE SPACE'))
+                for office, space_available in offices_data.items():
+                    self.print_message('  {name: <40} -{space: <3}'.format(name=office, space=space_available))
+            else:
+                self.print_message('No Office space available')
+
+        else:
+            self.print_message('No offices available')
+
+        if self.living_spaces:
+            free_livingspaces = [x for x in self.living_spaces if len(x.occupants) < self.livingspace_max_occupants]
+            livingspaces_data = {}
+            for room in free_livingspaces:
+                livingspaces_data[room.room_name] = self.livingspace_max_occupants - len(room.occupants)
+
+            if bool(livingspaces_data):
+                self.print_message('{name: <40}{avail_space: <15}'.format(name='LIVINGSPACE NAME', avail_space='AVAILABLE SPACE'))
+                for name, spaces_available in livingspaces_data.items():
+                    self.print_message('  {name: <40} -{space: <3}'.format(name=name, space=spaces_available))
+            else:
+                self.print_message('No space available in livingspaces.')
+
+        else:
+            self.print_message('No livingspaces available.')
+
     def exit_gracefully(self):
         '''Function to ensure the programs prompts the user to save data if theres any data in the program when exit command is entered'''
 
-        changes = False # Flag to indicate presence of data in the program at exit time
+        changes = False  # Flag to indicate presence of data in the program at exit time
 
-        for data_field in (self.fellows, self.staff_members, self.un_allocated_persons['fellows_office'], self.un_allocated_persons['staff'], self.un_allocated_persons['fellows_acc'],self.office_block,
-                           self.living_spaces):
+        for data_field in (
+        self.fellows, self.staff_members, self.un_allocated_persons['fellows_office'], self.un_allocated_persons['staff'], self.un_allocated_persons['fellows_acc'], self.office_block,
+        self.living_spaces):
             if data_field:
                 changes = True
             else:
@@ -787,113 +799,102 @@ class AmityManager(object):
                 print('\n')
                 self.print_message('      Incorrect response.', 'error')
 
-    def load_state(self, database_name):
+    def delete_room(self, room_name):
         '''
-        Function to load data from the specified database
-        :param database_name: The sqlite database that contains the data
-        :return: prints confirmation message that the data has been loaded or error message in case of failure.
+        To delete a specified room, and add its occupants, if any, to respective unallocated list
+        :param room_name: name of the room to be deleted.
+        :return: 
         '''
 
-        self.title_printer('LOAD FROM DATABASE')
-        if not str(database_name).endswith('.db'):
-            self.print_message('The specified file is not a valid database file.', 'error')
+        self.title_printer('DELETE ROOM')
+        # Get room object if it exists
+        all_rooms = self.office_block + self.living_spaces
+        try:
+            room_object = [x for x in all_rooms if x.room_name == room_name][0]
+        except:
+            self.print_message('Specified room does not exist!', 'error')
             return
 
-        if not os.path.isfile(database_name):
-            self.print_message('The specified database does not exist.', 'error')
+        self.print_message('Deleting room {name}'.format(name=room_name))
+        if room_object.room_type == 'office':
+            self.office_block.remove(room_object)
+            if len(room_object.occupants) > 0:
+                for occupant in room_object.occupants:
+                    offices_with_space = [x for x in self.office_block if len(x.occupants) < self.office_max_occupants]
+                    if offices_with_space:
+                        office = self.allocate_office()
+                        self.reallocate_person(occupant.person_id, office.room_name)
+                    else:
+                        if isinstance(occupant, Staff):
+                            self.un_allocated_persons['staff'].append(occupant)
+                            self.print_message('    {name} Added to list of unallaocated staff.'.format(name=' '.join(occupant.person_name)), 'info')
+                        else:
+                            self.un_allocated_persons['fellows_office'].append(occupant)
+                            self.print_message('    {name} Added to list of fellows without an office.'.format(name=' '.join(occupant.person_name)), 'info')
+
+            self.print_message('Room Deleted!')
+
+        else:
+            self.living_spaces.remove(room_object)
+            if len(room_object.occupants) > 0:
+                for occupant in room_object.occupants:
+                    livingspaces_with_space = [x for x in self.living_spaces if len(x.occupants) < self.livingspace_max_occupants]
+                    if livingspaces_with_space:
+                        livingspace = self.allocate_livingspace()
+                        self.reallocate_person(occupant.person_id, livingspace.room_name)
+                    else:
+                        self.un_allocated_persons['fellows_acc'].append(occupant)
+                        self.print_message('    {name} Added to list of fellows without a livingspace'.format(name=' '.join(occupant.person_name)), 'info')
+            self.print_message('Room {} deleted successfully.'.format(room_name))
+
+    def remove_person(self, personnel_id):
+        '''
+        To remove a person from the record
+        :param personnel_id: The person_id who is to be removed.
+        :return: None. Prints to the screen status messages.
+        '''
+
+        self.title_printer('REMOVE PERSON')
+
+        regex = re.compile(r'^AND\/(S|F)\/(\d{3})')
+
+        if not regex.search(personnel_id):
+            self.print_message('Incorrect Personnel ID format')
             return
 
-        engine = create_engine("sqlite:///{}".format(database_name))
-        Session = sessionmaker(bind=engine)
-        session = Session()
+        available_people = list(itertools.chain(self.fellows, self.staff_members))  # List of all people objects present
+        available_people_ids = [x.person_id for x in available_people]  # List of available people ids
 
-        if session.query(FellowDb):
-            self.print_message('Reading Fellows data')
-            for entry in session.query(FellowDb):
-                fellow_instance = Fellow()
-                name = entry.person_name.split(' ')
-                fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
-                self.fellows.append(fellow_object)
-        else:
-            self.print_message('No Fellow data in database', 'info')
+        if personnel_id not in available_people_ids:
+            self.print_message('Employee {} does not exist'.format(personnel_id), 'error')
+            return
 
-        if session.query(StaffDb):
-            self.print_message('Reading staff data...')
-            for entry in session.query(StaffDb):
-                staff_instance = Staff()
-                name = entry.person_name.split(' ')
-                staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
-                self.staff_members.append(staff_member)
-            self.print_message('Staff data loaded successfully')
-        else:
-            self.print_message('No Staff data found in database', 'info')
+        person_object = [x for x in available_people if x.person_id == personnel_id][0]  # Get person object belonging to the specified ID
 
-        if session.query(UnallocatedDb):
-            self.print_message('Reading Unallocated people data', 'info')
-            for entry in session.query(UnallocatedDb):
-                name = entry.person_name.split(' ')
-                if entry.person_type == 'staff':
-                    staff_instance = Staff()
-                    staff_member = staff_instance.add_person([name[0], name[1]], entry.person_id)
-                    self.un_allocated_persons['staff'].append(staff_member)
+        if personnel_id.split('/')[1] == 'S':  # If the person is staff
+            self.staff_members.remove(person_object)
+            self.print_message('Staff member {} has been removed from Staff Members list.'.format(' '.join(person_object.person_name)), 'info')
 
-                elif entry.person_type == 'fellow':
-                    fellow_instance = Fellow()
-                    fellow_object = fellow_instance.add_person([name[0], name[1]], 'Y', entry.person_id)
-                    if entry.need == 'office':
-                        self.un_allocated_persons['fellows_office'].append(fellow_object)
-                    elif entry.need == 'accommodation':
-                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
-                    elif entry.need == 'accommodation and office':
-                        self.un_allocated_persons['fellows_acc'].append(fellow_object)
-                        self.un_allocated_persons['fellows_office'].append(fellow_object)
+        elif personnel_id.split('/')[1] == 'F':
+            self.fellows.remove(person_object)
+            self.print_message('Fellow {} has been removed from Fellows list.'.format(' '.join(person_object.person_name)), 'info')
 
-            self.print_message('Unallocated data loaded successfully')
+        available_rooms = list(itertools.chain(self.office_block, self.living_spaces))
 
-        else:
-            self.print_message('No Unallocated data found in database', 'info')
+        occupied_rooms = [x for x in available_rooms if person_object in x.occupants]
 
-        if session.query(PersonelIdsDb):
-            for entry in session.query(PersonelIdsDb):
-                self.personnel_id = entry.current_id
-            self.print_message('Current personnel id updated')
-        else:
-            self.print_message('No personnel id number data found', 'info')
+        if len(occupied_rooms) == 0:  # If the person was unallocated.
+            self.print_message('The specified person did not occupy any room.', 'info')
+            for list_of_unallocated in [self.un_allocated_persons['fellows_acc'], self.un_allocated_persons['staff'], self.un_allocated_persons['fellows_office']]:
+                if person_object in list_of_unallocated:
+                    list_of_unallocated.remove(person_object)
+                    self.print_message('Employee No: {} Has been removed from the records'.format(personnel_id))
 
-        if session.query(MaxRoomOccupants):
-            self.print_message('Reading maximum office and livingspace occupants information...')
-            for entry in session.query(MaxRoomOccupants):
-                self.office_max_occupants = entry.office_max_occupants
-                self.livingspace_max_occupants = entry.livingspace_max_occupants
+        else:  # Employee occupied at least one room
+            for room in occupied_rooms:
+                room.occupants.remove(person_object)
+                self.print_message('Employee has been removed from {type} {name}'.format(type=room.room_type, name=room.room_name))
 
-            self.print_message('Data for maximum occupants for each room type room loaded')
-
-        if session.query(OfficeblockDb):
-            self.print_message('Reading data for office block...')
-            for entry in session.query(OfficeblockDb):
-                room_name = entry.room_name
-                room_object = self.add_room(room_name, 'Office')
-
-                room_occupant_ids = entry.room_occupants.split(', ')
-                all_people = self.fellows + self.staff_members  # all people currently loaded
-                for person_id in room_occupant_ids:  # Find the corresponding people objects
-                    person_object = [x for x in all_people if x.person_id == person_id][0]
-                    room_object.occupants.append(person_object)
-            self.print_message('Office block data successfully Loaded')
-        else:
-            self.print_message('No office data in database.', 'info')
-
-        if session.query(LivingspaceDb):
-            self.print_message('Reading data for livingspaces...')
-            for entry in session.query(LivingspaceDb):
-                room_name = entry.room_name
-                room_object = self.add_room(room_name, 'Livingspace')
-
-                room_occupant_ids = entry.room_occupants.split(', ')
-                for person_id in room_occupant_ids:  # Find the corresponding people objects
-                    person_object = [x for x in self.fellows if x.person_id == person_id][0]
-                    room_object.occupants.append(person_object)
-            self.print_message('Livingspace data successfully Loaded')
-        else:
-            self.print_message('No Livingspace data in database.', 'info')
-
+    def reallocate_all(self):
+        '''Function to allocate people in unallocated people lists to any available spaces'''
+        pass
