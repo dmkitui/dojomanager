@@ -404,6 +404,8 @@ class AmityManager(object):
         available_people = list(itertools.chain(self.fellows, self.staff_members))  # List of all people objects present
         available_people_ids = [x.person_id for x in available_people]  # List of available people ids
 
+        new_room = new_room.lower()
+
         if relocate_id not in available_people_ids:
             self.print_message('Employee {} does not exist'.format(relocate_id), 'error')
             return
@@ -415,7 +417,7 @@ class AmityManager(object):
 
         current_occupied_room_names = [x.room_name.lower() for x in current_rooms_occupied]
 
-        if new_room.lower() in current_occupied_room_names:
+        if new_room in current_occupied_room_names:
             self.print_message('You cannot relocate a person to a room they are currently occupying.', 'error')
             return
 
@@ -725,7 +727,7 @@ class AmityManager(object):
                 room_object = self.add_room(room_name, 'livingspace')
 
                 room_occupant_ids = entry.room_occupants.split(', ')
-                import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 for person_id in room_occupant_ids:  # Find the corresponding people objects
                     person_object = [x for x in self.fellows if x.person_id == person_id][0]
                     room_object.occupants.append(person_object)
