@@ -610,16 +610,16 @@ class AmityManager(object):
         :return: prints confirmation message that the data has been loaded or error message in case of failure.
         '''
 
+        db_name = 'data/' + str(database_name)
+
         self.title_printer('LOAD FROM DATABASE')
         if not str(database_name).endswith('.db'):
             self.print_message('The specified file is not a valid database file.', 'error')
             return
 
-        if not os.path.isfile(database_name):
+        if not os.path.isfile(db_name):
             self.print_message('The specified database does not exist.', 'error')
             return
-
-        db_name = 'data/' + database_name
 
         engine = create_engine("sqlite:///{}".format(db_name))
         Session = sessionmaker(bind=engine)
