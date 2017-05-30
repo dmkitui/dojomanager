@@ -409,7 +409,15 @@ class TestAmityModule(unittest.TestCase):
 
     def test_load_state_defined_name(self):
         '''Test the load_state for a defined and existing database.'''
-#
+
+        # Make the db again.
+        self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
+        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Staff will be allocated to the available Bungoma office
+
+        self.amity_instance.save_state('test_amity.db')     #
+
+        self.reset()
+        
         self.amity_instance.load_state('test_amity.db')
 
         assert len(self.amity_instance.office_block) == 1
