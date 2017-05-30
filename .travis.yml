@@ -8,7 +8,7 @@ install:
   - pip install pytest-cov
 # command to run tests
 script:
-  - py.test --cov-report=term --cov=amity --cov=models --cov=amity
+  - py.test --cov-report=term --cov=amity --cov=models --cov=amity --cov=tests
 #  - coverage run --source=amity,models,tests test
 after_success:
   - coveralls
