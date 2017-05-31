@@ -752,7 +752,7 @@ class AmityManager(object):
             if bool(offices_data):
                 self.print_message('{name: <40}{avail_space: <15}'.format(name='OFFICE NAME', avail_space='AVAILABLE SPACE'))
                 for office, space_available in offices_data.items():
-                    self.print_message('  {name: <40} -{space: <3}'.format(name=office, space=space_available))
+                    self.print_message('  {name: <40}  {space: <3}'.format(name=office, space=space_available))
             else:
                 self.print_message('No Office space available')
 
@@ -768,7 +768,7 @@ class AmityManager(object):
             if bool(livingspaces_data):
                 self.print_message('{name: <40}{avail_space: <15}'.format(name='LIVINGSPACE NAME', avail_space='AVAILABLE SPACE'))
                 for name, spaces_available in livingspaces_data.items():
-                    self.print_message('  {name: <40} {space: <3}'.format(name=name, space=spaces_available))
+                    self.print_message('  {name: <40}  {space: <3}'.format(name=name, space=spaces_available))
             else:
                 self.print_message('No space available in livingspaces.')
 
