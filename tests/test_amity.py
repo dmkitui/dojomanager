@@ -132,7 +132,7 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         self.assertIn('#Dojo is not a valid room name. Room names should not include special characters or digits. Room not created', print_output)
 
-#     def test_add_person_no_rooms_available(self):
+    def test_add_person_no_rooms_available(self):
         '''Test adding person when no room is available'''
 
         with screen_output() as (terminal_output, err):
@@ -288,8 +288,6 @@ class TestAmityModule(unittest.TestCase):
         self.assertIn('The output file specified is not a valid text file. Data will not be saved', print_output)
 
 
-
-
     def test_reallocate_person(self):
         '''Test reallocate_person functionality'''
 
@@ -327,7 +325,6 @@ class TestAmityModule(unittest.TestCase):
         self.assertIn('Employee AND/S/009 does not exist', print_output)
 
 
-
     def test_reallocate_person_same_room_they_already_occupy(self):
         '''Test reallocate_person to a non-existent room'''
 
@@ -352,98 +349,9 @@ class TestAmityModule(unittest.TestCase):
         print_output = terminal_output.getvalue().strip()
         self.assertIn('Room mombasa does not exist.', print_output)
 
-    def test_load_state_db_does_not_exist(self):
-        '''Test load_state functionality'''
-
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.load_state('db_doesnt_exist.db')
-
-        print_output = terminal_output.getvalue().strip()
-        self.assertIn('The specified database does not exist.', print_output, )
-
-    def test_load_state_invalid_database(self):
-        '''Test load_state for invalid name'''
-#
-        fake_db = open('not_db.txt', 'w+')
-        fake_db.close()
-
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.load_state('not_db.txt') # Load a wrong format file
-
-        print_output = terminal_output.getvalue().strip()
-        self.assertIn('The specified file is not a valid database file.', print_output)
-
-        os.unlink('not_db.txt')
-
-        self.reset()
-
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.load_state('db_does_not_exist.db') # Load a db that doesnt exist
-
-        print_output = terminal_output.getvalue().strip()
-        self.assertIn('The specified database does not exist.', print_output)
-
-
-    def test_save_state_database_name(self):
-        '''Test save state functionalities- naming of database'''
-        self.reset()
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.save_state('amity_data')  # wrong database name
-
-        print_output = terminal_output.getvalue().strip()
-        self.assertIn('Invalid database name. Make sure the name ends with ".db".', print_output)
-
-    def test_save_state_specified_db_name(self):
-        '''Test that save_state method with a specified name'''
-#
-        self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
-        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Staff will be allocated to the available Bungoma office
-
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.save_state('test_amity.db')     #
-
-        print_output = terminal_output.getvalue().strip()
-        self.assertIn('Program data successfully saved to data/test_amity.db!', print_output)
-
-        self.assertTrue('data/test_amity.db!')      # Assert db exists.
-
-    def test_load_state_defined_name(self):
-        '''Test the load_state for a defined and existing database.'''
-
-        # Make the db again.
-        self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
-        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Staff will be allocated to the available Bungoma office
-
-        self.amity_instance.save_state('test_amity.db')     #
-
-        self.reset()
-        
-        self.amity_instance.load_state('test_amity.db')
-
-        assert len(self.amity_instance.office_block) == 1
-        assert len(self.amity_instance.staff_members) == 1
-
-    def test_save_state_all_data_present(self):
-        '''Test save_state'''
-
-        self.amity_instance.add_person(['Daniels', 'Masake'], 'fellow', 'Y')  # will create an unallocated fellow
-        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Will create an unallocated staff
-        self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
-        self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None) # Staff will be allocated to the available Bungoma office
-        self.amity_instance.add_person(['Daniel', 'Kitui'], 'fellow', 'Y')
-        self.amity_instance.create_room(['kenya'], 'livingspace')
-
-        with screen_output() as (terminal_output, err):
-            self.amity_instance.save_state('trial_data.db')
-
-        print_output = terminal_output.getvalue().strip()
-        self.assertIn('Program data successfully saved to data/trial_data.db!', print_output)
-
-        self.assertTrue('data/trial_data.db') # test file exists
-
     def test_remove_person(self):
         '''Tests remove_person functionality'''
-#
+
         self.amity_instance.add_person(['Albert', 'Einstein'], 'fellow', 'y')
 
         self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
@@ -470,7 +378,6 @@ class TestAmityModule(unittest.TestCase):
     def test_delete_room(self):
         '''Tests thhe delete_room functionality'''
 
-
         self.amity_instance.create_room(['Bungoma'], 'office') # Create new office
         self.amity_instance.add_person(['Daniel','Kitui'], 'staff', None)  # Person added to room Bungoma
         self.amity_instance.add_person(['Daniel', 'Kitui'], 'fellow', 'Y')
@@ -486,4 +393,4 @@ class TestAmityModule(unittest.TestCase):
 
         assert len(self.amity_instance.un_allocated_persons['staff']) == 1  # unallocated list has one more person
         assert len(self.amity_instance.un_allocated_persons['fellows_office']) == 1     # Unallocated list has one person.
-#
+
