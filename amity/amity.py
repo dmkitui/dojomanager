@@ -727,10 +727,10 @@ class AmityManager(object):
                 room_object = self.add_room(room_name, 'livingspace')
 
                 room_occupant_ids = entry.room_occupants.split(', ')
-                # import pdb; pdb.set_trace()
-                for person_id in room_occupant_ids:  # Find the corresponding people objects
-                    person_object = [x for x in self.fellows if x.person_id == person_id][0]
-                    room_object.occupants.append(person_object)
+                if len(room_occupant_ids) > 1:
+                    for person_id in room_occupant_ids:  # Find the corresponding people objects
+                        person_object = [x for x in self.fellows if x.person_id == person_id][0]
+                        room_object.occupants.append(person_object)
             self.print_message('    Livingspace data successfully Loaded', 'info')
         else:
             self.print_message('No Livingspace data in database.', 'info')
