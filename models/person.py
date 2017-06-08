@@ -42,10 +42,8 @@ class Fellow(Person):
         '''
         self.person_name = fellow_name
         self.accommodation = accommodation
-        self.person_id= person_id
-        # print('Fellow {0} {1} has been successfully added.\n'.format(self.person_name[0], self.person_name[1]))
-        # if not accommodation:
-        #     print('{0} does not wish to be accommodated\n'.format(fellow_name[0]))
+        self.person_id  = person_id
+
         return self
 
 

@@ -101,3 +101,5 @@ personel/
 room/__pycache__/
 rooms/
 .DS_Store
+*.db
+*.db-backup
